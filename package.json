@@ -4,9 +4,12 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "emotional": "0.0.3",
     "koa": "^2.2.0",
     "koa-router": "^7.1.1",
+    "natural": "^0.5.1",
     "request": "^2.81.0",
+    "sentiment": "^4.0.0",
     "twitter": "^1.7.0",
     "winston": "^2.3.1"
   },
