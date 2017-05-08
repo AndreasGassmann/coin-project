@@ -8,6 +8,15 @@
     },
     "trakt": {
       "client_id": ""
+    },
+    "db": {
+      "dialect": "mysql",
+      "username": "root",
+      "password": "",
+      "database": "coin",
+      "host": "localhost",
+      "port": "3306",
+      "logging": false
     }
   }
 }
