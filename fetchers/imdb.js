@@ -1,5 +1,8 @@
 let imdb = require('imdb-api');
 let scraperjs = require('scraperjs');
+let _ = require('lodash');
+let fs = require('fs');
+let pad = require('pad');
 
 /**
  * Fetches a TV show from IMDb
@@ -15,15 +18,15 @@ let fetchTvShow = (name) => {
 /**
  * Filters an array of TV show episodes for specific seasons
  * @param {Object[]} episodes - The episodes as JSON objects
- * @param {int[]} includeSeasons - The numbers of all seasons that this function should return
- * @param {int[]} includeEpisodes - The numbers of all episodes (of a season) that this function should return
+ * @param {int[]} includeSeasons - The numbers of all seasons that this function should return (or null for all seasons)
+ * @param {int[]} includeEpisodes - The numbers of all episodes (of a season) that this function should return (or null for all episodes)
  * @returns {Object[]} Filtered array of episodes as JSON objects
  */
 let filterEpisodes = (episodes, includeSeasons, includeEpisodes) => {
     var filteredEpisodes = new Array();
     episodes.forEach(function (episode) {
-        var cond = includeSeasons.indexOf(episode.season) != -1;
-        cond &= includeEpisodes.indexOf(episode.episode) != -1;
+        var cond = includeSeasons == null ? true : includeSeasons.indexOf(episode.season) != -1;
+        cond &= includeEpisodes == null ? true : includeEpisodes.indexOf(episode.episode) != -1;
         if (cond) {
             filteredEpisodes.push(episode)
         }
@@ -34,28 +37,32 @@ let filterEpisodes = (episodes, includeSeasons, includeEpisodes) => {
 /**
  * Iterates over all user reviews of one TV show episode
  * @param {Object} episode - The episode as JSON object
- * @returns {Promise<string>} A promise to the user reviews as raw text string
+ * @returns {Promise<string>} A promise to the episode object containing user reviews as raw text string
  */
 let fetchUserReviews = (episode) => {
     return new Promise((resolve, reject) => {
         var imdburl = 'http://www.imdb.com/title/' + episode.imdbid + '/reviews' + "?filter=chrono&start=";
         var start = 0;
         var content = "";
-        function next() {
+        let next = function() {
             scraperjs.StaticScraper.create(imdburl + start)
                 .scrape($ => {
-                    return $('div#tn15content').find('div').map(function () {
+                    return $('div#tn15content').find('div,p').map(function () {
                         return $(this).text();
                     }).get();
                 })
                 .then(result => {
                     content += result;
-                    if (result.length > 0) {
+                    var cond = result.length > 0;
+                    //console.log(result.toString());
+                    cond &= (result.toString() !== "Add another review");
+                    if (cond) {
                         start = start + 10;
                         next();
                     }
                     else {
-                        resolve(content);
+                        episode.reviewsRaw = content;
+                        resolve(episode);
                     }
                 });
         };
@@ -63,14 +70,55 @@ let fetchUserReviews = (episode) => {
     });
 };
 
+
 /**
- * The main procedure
+ * Returns a function that can be used to extract textual information from a review text
+ * using a regular expression (the first matching group will be the return string)
+ * @param {RegExp} regex - The regular expression used to extract information out of a user review
+ * @returns {Function} An extractor function that has the first matching group of the regular expression as return value
  */
-(_ => {
-    var seasonsFilter = [5];
-    var episodesFilter = [1];
+let extractorsFactory = (regex) => {
+    return (review) => {
+        var matches = regex.exec(review);
+        return matches ? matches[1] : null;
+    };
+};
+
+/**
+ * A set of functions for extracting information out of user reviews
+ */
+let extractors = {
+    helpfulYes: (review) => parseInt(extractorsFactory(new RegExp(/([0-9]*) out of/g))(review)),
+    helpfulTotal: (review) => parseInt(extractorsFactory(new RegExp(/out of ([0-9]*)/g))(review)),
+    title: (review) => extractorsFactory(new RegExp(/\s*(.*)\s*Author/g))(review),
+    authorName: (review) => extractorsFactory(new RegExp(/Author:\s*(.*?)(?:\n| from)/g))(review),
+    authorFrom: (review) => extractorsFactory(new RegExp(/Author:\n.* from (.*)\n/g))(review),
+    date: (review) => {
+        let parseDateString = (input) => {
+            if (input == null)
+                return null;
+            var months = { 'January': '01', 'February': '02', 'March': '03', 'April': '04', 'May': '05', 'June': '06', 'July': '07', 'August': '08', 'September': '09', 'October': '10', 'November': '11', 'December': '12' };
+            var components = input.split(' '); // e.g., '3 September 2014'
+            return components[2] + '-' + months[components[1]] + '-' + pad(2, components[0], '0'); // e.g., '2014-09-03'
+        };
+        return parseDateString(extractorsFactory(new RegExp(/Author:\n.*\n(.*)/g))(review));
+    },
+    isSpoiler: (review) => (extractorsFactory(new RegExp(/[0-9]{1,2} [A-z]+ [0-9]{4}\n\*(.*)\*/g))(review) != null),
+    text: (review) => {
+        var regex = new RegExp(/\*\*\* This review may contain spoilers \*\*\*/g);
+        review = review.replace(regex, '');
+        return extractorsFactory(new RegExp(/[0-9]{1,2} [A-z]+ [0-9]{4}\s*(?:,{1,2})\n((?:.|\s)*)/g))(review)
+    }
+};
+
+/**
+ * Performs data fetching
+ */
+let runFetcher = (tvshowName, seasonNo, episodeNo) => {
+    var seasonsFilter = [seasonNo];
+    var episodesFilter = [episodeNo];
     var tvshow;
-    fetchTvShow('Game of Thrones')
+    fetchTvShow(tvshowName)
         .then(result => { // tv show
             return new Promise((resolve, reject) => {
                 tvshow = result;
@@ -79,74 +127,111 @@ let fetchUserReviews = (episode) => {
         })
         .then(result => { // episodes
             return new Promise((resolve, reject) => {
-                var reviewsRaw;
                 tvshow._episodes = filterEpisodes(tvshow._episodes, seasonsFilter, episodesFilter);
-                fetchUserReviews(tvshow._episodes[0]).then(resolve);
+                var promises = [];
+                tvshow._episodes.forEach(episode => {
+                    promises.push(fetchUserReviews(episode));
+                });
+                Promise.all(promises).then(results => { // Episode[]
+                    resolve(results);
+                });
             });
         })
-        .then(result => { // user reviews
-            var regex = new RegExp(/([0-9]*) out of ([0-9]*) people.*useful:\n\n(.*)\n\nAuthor:\n(.*) from (.*)\n(.*)/g);
-            reviewsRaw = result.split("Was the above review useful to you?");
-            //console.log(reviewsRaw); // TODO this works
-            for (var i = 0, len = reviewsRaw.length; i < len; i++) {
-                var reviewRaw = reviewsRaw[i];
-                reviewRaw = reviewRaw.trim();
-                //console.log(reviewRaw); // TODO this works
-                if (reviewRaw.length > 0) {
-                    var regexResult = regex.exec(reviewRaw); // TODO this does NOT work (some returns are null)
-                    console.log(regexResult); // TODO this does NOT work (null values)
-                }
-            }
-        });
-})();
-
-/*
-
-
-                    .then(result => {
-                        //console.log(result);
-                        reviewsRaw = result.split("Was the above review useful to you?");
-                        //console.log(reviewsRaw);
-                        var reviews = new Array();
-                        var counter = 0;
-                        var matches = new Array();
-                        reviewsRaw.forEach((element) => {
-                            element = element.trim();
-                            //console.log(element);
-                            //console.log("____START____");
-                            //onsole.log(element);
-                            //console.log("____END____");
-                            if (element.length > 0) {
-                                //console.log(element);
-                                //console.log("____START____");
-                                //console.log(counter++);
-                                var review = new Object();
-                                //console.log(element);
-                                var regex = new RegExp(/([0-9]*) out of ([0-9]*) people.*useful:\n\n(.*)\n\nAuthor:\n(.*) from (.*)\n(.*)/g);
-                                matches.push(regex.exec(element));
-                            }
-                        }, this);
-
-                        //console.log(matches);
-
-                        matches.forEach(function (element) {
-                            console.log(element); // TODO this works!
-                            console.log(element[3]); // TODO this does not work!
-                            if (false) {
-                                review.votes_helpful_yes = match[1];
-                                review.votes_helpful_total = match[2];
-                                review.title = match[3];
-                                review.author_name = match[4];
-                                review.author_from = match[5];
-                                review.date = match[6];
-                                reviews.push(review);
-                            }
-                        }, this);
-                    });
-
+        .then(episodes => { // episodes (now containing raw reviews content)
+            episodes.forEach(episode => {
+                var reviewsRaw = episode.reviewsRaw.split("Was the above review useful to you?");
+                episode.reviewsRaw = null;
+                episode.reviews = [];
+                reviewsRaw.forEach(element => {
+                    element = element.trim();
+                    if (element.length > 0) {
+                        var review = {};
+                        Object.keys(extractors).forEach(ext => {
+                            review[ext] = extractors[ext](element)
+                        });
+                        if (review.title != null)
+                            episode.reviews.push(review);
+                    }
+                });
             });
+            var filePath = __dirname + '/../data/imdb/' + tvshow.title + '_S' + pad(2, seasonNo, '0') + '_E' + pad(2, episodeNo, '0') + '.json';
+            fs.writeFile(filePath, JSON.stringify(tvshow, null, 2) + "\n", 'utf8', (err) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                console.log("File has been created: " + filePath);
+            });
+        }).catch(console.log);
+};
+
+// TV Shows array
+var tvshows = [];
+
+// Game of Thrones
+var got = {};
+got.tvshowName = 'Game of Thrones';
+got.seasons = (() => _.range(1, 7).map((element) => {
+    return {
+        season: element,
+        episodes: _.range(1, 11)
+    }
+}))();
+
+// The Big Bang Theory
+// TODO episode 0
+var bbt = {};
+bbt.tvshowName = 'The Big Bang Theory';
+bbt.seasons = (() => _.range(1, 10).map((element) => {
+    return {
+        season: element,
+        episodes: (() => {
+            if (element == 1)
+                return _.range(1, 18);
+            else if (element == 2)
+                return _.range(1, 24);
+            else
+                return _.range(1, 25);
+        })()
+    }
+}))();
+
+// Criminal Minds
+var crms = {};
+crms.tvshowName = 'Criminal Minds';
+crms.seasons = (() => _.range(1, 12).map((element) => {
+    return {
+        season: element,
+        episodes: (() => {
+            if ([2, 5, 10].indexOf(element) != -1)
+                return _.range(1, 24);
+            else if (element == 3)
+                return _.range(1, 21);
+            else if (element == 4)
+                return _.range(1, 26);
+            else if (_.range(6,10).indexOf(element) != -1)
+                return _.range(1, 25);
+            else if ([1, 11, 12].indexOf(element) != -1)
+                return _.range(1, 23);
+            else
+                return null; // should never happen
+        })()
+    }
+}))();
+
+
+// Add TVShows to tvshows array to iterate over them
+tvshows.push(got);
+//tvshows.push(bbt);
+//tvshows.push(crms);
+
+// Iterate over all episodes of all seasons of all defined TvShows and run fetcher for each episode
+tvshows.forEach((tvshow) => {
+    tvshow.seasons.forEach((season) => {
+        season.episodes.forEach((episode) => {
+            runFetcher(tvshow.tvshowName, season.season, episode);
         });
-})();
+    });
+});
 
-
-*/
+// TODO also fetch user reviews from TVShow context (only episode-level so far)

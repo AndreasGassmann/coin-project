@@ -7,9 +7,12 @@
     "emotional": "0.0.3",
     "koa": "^2.2.0",
     "koa-router": "^7.1.1",
+    "lodash": "^4.17.4",
     "natural": "^0.5.1",
+    "pad": "^1.1.0",
     "request": "^2.81.0",
     "sentiment": "^4.0.0",
+    "sequelize": "^3.30.4",
     "twitter": "^1.7.0",
     "winston": "^2.3.1"
   },
