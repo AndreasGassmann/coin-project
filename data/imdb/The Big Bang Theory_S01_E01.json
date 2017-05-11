@@ -41,8 +41,8 @@
       "reviews": [
         {
           "helpfulYes": 9,
-          "helpfulTotal": 10,
           "title": "The First Episode...",
+          "rating": 9,
           "authorName": "Taylor Kingston",
           "authorFrom": "Australia",
           "date": "2015-06-18",
@@ -51,8 +51,8 @@
         },
         {
           "helpfulYes": 2,
-          "helpfulTotal": 3,
           "title": "Great way to start off",
+          "rating": 9,
           "authorName": "peterhill-84900",
           "authorFrom": "England",
           "date": "2015-03-16",
@@ -61,8 +61,8 @@
         },
         {
           "helpfulYes": 3,
-          "helpfulTotal": 5,
           "title": "A Flying Start",
+          "rating": 9,
           "authorName": "eevee_j",
           "authorFrom": "United Kingdom",
           "date": "2010-11-12",
@@ -71,8 +71,8 @@
         },
         {
           "helpfulYes": 15,
-          "helpfulTotal": 21,
           "title": "Pilot for \"The Big Bang Theory\" should be the start of another hit for Chuck Lorre",
+          "rating": 7,
           "authorName": "tavm",
           "authorFrom": "Baton Rouge, LA",
           "date": "2007-09-25",
