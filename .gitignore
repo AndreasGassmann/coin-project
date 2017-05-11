@@ -40,3 +40,6 @@ jspm_packages
 .idea/
 
 config/config.json
+
+# Local Visual Studio Code Configuration
+.vscode/*
