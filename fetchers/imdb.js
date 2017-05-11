@@ -133,6 +133,7 @@ let extractors = {
         var result = parseInt(extractorsFactory(new RegExp(/out of ([0-9]*)/g))(review));
         if (isNaN(result))
             return null;
+        return result;
     },
     title: (review) => extractorsFactory(new RegExp(/\s*(.*)\n?(?:(?:(?:(?:[0-9])|(?:10))\/10))?\nAuthor/g))(review),
     rating: (review) => {
@@ -274,8 +275,8 @@ crms.seasons = (() => _.range(1, 12).map((element) => {
 
 
 // Add TVShows to tvshows array to iterate over them
-tvshows.push(got);
-//tvshows.push(bbt);
+//tvshows.push(got);
+tvshows.push(bbt);
 //tvshows.push(crms);
 
                 sequelize.sync({ force: true }).then(function () {
