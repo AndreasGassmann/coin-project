@@ -123,8 +123,17 @@ let extractorsFactory = (regex) => {
  * A set of functions for extracting information out of user reviews
  */
 let extractors = {
-    helpfulYes: (review) => parseInt(extractorsFactory(new RegExp(/([0-9]*) out of/g))(review)),
-    helpfulTotal: (review) => parseInt(extractorsFactory(new RegExp(/out of ([0-9]*)/g))(review)),
+    helpfulYes: (review) => {
+        var result = parseInt(extractorsFactory(new RegExp(/([0-9]*) out of/g))(review));
+        if (isNaN(result))
+            return null;
+        return result;
+    },
+    helpfulTotal: (review) => {
+        var result = parseInt(extractorsFactory(new RegExp(/out of ([0-9]*)/g))(review));
+        if (isNaN(result))
+            return null;
+    },
     title: (review) => extractorsFactory(new RegExp(/\s*(.*)\n?(?:(?:(?:(?:[0-9])|(?:10))\/10))?\nAuthor/g))(review),
     rating: (review) => {
         var result = extractorsFactory(new RegExp(/\s*(?:.*)\n?(?:(?:(?:([0-9]|10)|(?:10))\/10))?\nAuthor/g))(review);
