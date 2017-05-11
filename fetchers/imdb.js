@@ -3,6 +3,35 @@ let scraperjs = require('scraperjs');
 let _ = require('lodash');
 let fs = require('fs');
 let pad = require('pad');
+let Sequelize = require('sequelize');
+let dbConfig = require('../config/config.json').credentials.db;
+
+
+let config = {};
+config.dialect = dbConfig.dialect;
+config.host = dbConfig.host;
+config.port = dbConfig.port;
+
+let sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
+
+let db = {};
+
+db.sequelize = sequelize; // TODO is this necessary?
+
+// TODO add sequelize definitions for connected data (tvShows, seasons, episodes, ...)
+let imdbUserReview = sequelize.define('imdbUserReview', {
+    isSpoiler: Sequelize.BOOLEAN,
+    date: Sequelize.DATEONLY,
+    authorName: Sequelize.STRING,
+    authorFrom: Sequelize.STRING,
+    title: Sequelize.STRING,
+    text: Sequelize.TEXT,
+    rating: Sequelize.INTEGER,
+    helpfulYes: Sequelize.INTEGER,
+    helpfulTotal: Sequelize.INTEGER
+});
+//imdbUserReview.belongsTo(tvShow); // TODO add sequelize definitions
+//imdbUserReview.belongsTo(episode); // TODO add sequelize definitions
 
 /**
  * Fetches a TV show from IMDb
@@ -44,10 +73,16 @@ let fetchUserReviews = (episode) => {
         var imdburl = 'http://www.imdb.com/title/' + episode.imdbid + '/reviews' + "?filter=chrono&start=";
         var start = 0;
         var content = "";
-        let next = function() {
+        let next = function () {
             scraperjs.StaticScraper.create(imdburl + start)
                 .scrape($ => {
                     return $('div#tn15content').find('div,p').map(function () {
+                        this.children.forEach(obj => { // TODO redo this in a cleaner way
+                            if (obj.type == 'tag' & obj.name == 'img') {
+                                obj.type = 'text';
+                                obj.data = obj.attribs.alt;
+                            }
+                        });
                         return $(this).text();
                     }).get();
                 })
@@ -90,7 +125,13 @@ let extractorsFactory = (regex) => {
 let extractors = {
     helpfulYes: (review) => parseInt(extractorsFactory(new RegExp(/([0-9]*) out of/g))(review)),
     helpfulTotal: (review) => parseInt(extractorsFactory(new RegExp(/out of ([0-9]*)/g))(review)),
-    title: (review) => extractorsFactory(new RegExp(/\s*(.*)\s*Author/g))(review),
+    title: (review) => extractorsFactory(new RegExp(/\s*(.*)\n?(?:(?:(?:(?:[0-9])|(?:10))\/10))?\nAuthor/g))(review),
+    rating: (review) => {
+        var result = extractorsFactory(new RegExp(/\s*(?:.*)\n?(?:(?:(?:([0-9]|10)|(?:10))\/10))?\nAuthor/g))(review);
+        if (result != null & result != undefined)
+            return parseInt(result);
+        return null;
+    },
     authorName: (review) => extractorsFactory(new RegExp(/Author:\s*(.*?)(?:\n| from)/g))(review),
     authorFrom: (review) => extractorsFactory(new RegExp(/Author:\n.* from (.*)\n/g))(review),
     date: (review) => {
@@ -115,54 +156,57 @@ let extractors = {
  * Performs data fetching
  */
 let runFetcher = (tvshowName, seasonNo, episodeNo) => {
-    var seasonsFilter = [seasonNo];
-    var episodesFilter = [episodeNo];
-    var tvshow;
-    fetchTvShow(tvshowName)
-        .then(result => { // tv show
-            return new Promise((resolve, reject) => {
-                tvshow = result;
-                tvshow.episodes().then(resolve);
-            });
-        })
-        .then(result => { // episodes
-            return new Promise((resolve, reject) => {
-                tvshow._episodes = filterEpisodes(tvshow._episodes, seasonsFilter, episodesFilter);
-                var promises = [];
-                tvshow._episodes.forEach(episode => {
-                    promises.push(fetchUserReviews(episode));
+    return new Promise((resolve, reject) => {
+        var seasonsFilter = [seasonNo];
+        var episodesFilter = [episodeNo];
+        var tvshow;
+        fetchTvShow(tvshowName)
+            .then(result => { // tv show
+                return new Promise((resolve, reject) => {
+                    tvshow = result;
+                    tvshow.episodes().then(resolve);
                 });
-                Promise.all(promises).then(results => { // Episode[]
-                    resolve(results);
+            })
+            .then(result => { // episodes
+                return new Promise((resolve, reject) => {
+                    tvshow._episodes = filterEpisodes(tvshow._episodes, seasonsFilter, episodesFilter);
+                    var promises = [];
+                    tvshow._episodes.forEach(episode => {
+                        promises.push(fetchUserReviews(episode));
+                    });
+                    Promise.all(promises).then(results => { // Episode[]
+                        resolve(results);
+                    });
                 });
-            });
-        })
-        .then(episodes => { // episodes (now containing raw reviews content)
-            episodes.forEach(episode => {
-                var reviewsRaw = episode.reviewsRaw.split("Was the above review useful to you?");
-                episode.reviewsRaw = null;
-                episode.reviews = [];
-                reviewsRaw.forEach(element => {
-                    element = element.trim();
-                    if (element.length > 0) {
-                        var review = {};
-                        Object.keys(extractors).forEach(ext => {
-                            review[ext] = extractors[ext](element)
-                        });
-                        if (review.title != null)
-                            episode.reviews.push(review);
+            })
+            .then(episodes => { // episodes (now containing raw reviews content)
+                episodes.forEach(episode => {
+                    var reviewsRaw = episode.reviewsRaw.split("Was the above review useful to you?");
+                    episode.reviewsRaw = null;
+                    episode.reviews = [];
+                    reviewsRaw.forEach(element => {
+                        element = element.trim();
+                        if (element.length > 0) {
+                            var review = {};
+                            Object.keys(extractors).forEach(ext => {
+                                review[ext] = extractors[ext](element)
+                            });
+                            if (review.title != null)
+                                episode.reviews.push(review);
+                        }
+                    });
+                });
+                var filePath = __dirname + '/../data/imdb/' + tvshow.title + '_S' + pad(2, seasonNo, '0') + '_E' + pad(2, episodeNo, '0') + '.json';
+                fs.writeFile(filePath, JSON.stringify(tvshow, null, 2) + "\n", 'utf8', (err) => {
+                    if (err) {
+                        console.error(err);
+                        return;
                     }
+                    console.log("File has been created: " + filePath);
                 });
-            });
-            var filePath = __dirname + '/../data/imdb/' + tvshow.title + '_S' + pad(2, seasonNo, '0') + '_E' + pad(2, episodeNo, '0') + '.json';
-            fs.writeFile(filePath, JSON.stringify(tvshow, null, 2) + "\n", 'utf8', (err) => {
-                if (err) {
-                    console.error(err);
-                    return;
-                }
-                console.log("File has been created: " + filePath);
-            });
-        }).catch(console.log);
+                resolve(episodes);
+            }).catch(console.log);
+    });
 };
 
 // TV Shows array
@@ -209,7 +253,7 @@ crms.seasons = (() => _.range(1, 12).map((element) => {
                 return _.range(1, 21);
             else if (element == 4)
                 return _.range(1, 26);
-            else if (_.range(6,10).indexOf(element) != -1)
+            else if (_.range(6, 10).indexOf(element) != -1)
                 return _.range(1, 25);
             else if ([1, 11, 12].indexOf(element) != -1)
                 return _.range(1, 23);
@@ -225,13 +269,34 @@ tvshows.push(got);
 //tvshows.push(bbt);
 //tvshows.push(crms);
 
+                sequelize.sync({ force: true }).then(function () {
 // Iterate over all episodes of all seasons of all defined TvShows and run fetcher for each episode
 tvshows.forEach((tvshow) => {
     tvshow.seasons.forEach((season) => {
         season.episodes.forEach((episode) => {
-            runFetcher(tvshow.tvshowName, season.season, episode);
+            runFetcher(tvshow.tvshowName, season.season, episode).then(episodes => {
+                var episode = episodes[0];
+                // Database
+                    console.log('db synced');
+                    if (episode.reviews.length > 0) {
+                        episode.reviews.forEach(review => {
+                            imdbUserReview.create({
+                                isSpoiler: review.isSpoiler,
+                                date: review.date,
+                                authorName: review.authorName,
+                                authorFrom: review.authorFrom,
+                                title: review.title,
+                                text: review.text,
+                                rating: review.rating,
+                                helpfulYes: review.helpfulYes,
+                                helpfulTotal: review.helpfulTotal
+                            });
+                        });
+                    };
+            });
         });
     });
 });
+                });
 
 // TODO also fetch user reviews from TVShow context (only episode-level so far)
