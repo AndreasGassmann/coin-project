@@ -4,34 +4,7 @@ let _ = require('lodash');
 let fs = require('fs');
 let pad = require('pad');
 let Sequelize = require('sequelize');
-let dbConfig = require('../config/config.json').credentials.db;
-
-
-let config = {};
-config.dialect = dbConfig.dialect;
-config.host = dbConfig.host;
-config.port = dbConfig.port;
-
-let sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, dbConfig);
-
-let db = {};
-
-db.sequelize = sequelize; // TODO is this necessary?
-
-// TODO add sequelize definitions for connected data (tvShows, seasons, episodes, ...)
-let imdbUserReview = sequelize.define('imdbUserReview', {
-    isSpoiler: Sequelize.BOOLEAN,
-    date: Sequelize.DATEONLY,
-    authorName: Sequelize.STRING,
-    authorFrom: Sequelize.STRING,
-    title: Sequelize.STRING,
-    text: Sequelize.TEXT,
-    rating: Sequelize.INTEGER,
-    helpfulYes: Sequelize.INTEGER,
-    helpfulTotal: Sequelize.INTEGER
-});
-//imdbUserReview.belongsTo(tvShow); // TODO add sequelize definitions
-//imdbUserReview.belongsTo(episode); // TODO add sequelize definitions
+let db = require('../db.js');
 
 /**
  * Fetches a TV show from IMDb
@@ -212,9 +185,9 @@ let runFetcher = (tvshowName, seasonNo, episodeNo) => {
                         console.error(err);
                         return;
                     }
-                    console.log("File has been created: " + filePath);
+                    console.log("File created: " + filePath);
                 });
-                resolve(episodes);
+                resolve(tvshow);
             }).catch(console.log);
     });
 };
@@ -275,38 +248,146 @@ crms.seasons = (() => _.range(1, 12).map((element) => {
 
 
 // Add TVShows to tvshows array to iterate over them
-//tvshows.push(got);
-tvshows.push(bbt);
+tvshows.push(got);
+//tvshows.push(bbt);
 //tvshows.push(crms);
 
-                sequelize.sync({ force: true }).then(function () {
-// Iterate over all episodes of all seasons of all defined TvShows and run fetcher for each episode
-tvshows.forEach((tvshow) => {
-    tvshow.seasons.forEach((season) => {
-        season.episodes.forEach((episode) => {
-            runFetcher(tvshow.tvshowName, season.season, episode).then(episodes => {
-                var episode = episodes[0];
-                // Database
-                    console.log('db synced');
-                    if (episode.reviews.length > 0) {
-                        episode.reviews.forEach(review => {
-                            imdbUserReview.create({
-                                isSpoiler: review.isSpoiler,
-                                date: review.date,
-                                authorName: review.authorName,
-                                authorFrom: review.authorFrom,
-                                title: review.title,
-                                text: review.text,
-                                rating: review.rating,
-                                helpfulYes: review.helpfulYes,
-                                helpfulTotal: review.helpfulTotal
+db.init().then((db) => {
+    // Database
+    console.log('db synced');
+    // Iterate over all episodes of all seasons of all defined TvShows and run fetcher for each episode
+    tvshows.forEach((tvshow) => {
+        tvshow.seasons.forEach((season) => {
+            season.episodes.forEach((episode) => {
+                runFetcher(tvshow.tvshowName, season.season, episode).then(fetchedTvShow => {
+                    var episode = fetchedTvShow._episodes[0];
+                    db.sequelize.models.tvShow.findOne({ where: { title: fetchedTvShow.title } })
+                        .then(dbTvShow => {
+                            return new Promise((resolve, reject) => {
+                                if (dbTvShow == null) {
+                                    db.sequelize.models.tvShow.create({
+                                        title: fetchedTvShow.title,
+                                        year: fetchedTvShow.year,
+                                        rated: fetchedTvShow.rated,
+                                        releaseDate: fetchedTvShow.released,
+                                        runtime: parseInt(fetchedTvShow.runtime.replace(' min', '')),
+                                        genres: fetchedTvShow.genres,
+                                        director: fetchedTvShow.director,
+                                        writer: fetchedTvShow.writer,
+                                        actors: fetchedTvShow.actors,
+                                        plot: fetchedTvShow.plot,
+                                        languages: fetchedTvShow.languages,
+                                        country: fetchedTvShow.country,
+                                        awards: fetchedTvShow.awards,
+                                        poster: fetchedTvShow.poster,
+                                        metascore: fetchedTvShow.metascore == 'N/A' ? null : fetchedTvShow.metascore,
+                                        rating: fetchedTvShow.rating, // TODO fix: number rounded to integer
+                                        votes: parseInt(fetchedTvShow.votes.replace(',', '')),
+                                        imdbid: fetchedTvShow.imdbid,
+                                        totalseasons: fetchedTvShow.totalseasons,
+                                        imdburl: fetchedTvShow.imdburl,
+                                        startYear: fetchedTvShow.start_year,
+                                        endYear: fetchedTvShow.end_year
+                                    }).then(resolve);
+                                } else {
+                                    resolve(dbTvShow);
+                                }
+
+                            }).then(dbTvShow => {
+                                db.sequelize.models.season.findOne({ where: { tvShowId: dbTvShow.id, seasonNumber: season.season } })
+                                    .then(dbSeason => {
+                                        return new Promise((resolve, reject) => {
+                                            if (dbSeason == null) {
+                                                db.sequelize.models.season.create({
+                                                    seasonNumber: season.season,
+                                                    tvShowId: dbTvShow.id
+                                                }).then(resolve);
+                                            } else {
+                                                resolve(dbSeason);
+                                            }
+                                        }).then(dbSeason => {
+
+
+
+                                            //console.log(dbSeason);
+                                            db.sequelize.models.episode.findOne({ where: { seasonId: dbSeason.id, episodeNumber: episode.episode } })
+                                                .then(dbEpisode => {
+                                                    return new Promise((resolve, reject) => {
+                                                        if (dbEpisode == null) {
+                                                            db.sequelize.models.episode.create({
+                                                                name: episode.name,
+                                                                releaseDate: episode.released,
+                                                                imdbId: episode.imdbid,
+                                                                imdbRating: episode.rating,
+                                                                episodeNumber: episode.episode,
+                                                                seasonId: dbSeason.id
+                                                            }).then(resolve);
+                                                        }
+                                                        else {
+                                                            resolve(dbEpisode);
+                                                        }
+                                                    }).then(dbEpisode => {
+
+                                                        if (episode.reviews.length > 0) {
+                                                            episode.reviews.forEach(review => {
+                                                                db.sequelize.models.imdbUserReview.create({
+                                                                    isSpoiler: review.isSpoiler,
+                                                                    date: review.date,
+                                                                    authorName: review.authorName,
+                                                                    authorFrom: review.authorFrom,
+                                                                    title: review.title,
+                                                                    text: review.text,
+                                                                    rating: review.rating,
+                                                                    helpfulYes: review.helpfulYes,
+                                                                    helpfulTotal: review.helpfulTotal,
+                                                                    episodeId: dbEpisode.id
+                                                                    //tvShowId: show[0].id
+                                                                });
+
+                                                            });
+                                                        }
+
+
+
+                                                    });
+                                                }); // END then(dbEpisode ..)
+
+
+                                        });
+
+
+
+
+
+
+                                    }); // END then(dbSeason ..)
                             });
-                        });
-                    };
-            });
-        });
-    });
-});
+
+
+
+
+
+
+
+
+
+                        }); // END then(dbTvShow ..)
+
+
                 });
+
+
+
+
+
+
+            }); // END season.episodes.forEach
+        }); // END tvshow.seasons.forEach
+
+
+    }); // END tvshows.forEach
+});
+
+console.log("DONE");
 
 // TODO also fetch user reviews from TVShow context (only episode-level so far)
