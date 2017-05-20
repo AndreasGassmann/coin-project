@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "csvtojson": "^1.1.5",
     "emotional": "0.0.3",
     "imdb-api": "^2.2.2",
     "koa": "^2.2.0",
