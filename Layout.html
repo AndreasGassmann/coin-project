@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>COINS Seminar 2017</title>
+
+    <!-- Custom styles for this template -->
+    <link href="jumbotron.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="">COINS Seminar - TV Series Coolhunting - Group 12</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- General informationa bout the topic -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1><b> Cool Hunting (TV)Series </b></h1>
+        <p style="font-size: 10pt;"> Series like The Walking Dead, Breaking Bad, House of Cards or Game of Thrones become increasingly popular and can be watched not only in free or pay TV but also on service on demand platforms like Netflix or amazon prime video.
+        Journalist speak of “The Golden age of TV “ (see Erlichman, J. (2016), „<a href="http://fortune.com/2016/01/18/golden-age-tv-peak/">The ‘Golden Age of TV’ Has A Lot of People Worried </a>“) .
+        But until now, little is known about the phenomenon of theses successful Series.
+        In this project, we apply social media analysis and identify based on UGC:
+        What are the people speak about in context of series?
+        Who is watching Series?
+        Why are people watching Series?
+        What are indicators for success?</p>
+        <p><a class="btn btn-primary btn-lg" href="https://sites.google.com/view/coincourse17-a/home" role="button">Learn more &raquo;</a></p>
+      </div>
+    </div>
+
+  <!-- Instructions -->
+    <div class="container">
+        <h2> COINS Seminar - Instruction for the Web App</h2>
+        <p style="font-size: 10pt;"> Erklären was wir machen....
+          - Regression analysis
+          blablabalbalablablabalablabalbaablablabalb
+          <br> <br> <br>
+          In the Following you can chose on TV Show, Season and Episode Level with the following features: <br>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Level</th>
+                <th>Features</th>
+                <th> Explanation </th> 
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>TV Show</td>
+                <td>Average Rating </td>
+                <td>Cumulated (averg.) ratings from all sources </td>
+              </tr>
+              <tr>
+                <td>Season Level</td>
+                <td>Correlation between explicit rating and implicit text sentiment</td>
+                <td>Correlation coefficient = [-1; 1]</td>
+              </tr>
+              <tr>
+                <td>Episode Level</td>
+                <td>Word Cloud</td> 
+                <td>Word Frequencies, Sentiment</td>
+              </tr>
+            </tbody>
+          </table>
+        </p>
+      <hr>
+     
+
+<!-- Accordion Collapse Bootsrap --> 
+        <div class="panel-group" id="accordion">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                <b> TV Show </b> Level</a>
+              </h4>
+            </div>
+            <div id="collapse1" class="panel-collapse collapse in">
+              <div class="panel-body">Select a TV Show: 
+                <div class="dropdown">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">TV Show
+                  <span class="caret"></span></button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">GoT</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Big Bang</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Navi CSI</a></li>
+                  </ul>
+                </div>
+
+                <div class="unsichtbar">
+                  <p> Dieser Bereich soll erst nach Auswahl der TV Show eingeblendet werden </p>
+                  <p> General Description: Blablablanalblabalbal </p>
+                  <p> Average Rating: 9,7 </p>
+                </div> 
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                <b>Season </b> Level</a>
+              </h4>
+            </div>
+            <div id="collapse2" class="panel-collapse collapse">
+              <div class="panel-body">Select a Season: 
+                <div class="dropdown">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Season
+                  <span class="caret"></span></button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">1</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">2</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">3</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                <b> Episode </b> Level</a>
+              </h4>
+            </div>
+            <div id="collapse3" class="panel-collapse collapse">
+              <div class="panel-body">Select a Episode: 
+                <div class="dropdown">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">Episode
+                  <span class="caret"></span></button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Chapter 1</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Chapter 2</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Chapter 3</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+  <!-- <footer>
+      <p>&copy; 2016 Company, Inc.</p>
+  </footer> -->
+  </div> <!-- End of container -->
+  </body>
+</html>
