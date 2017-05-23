@@ -5,6 +5,7 @@
   "main": "server.js",
   "dependencies": {
     "async": "^2.4.0",
+    "csvtojson": "^1.1.5",
     "emotional": "0.0.3",
     "imdb-api": "^3.0.0",
     "koa": "^2.2.0",
