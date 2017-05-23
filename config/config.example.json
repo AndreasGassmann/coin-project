@@ -18,5 +18,8 @@
       "port": "3306",
       "logging": false
     }
+  },
+  "imdb": {
+    "omdb_api_key": ""
   }
 }

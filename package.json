@@ -4,8 +4,9 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "async": "^2.4.0",
     "emotional": "0.0.3",
-    "imdb-api": "^2.2.2",
+    "imdb-api": "^3.0.0",
     "koa": "^2.2.0",
     "koa-router": "^7.1.1",
     "lodash": "^4.17.4",

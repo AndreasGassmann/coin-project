@@ -112,9 +112,10 @@ module.exports.init = () => {
         episode.hasMany(traktComment);
         episode.hasMany(redditPost);
 
-        sequelize.sync({ force: true }).then(function () {
+        sequelize.sync({ force: false }).then(function () {
             resolve(db);
-            console.log('done');
+            //console.log('done');
+            /*
             tvShow.create({
                 title: 'Test Show',
                 releaseYear: 2010
@@ -129,15 +130,15 @@ module.exports.init = () => {
                     }, {
                         episodeNumber: 2,
                         seasonId: s.id
-                    }]).then(x => {/*
+                    }]).then(x => {
                 episode.findOne().then(ep => {
                     ep.getSeason().then(se => {
                         //console.log(se);
                     });
-                })*/
+                })
                         season.findOne().then(se => {
                             se.getEpisodes().then(a => {
-                                console.log(a);
+                                //console.log(a);
                             })
                             //console.log(se);
                         });
@@ -145,7 +146,7 @@ module.exports.init = () => {
                 })
                 //season.setTvShow(show);
             });
-            /*
+ 
             tvShow.bulkCreate([, {
                 title: 'Simpsons',
                 releaseYear: 1995
