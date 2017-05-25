@@ -20,35 +20,35 @@ const routes: Routes = [
     }
   },
   {
-    path: '/show-choice',
+    path: 'show-choice',
     component: ShowChoiceComponent,
     data: {
       title: 'Coin'
     }
   },
   {
-    path: '/thirteen-reasons-why',
+    path: 'thirteen-reasons-why',
     component: ThirteenReasonsWhyComponent,
     data: {
       title: 'Coin'
     }
   },
   {
-    path: '/got',
+    path: 'got',
     component: GotComponent,
     data: {
       title: 'Coin'
     }
   },
   {
-    path: '/criminal-minds',
+    path: 'criminal-minds',
     component: CriminalMindsComponent,
     data: {
       title: 'Coin'
     }
   },
   {
-    path: '/big-bang-theory',
+    path: 'big-bang-theory',
     component: BigBangTheoryComponent,
     data: {
       title: 'Coin'
