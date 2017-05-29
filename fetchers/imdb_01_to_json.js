@@ -266,10 +266,28 @@ crms.seasons = (() => _.range(1, 12).map((element) => {
     }
 }))();
 
+// 13 Reasons Why
+var trw = {};
+trw.tvshowName = '13 Reasons Why';
+trw.fetchTvShowReviews = true;
+trw.seasons = (() => _.range(1, 2).map((element) => {
+    return {
+        season: element,
+        episodes: (() => {
+            if (element == 1)
+                return _.range(1, 14);
+            else
+                return null; // should never happen
+        })()
+    }
+}))();
+
+
 // Add TVShows to tvshows array to iterate over them
 //tvshows.push(got);
 //tvshows.push(bbt);
-tvshows.push(crms);
+//tvshows.push(crms);
+tvshows.push(trw);
 
 var episodeFetcherPromises = [];
 // Iterate over all episodes of all seasons of all defined TvShows and run fetcher for each episode

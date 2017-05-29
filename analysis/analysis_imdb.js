@@ -7,7 +7,7 @@ let _ = require('lodash');
 let fs = require('fs');
 let pad = require('pad');
 let Sequelize = require('sequelize');
-let dbjs = require('./db.js');
+let dbjs = require('../db.js');
 //let async = require('async');
 
 let TfIdf = natural.TfIdf,
@@ -16,42 +16,6 @@ let TfIdf = natural.TfIdf,
 var db;
 
 var globalCounter = 0; // for debugging
-
-// TV Shows array
-var tvshows = [];
-
-// Game of Thrones
-var got = {};
-got.tvshowName = 'Game of Thrones';
-got.fetchTvShowReviews = true;
-got.seasons = (() => _.range(1, 7).map((element) => {
-    return {
-        season: element,
-        episodes: _.range(1, 11)
-    }
-}))();
-
-// The Big Bang Theory
-// TODO episode 0
-var bbt = {};
-bbt.tvshowName = 'The Big Bang Theory';
-bbt.fetchTvShowReviews = true;
-bbt.seasons = (() => _.range(1, 10).map((element) => {
-    return {
-        season: element,
-        episodes: (() => {
-            if (element == 1)
-                return _.range(1, 18);
-            else if (element == 2 | element == 3)
-                return _.range(1, 24);
-            else
-                return _.range(1, 25);
-        })()
-    }
-}))();
-
-//tvshows.push(got);
-tvshows.push(bbt);
 
 dbjs.init().then(res => {
     db = res;
@@ -68,7 +32,7 @@ dbjs.init().then(res => {
     //}
 
 
-    lastProcessedEpisodeId = 267;
+    lastProcessedEpisodeId = 521;
 
 
     emotional.load(() => {
