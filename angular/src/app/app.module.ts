@@ -12,14 +12,22 @@ import { SIDEBAR_TOGGLE_DIRECTIVES } from './shared/sidebar.directive';
 import { AsideToggleDirective } from './shared/aside.directive';
 import { BreadcrumbsComponent } from './shared/breadcrumb.component';
 
+import { HttpModule } from '@angular/http';
+
+import { ApiService } from './shared/api.service';
+
 // Routing Module
 import { AppRoutingModule } from './app.routing';
 
 //Layouts
 import { FullLayoutComponent } from './layouts/full-layout.component';
+import { ShowComponent } from './show/show.component';
+import { SeasonComponent } from './season/season.component';
+import { EpisodeComponent } from './episode/episode.component';
 
 @NgModule({
   imports: [
+    HttpModule,
     BrowserModule,
     AppRoutingModule,
     BsDropdownModule.forRoot(),
@@ -32,12 +40,16 @@ import { FullLayoutComponent } from './layouts/full-layout.component';
     NAV_DROPDOWN_DIRECTIVES,
     BreadcrumbsComponent,
     SIDEBAR_TOGGLE_DIRECTIVES,
-    AsideToggleDirective
+    AsideToggleDirective,
+    ShowComponent,
+    SeasonComponent,
+    EpisodeComponent
   ],
   providers: [{
     provide: LocationStrategy,
     useClass: HashLocationStrategy
-  }],
-  bootstrap: [ AppComponent ]
+  },
+    ApiService],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -7,8 +7,9 @@ const router = new Router({
 let shows = [{
     'id': 1,
     'name': 'Game of Thrones',
-    'seasons': 7,
+    'image': "http://thetvdb.com/banners/fanart/original/121361-15.jpg",
     'episodes': 70,
+    'viewers': 51301,
     'rating': {
         '1': 5,
         '2': 57,
@@ -20,13 +21,52 @@ let shows = [{
         '8': 2200,
         '9': 2301,
         '10': 1900
-    }
+    },
+    'seasons': [{
+        id: 1,
+        episodes: [{
+            id: 1,
+            name: 'Test'
+        }, {
+            id: 2,
+            name: 'Test'
+        }, {
+            id: 3,
+            name: 'Test'
+        }, {
+            id: 4,
+            name: 'Test'
+        }, {
+            id: 5,
+            name: 'Test'
+        }]
+    }, {
+        id: 2,
+        episodes: [{
+            id: 1,
+            name: 'Test'
+        }, {
+            id: 2,
+            name: 'Test'
+        }, {
+            id: 3,
+            name: 'Test'
+        }, {
+            id: 4,
+            name: 'Test'
+        }, {
+            id: 5,
+            name: 'Test'
+        }]
+    }],
 }, {
     'id': 2,
-    'name': '13 Reasons Why'
+    'name': 'The Big Bang Theory',
+    'image': "http://thetvdb.com/banners/fanart/original/80379-38.jpg"
 }, {
     'id': 3,
-    'name': 'Criminal Minds'
+    'name': '13 Reasons Why',
+    'image': 'http://thetvdb.com/banners/fanart/original/323168-10.jpg'
 }];
 
 router.get('/', async(ctx, next) => {
@@ -41,7 +81,8 @@ router.get('/show/', async(ctx, next) => {
 
 router.get('/show/:id', async(ctx, next) => {
     if (!ctx.params.id) return;
-    ctx.body = shows.filter(s => s.id == ctx.params.id);
+    let show = shows.filter(s => s.id == ctx.params.id);
+    ctx.body = show.length === 1 ? show[0] : show;
 });
 
 
