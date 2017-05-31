@@ -148,6 +148,38 @@ export class ShowComponent implements OnInit {
   public lineChart5Legend: boolean = false;
   public lineChart5Type: string = 'line';
 
+  // barChart1
+  public barChart1Data:Array<any> = [
+    {
+      data: [2.5, 3.8, 4.9, 6.8, 6.8, 7.69],
+      label: 'Mio. Viewers'
+    }
+  ];
+  public barChart1Labels:Array<any> = ['Season 1', 'Season 2', 'Season 3', 'Season 4', 'Season 5', 'Season 6'];
+  public barChart1Options:any = {
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        display: false,
+        barPercentage: 0.6,
+      }],
+      yAxes: [{
+        display: false
+      }]
+    },
+    legend: {
+      display: false
+    }
+  };
+  public barChart1Colours:Array<any> = [
+    {
+      backgroundColor: 'rgba(255,255,255,.3)',
+      borderWidth: 0
+    }
+  ];
+  public barChart1Legend:boolean = false;
+  public barChart1Type:string = 'bar';
+
   constructor(private cdr: ChangeDetectorRef, private route: ActivatedRoute, private _apiService: ApiService) {
 
     setInterval(() => {
