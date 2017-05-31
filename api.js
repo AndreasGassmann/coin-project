@@ -1,4 +1,5 @@
 const Router = require('koa-router');
+const dbConnection = require('./db');
 
 const router = new Router({
     prefix: '/api'
@@ -83,6 +84,19 @@ router.get('/show/:id', async(ctx, next) => {
     if (!ctx.params.id) return;
     let show = shows.filter(s => s.id == ctx.params.id);
     ctx.body = show.length === 1 ? show[0] : show;
+});
+
+router.get('/show/:id/seasons/', async(ctx, next) => {
+    if (!ctx.params.id) return;
+    let show = shows.filter(s => s.id == ctx.params.id);
+    ctx.body = show.length === 1 ? show[0] : show;
+});
+
+router.get('/show/:id/seasons/:seasonId', async(ctx, next) => {
+    if (!ctx.params.id) return;
+    let show = shows.filter(s => s.id == ctx.params.id);
+    let season = show.seasons.filter(e => e.id == ctx.params.seasonId)
+    ctx.body = season.length === 1 ? season[0] : season;
 });
 
 

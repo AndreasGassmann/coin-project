@@ -12,13 +12,7 @@ const routes: Routes = [
     component: DashboardComponent,
     data: {
       title: 'Dashboard'
-    },
-    children: [
-      {
-        path: 'show',
-        loadChildren: './basic-forms/basic-forms.module#BasicFormsModule'
-      }
-    ]
+    }
   }
 ];
 
