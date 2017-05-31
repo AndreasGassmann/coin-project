@@ -1,13 +1,19 @@
 <div class="page__dashboard animated fadeIn">
-  <div class="row"></div>
   <div class="row">
-    <div class="col-sm-6 col-lg-3">
+    <div class="col-sm-12 col-md-12">
+        <div class="card">
+          <img class="card-img-top img-fluid" src="https://red.elbenwald.de/media/image/3a/49/87/game-of-thrones_cat.jpg" class="img-fluid">
+        </div>
+    </div><!--/.col-->
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-lg-4">
       <div class="card card-inverse card-primary">
         <div class="card-block pb-0">
           <h4 class="mb-0">5.36 Mio.</h4>
           <p>Average Viewers</p>
         </div>
-        <div class="chart-wrapper px-1" style="height:70px;">
+        <div class="chart-wrapper px-1" style="height:100px;">
           <canvas baseChart class="chart"
                   [datasets]="barChart1Data"
                   [labels]="barChart1Labels"
