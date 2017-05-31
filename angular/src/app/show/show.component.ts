@@ -180,6 +180,45 @@ export class ShowComponent implements OnInit {
   public barChart1Legend:boolean = false;
   public barChart1Type:string = 'bar';
 
+  // barChart
+  public barChartOptions: any = {
+    scaleShowVerticalLines: false,
+    responsive: true,
+  };
+  public barChartColors: Array<any> = [
+  { // grey
+    backgroundColor: 'rgba(255, 0, 0, 0.5)',
+    borderColor: 'rgba(148,159,177,1)',
+    pointBackgroundColor: 'rgba(148,159,177,1)',
+    pointBorderColor: '#fff',
+    pointHoverBackgroundColor: '#fff',
+    pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+  },
+  { // dark grey
+    backgroundColor: 'rgba(77,83,96,0.2)',
+    borderColor: 'rgba(77,83,96,1)',
+    pointBackgroundColor: 'rgba(77,83,96,1)',
+    pointBorderColor: '#fff',
+    pointHoverBackgroundColor: '#fff',
+    pointHoverBorderColor: 'rgba(77,83,96,1)'
+  },
+  { // grey
+    backgroundColor: 'rgba(148,159,177,0.2)',
+    borderColor: 'rgba(148,159,177,1)',
+    pointBackgroundColor: 'rgba(148,159,177,1)',
+    pointBorderColor: '#fff',
+    pointHoverBackgroundColor: '#fff',
+    pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+  }
+];
+  public barChartLabels: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  public barChartType: string = 'bar';
+  public barChartLegend: boolean = false;
+
+  public barChartData: any[] = [
+    {data: [65, 59, 80, 81, 75, 78, 80, 70, 62, 74], label: 'Star Rating'}
+  ];
+
   constructor(private cdr: ChangeDetectorRef, private route: ActivatedRoute, private _apiService: ApiService) {
 
     setInterval(() => {
