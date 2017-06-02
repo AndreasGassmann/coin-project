@@ -1,23 +1,72 @@
 <div class="animated fadeIn">
   <p class="lead">Game of Thrones</p>
-  <span *ngIf="show">
-    <h1 class="display-4">Season 1</h1>
-  </span>
+  <h1 *ngIf="show" class="display-3">Season 1</h1>
 
   <div class="row">
-    <div class="col-12 col-md-6">
+    <div class="col-12">
 
-      <!-- Season selection -->
+      <!-- Episode selection -->
       <div class="card text-center">
         <div class="card-block">
           <span *ngIf="show">
               <span *ngFor="let s of show.seasons[0].episodes" routerLinkActive="active">
-                <button type="button" class="btn btn-primary btn-lg"
-                        [routerLink]="['episode/', s.id]">Episode {{s.id}} </button>
+                <button type="button" class="btn btn-primary btn-lg btn-space"
+                        [routerLink]="['episode/', s.id]">Episode {{s.id}}</button>
               </span>
           </span>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Ratings per star rating -->
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+            <div class="col-12">
+              <div class="chart-wrapper">
+                <canvas baseChart class="chart"
+                        [datasets]="ratingDistributionData"
+                        [labels]="ratingDistributionLabels"
+                        [options]="ratingDistributionOptions"
+                        [colors]="ratingDistributionColors"
+                        [legend]="ratingDistributionLegend"
+                        [chartType]="barChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+              <h4 class="text-lg-center">Distribution of Ratings</h4>
+            </div><!--/.col-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+            <div class="col-12">
+              <div class="chart-wrapper">
+                <canvas baseChart class="chart"
+                        [datasets]="averageRatingData"
+                        [labels]="averageRatingLabels"
+                        [options]="averageRatingOptions"
+                        [colors]="averageRatingColors"
+                        [legend]="barChartLegend"
+                        [chartType]="barChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+              <h4 class="text-lg-center">Average rating per episode</h4>
+            </div><!--/.col-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
