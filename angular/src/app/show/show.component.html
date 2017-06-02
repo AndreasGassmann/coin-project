@@ -211,6 +211,24 @@
         </div>
       </div>
     </div><!--/.col-->
+    <div class="col-12 col-md-3">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+            <div class="col-12">
+              <div class="chart-wrapper">
+                <canvas baseChart class="chart" [data]="pie1ChartData" [labels]="pie1ChartLabels" [chartType]="pie1ChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+              <h4 class="text-lg-center">Distribution of Ratings</h4>
+              <p class="text-lg-center">(Alternative zu Balkendiagramm oben)</p>
+            </div><!--/.col-->
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="row">

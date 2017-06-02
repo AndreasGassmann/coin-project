@@ -180,6 +180,11 @@ export class ShowComponent implements OnInit {
   public viewersLegend:boolean = false;
   public viewersType:string = 'bar';
 
+  // Pie distribution of ratings
+  public pie1ChartLabels: string[] = ['1 star', '2 stars', '3 stars', '4 stars', '5 stars', '6 stars', '7 stars', '8 stars', '9 stars', '10 stars'];
+  public pie1ChartData: number[] = [5, 7, 11, 6, 12, 10, 13, 13, 15, 8];
+  public pie1ChartType: string = 'pie';
+
   // Rating Distribution
   public ratingDistributionOptions: any = {
     scaleShowVerticalLines: false,
@@ -203,13 +208,13 @@ export class ShowComponent implements OnInit {
     pointHoverBorderColor: 'rgba(77,83,96,1)'
   }
 ];
-  public ratingDistributionLabels: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  public ratingDistributionLabels: string[] = ['1 star', '2 stars', '3 stars', '4 stars', '5 stars', '6 stars', '7 stars', '8 stars', '9 stars', '10 stars'];
   public barChartType: string = 'bar';
   public ratingDistributionLegend: boolean = true;
 
   public ratingDistributionData: any[] = [
-    {data: [65, 59, 80, 81, 75, 78, 80, 70, 62, 74], label: 'IMDb'},
-    {data: [22, 74, 28, 81, 74, 78, 45, 62, 89, 12], label: 'Trakt.tv'}
+    {data: [5, 7, 11, 6, 12, 10, 13, 13, 15, 8], label: 'IMDb'},
+    {data: [3, 9, 14, 9, 6, 5, 18, 10, 18, 8], label: 'Trakt.tv'}
   ];
 
   // Average Rating
@@ -235,7 +240,7 @@ export class ShowComponent implements OnInit {
       pointHoverBorderColor: 'rgba(77,83,96,1)'
     }
   ];
-  public averageRatingLabels: string[] = ['1', '2', '3', '4', '5', '6'];
+  public averageRatingLabels: string[] = ['Season 1', 'Season 2', 'Season 3', 'Season 4', 'Season 5', 'Season 6'];
   //public barChartType: string = 'bar';
   public averageRatingLegend: boolean = true;
 
@@ -279,22 +284,10 @@ export class ShowComponent implements OnInit {
       })
     })
 
-
-
-
-
-
-
-
-
-
-
   }
 
   ngOnInit() {
-
     this.setFilter('all');
-
   }
 
   private drawWordCloud(data) {
