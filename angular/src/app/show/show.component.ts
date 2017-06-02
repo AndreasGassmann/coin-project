@@ -61,6 +61,68 @@ export class ShowComponent implements OnInit {
   public lineChart4Type: string = 'line';
 
 
+  // Line Chart: Correlation between review sentiment and rating
+  public crrLineChartData: Array<any> = [
+    {
+      data: [
+        {x: '1 star', y: 0},
+        {x: '2 stars', y: 0.31},
+        {x: '3 stars', y: 0.48},
+        {x: '4 stars', y: 0.37},
+        {x: '5 stars', y: 0.49},
+        {x: '6 stars', y: 0.52},
+        {x: '7 stars', y: 0.69},
+        {x: '8 stars', y: 0.67},
+        {x: '9 stars', y: 0.89},
+        {x: '10 stars', y: 1},
+      ],
+      label: 'Normalized average sentiment (IMDb) per rating'
+    },
+    {
+    data: [
+      {x: '1 star', y: 0.1325},
+      {x: '2 stars', y: 0.22324},
+      {x: '3 stars', y: 0.31413},
+      {x: '4 stars', y: 0.40502},
+      {x: '5 stars', y: 0.49591},
+      {x: '6 stars', y: 0.5868},
+      {x: '7 stars', y: 0.67769},
+      {x: '8 stars', y: 0.76858},
+      {x: '9 stars', y: 0.85947},
+      {x: '10 stars', y: 0.95036},
+      ],
+    label: 'Line of best fit (linear regression)',
+    showLine: true,
+    pointRadius: 0,
+    fill: false
+    }
+  ];
+  // labels (x axis): rating in stars (1,2,..10)
+  public crrLineChartLabels: Array<any> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  public crrLineChartOptions: any = {
+    //animation: {
+    //  duration: 0
+    //},
+    //maintainAspectRatio: false,
+    //scales: {
+    //  xAxes: [{
+    //    display: true,
+    //    points: true,
+    //  }],
+    //  yAxes: [{
+    //    display: true,
+    //  }]
+    //},
+    //elements: { point: { radius: 1 } },
+    //legend: {
+    //  display: true
+    //},
+    //pointStyle: 'circle',
+    showLines: false
+  };
+  public crrLineChartType: string = 'line';
+
+
   // barChart2
   public barChart2Data: Array<any> = [
     {
