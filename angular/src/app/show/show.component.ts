@@ -100,24 +100,6 @@ export class ShowComponent implements OnInit {
   // labels (x axis): rating in stars (1,2,..10)
   public crrLineChartLabels: Array<any> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
   public crrLineChartOptions: any = {
-    //animation: {
-    //  duration: 0
-    //},
-    //maintainAspectRatio: false,
-    //scales: {
-    //  xAxes: [{
-    //    display: true,
-    //    points: true,
-    //  }],
-    //  yAxes: [{
-    //    display: true,
-    //  }]
-    //},
-    //elements: { point: { radius: 1 } },
-    //legend: {
-    //  display: true
-    //},
-    //pointStyle: 'circle',
     showLines: false
   };
   public crrLineChartType: string = 'line';
