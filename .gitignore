@@ -43,3 +43,5 @@ config/config.json
 
 # Local Visual Studio Code Configuration
 .vscode/*
+
+.DS_Store
