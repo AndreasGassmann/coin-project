@@ -1,3 +1,23 @@
-<p>
-  season works!
-</p>
+<div class="animated fadeIn">
+  <p class="lead">Game of Thrones</p>
+  <span *ngIf="show">
+    <h1 class="display-4">Season 1</h1>
+  </span>
+
+  <div class="row">
+    <div class="col-12 col-md-6">
+
+      <!-- Season selection -->
+      <div class="card text-center">
+        <div class="card-block">
+          <span *ngIf="show">
+              <span *ngFor="let s of show.seasons[0].episodes" routerLinkActive="active">
+                <button type="button" class="btn btn-primary btn-lg"
+                        [routerLink]="['episode/', s.id]">Episode {{s.id}} </button>
+              </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
