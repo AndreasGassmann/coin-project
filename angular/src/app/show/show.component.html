@@ -2,7 +2,7 @@
 
   <!-- Title image -->
   <div class="row">
-    <div class="col-sm-12 col-md-12">
+    <div class="col-12 col-md-12">
       <div class="card">
         <span *ngIf="show">
             <img class="card-img-top img-fluid" src="{{show.titleimage}}">
@@ -13,11 +13,11 @@
 
   <!-- Meta Info -->
   <div class="row">
-    <div class="col-sm-6 col-md-4">
+    <div class="col-12 col-md-4">
       <div class="card">
         <div class="card-block">
           <h3>Info</h3>
-          <table class="table">
+          <table class="table table-responsive">
             <tbody>
             <tr>
               <th scope="row">Title</th>
@@ -50,6 +50,100 @@
     </div><!--/.col-->
 
 
+    <div class="col-12 col-md-8">
+      <div class="row">
+
+        <!-- Season selection -->
+        <div class="col-12">
+          <div class="card">
+            <div class="card-block">
+              <span *ngIf="show">
+                <div class="row">
+                  <div *ngFor="let s of show.seasons" class="col-12 col-md-2" routerLinkActive="active">
+                    <a [routerLink]="['season/', s.id]">
+                    <div class="card card-inverse card-info">
+                      <!--<img src="http://www.cultjer.com/img/ug_photo/2015_10/72623720151004152641.jpg" class="card-img-top" height="200" width="auto"/>-->
+                      <div class="card-block">
+                        <h4 class="card-title text-center">Season {{s.id}}</h4>
+                      </div>
+                    </div>
+                      </a>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- reddit and imdb -->
+        <div class="col-12">
+          <div class="card">
+            <div class="card-block">
+              <div class="row">
+                <div class="col-6 col-md-3">
+                  <div class="card no-vertical-margin card-outline-info">
+                    <div class="card-block">
+                      <div class="h1 text-muted text-right mb-2">
+                        <img
+                          src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/Reddit_logo_and_wordmark.svg/1280px-Reddit_logo_and_wordmark.svg.png"
+                          height="50" width="auto">
+                      </div>
+                      <div class="h4 mb-0">167.906</div>
+                      <p class="text-muted text-uppercase font-weight-bold">Posts</p>
+                    </div>
+                  </div>
+                </div><!--/.col-->
+                <div class="col-6 col-md-3">
+                  <div class="card no-vertical-margin card-outline-info">
+                    <div class="card-block">
+                      <div class="h1 text-muted text-right mb-2">
+                        <img
+                          src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/Reddit_logo_and_wordmark.svg/1280px-Reddit_logo_and_wordmark.svg.png"
+                          height="50" width="auto">
+                      </div>
+                      <div class="h4 mb-0">1,7 Mio</div>
+                      <p class="text-muted text-uppercase font-weight-bold">Comments</p>
+                    </div>
+                  </div>
+                </div><!--/.col-->
+                <div class="col-6 col-md-3">
+                  <div class="card no-vertical-margin card-outline-warning">
+                    <div class="card-block">
+                      <div class="h1 text-muted text-right mb-2">
+                        <img
+                          src="http://ia.media-imdb.com/images/M/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE@._V1_.png"
+                          height="50" width="auto">
+                      </div>
+                      <div class="h4 mb-0">87.273</div>
+                      <p class="text-muted text-uppercase font-weight-bold">IMDb Ratings</p>
+                    </div>
+                  </div>
+                </div><!--/.col-->
+                <div class="col-6 col-md-3">
+                  <div class="card no-vertical-margin card-outline-warning">
+                    <div class="card-block">
+                      <div class="h1 text-muted text-right mb-2">
+                        <img
+                          src="http://ia.media-imdb.com/images/M/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE@._V1_.png"
+                          height="50" width="auto">
+                      </div>
+                      <div class="h4 mb-0">8,6</div>
+                      <p class="text-muted text-uppercase font-weight-bold">Avg. Rating </p>
+                    </div>
+                  </div>
+                </div><!--/.col-->
+              </div>
+            </div>
+          </div>
+        </div><!--/.col (reddit)-->
+      </div>
+    </div>
+
+
+  </div><!--/.row-->
+
+  <!-- Ratings per star rating -->
+  <div class="row">
     <div class="col-lg-4 col-sm-12">
       <tabset>
         <tab heading="IMDb Ratings">
@@ -102,28 +196,6 @@
     </div><!--/.col-->
   </div>
 
-  <!-- Season selection -->
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-block">
-          <span *ngIf="show">
-            <div *ngFor="let s of show.seasons" class="col-2" routerLinkActive="active">
-              <a [routerLink]="['season/', s.id]">
-              <div class="card card-inverse card-info">
-                <!--<img src="http://www.cultjer.com/img/ug_photo/2015_10/72623720151004152641.jpg" class="card-img-top" height="200" width="auto"/>-->
-                <div class="card-block">
-                  <h4 class="card-title text-center">Season {{s.id}}</h4>
-                </div>
-              </div>
-                </a>
-            </div>
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- Viewers -->
   <div class="row">
     <div class="col-sm-6 col-lg-4">
@@ -142,56 +214,6 @@
                   [chartType]="barChart1Type"
                   (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event)"></canvas>
-        </div>
-      </div>
-    </div><!--/.col-->
-    <div class="col-sm-6 col-md-2">
-      <div class="card">
-        <div class="card-block">
-          <div class="h1 text-muted text-right mb-2">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/Reddit_logo_and_wordmark.svg/1280px-Reddit_logo_and_wordmark.svg.png"
-              height="50" width="auto">
-          </div>
-          <div class="h4 mb-0">167.906</div>
-          <p class="text-muted text-uppercase font-weight-bold">Posts</p>
-        </div>
-      </div>
-    </div><!--/.col-->
-    <div class="col-sm-6 col-md-2">
-      <div class="card">
-        <div class="card-block">
-          <div class="h1 text-muted text-right mb-2">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/Reddit_logo_and_wordmark.svg/1280px-Reddit_logo_and_wordmark.svg.png"
-              height="50" width="auto">
-          </div>
-          <div class="h4 mb-0">1,7 Mio</div>
-          <p class="text-muted text-uppercase font-weight-bold">Comments</p>
-        </div>
-      </div>
-    </div><!--/.col-->
-    <div class="col-sm-6 col-md-2">
-      <div class="card">
-        <div class="card-block">
-          <div class="h1 text-muted text-right mb-2">
-            <img src="http://ia.media-imdb.com/images/M/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE@._V1_.png"
-                 height="50" width="auto">
-          </div>
-          <div class="h4 mb-0">87.273</div>
-          <p class="text-muted text-uppercase font-weight-bold">IMDb Ratings</p>
-        </div>
-      </div>
-    </div><!--/.col-->
-    <div class="col-sm-6 col-md-2">
-      <div class="card">
-        <div class="card-block">
-          <div class="h1 text-muted text-right mb-2">
-            <img src="http://ia.media-imdb.com/images/M/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE@._V1_.png"
-                 height="50" width="auto">
-          </div>
-          <div class="h4 mb-0">8,6</div>
-          <p class="text-muted text-uppercase font-weight-bold">Avg. Rating </p>
         </div>
       </div>
     </div><!--/.col-->

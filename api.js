@@ -60,7 +60,79 @@ let shows = [{
             id: 5,
             name: 'Test'
         }]
-    }],
+    },{
+        id: 3,
+        episodes: [{
+            id: 1,
+            name: 'Test'
+        }, {
+            id: 2,
+            name: 'Test'
+        }, {
+            id: 3,
+            name: 'Test'
+        }, {
+            id: 4,
+            name: 'Test'
+        }, {
+            id: 5,
+            name: 'Test'
+        }]
+    },{
+        id: 4,
+        episodes: [{
+            id: 1,
+            name: 'Test'
+        }, {
+            id: 2,
+            name: 'Test'
+        }, {
+            id: 3,
+            name: 'Test'
+        }, {
+            id: 4,
+            name: 'Test'
+        }, {
+            id: 5,
+            name: 'Test'
+        }]
+    },{
+        id: 5,
+        episodes: [{
+            id: 1,
+            name: 'Test'
+        }, {
+            id: 2,
+            name: 'Test'
+        }, {
+            id: 3,
+            name: 'Test'
+        }, {
+            id: 4,
+            name: 'Test'
+        }, {
+            id: 5,
+            name: 'Test'
+        }]
+    },{
+        id: 6,
+        episodes: [{
+            id: 1,
+            name: 'Test'
+        }, {
+            id: 2,
+            name: 'Test'
+        }, {
+            id: 3,
+            name: 'Test'
+        }, {
+            id: 4,
+            name: 'Test'
+        }, {
+            id: 5,
+            name: 'Test'
+        }]
+    }]
 }, {
     'id': 2,
     'name': 'The Big Bang Theory',
@@ -121,6 +193,7 @@ let shows = [{
     'id': 3,
     'name': '13 Reasons Why',
     'image': "http://thetvdb.com/banners/fanart/original/323168-10.jpg",
+    'titleimage': "https://img-www.tf-cdn.com/show/2/13-reasons-why.jpeg?_v=20170307014747&w=1024&h=342&dpr=2&auto=compress&fit=crop&crop=faces,top",
     'episodes': 70,
     'viewers': 51301,
     'rating': {
@@ -176,6 +249,7 @@ let shows = [{
     'id': 4,
     'name': 'Criminal Minds',
     'image': "http://www.returndates.com/backgrounds/criminalminds.jpg",
+    'titleimage': "http://www.asset1.net/tv/pictures/show/criminal-minds/Criminal-Minds-S10-LB-1.jpg",
     'episodes': 70,
     'viewers': 51301,
     'rating': {
