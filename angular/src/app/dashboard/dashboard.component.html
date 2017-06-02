@@ -1,5 +1,18 @@
 <div class="page__dashboard animated fadeIn">
-  <div *ngFor="let s of shows" class="show" routerLinkActive="active" [routerLink]="['/show/', s.id]">
-    <img src="{{s.image}}" class="image" />{{s.name}}
+  <div class="row">
+    <div class="col-12"><h1 class="display-3">Choose a show</h1></div>
+  </div>
+  <div class="row">
+    <div *ngFor="let s of shows" class="show" routerLinkActive="active" [routerLink]="['/show/', s.id]">
+      <div class="col-sm-6 col-md-3">
+        <div class="card">
+          <img src="{{s.image}}" class="card-img-top img-fluid"/>
+          <div class="card-block">
+            <h5 class="card-title">{{s.name}}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
