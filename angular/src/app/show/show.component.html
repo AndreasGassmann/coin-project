@@ -1,12 +1,17 @@
 <div class="page__dashboard animated fadeIn">
+
+  <!-- Title image -->
   <div class="row">
     <div class="col-sm-12 col-md-12">
       <div class="card">
-        <img class="card-img-top img-fluid" src="https://red.elbenwald.de/media/image/3a/49/87/game-of-thrones_cat.jpg"
-             class="img-fluid">
+        <span *ngIf="show">
+            <img class="card-img-top img-fluid" src="{{show.titleimage}}">
+        </span>
       </div>
-    </div><!--/.col-->
+    </div>
   </div>
+
+  <!-- Meta Info -->
   <div class="row">
     <div class="col-sm-6 col-md-4">
       <div class="card">
@@ -16,7 +21,7 @@
             <tbody>
             <tr>
               <th scope="row">Title</th>
-              <td>Game of Thrones</td>
+              <td><span *ngIf="show" [innerHtml]="show.name"></span></td>
             </tr>
             <tr>
               <th scope="row">Genre</th>
@@ -24,11 +29,11 @@
             </tr>
             <tr>
               <th scope="row">Seasons</th>
-              <td>6</td>
+              <td><span *ngIf="show" [innerHtml]="show.seasons.length"></span></td>
             </tr>
             <tr>
               <th scope="row">Episodes per Season</th>
-              <td>10</td>
+              <td><span *ngIf="show" [innerHtml]="show.seasons[0].episodes.length"></span></td>
             </tr>
             <tr>
               <th scope="row">Duration per Episode</th>
@@ -43,11 +48,13 @@
         </div>
       </div>
     </div><!--/.col-->
+
+
     <div class="col-lg-4 col-sm-12">
       <tabset>
         <tab heading="IMDb Ratings">
           <h5>Number of ratings per star-rating</h5>
-          <div class="chart-wrapper" >
+          <div class="chart-wrapper">
             <canvas baseChart class="chart"
                     [datasets]="barChartData"
                     [labels]="barChartLabels"
@@ -60,7 +67,11 @@
           </div>
         </tab>
         <tab heading="Trakt.tv">
-          2. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          2. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+          dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+          commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+          nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
+          id est laborum.
         </tab>
       </tabset>
     </div><!--/.col-->
@@ -68,7 +79,7 @@
       <tabset>
         <tab heading="IMDb Ratings">
           <h5>Average rating per season</h5>
-          <div class="chart-wrapper" >
+          <div class="chart-wrapper">
             <canvas baseChart class="chart"
                     [datasets]="barChartData"
                     [labels]="barChartLabels"
@@ -81,12 +92,39 @@
           </div>
         </tab>
         <tab heading="Trakt.tv">
-          2. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          2. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+          dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+          commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+          nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
+          id est laborum.
         </tab>
       </tabset>
     </div><!--/.col-->
   </div>
 
+  <!-- Season selection -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-block">
+          <span *ngIf="show">
+            <div *ngFor="let s of show.seasons" class="col-2" routerLinkActive="active">
+              <a [routerLink]="['season/', s.id]">
+              <div class="card card-inverse card-info">
+                <!--<img src="http://www.cultjer.com/img/ug_photo/2015_10/72623720151004152641.jpg" class="card-img-top" height="200" width="auto"/>-->
+                <div class="card-block">
+                  <h4 class="card-title text-center">Season {{s.id}}</h4>
+                </div>
+              </div>
+                </a>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Viewers -->
   <div class="row">
     <div class="col-sm-6 col-lg-4">
       <div class="card card-inverse card-primary">
