@@ -139,62 +139,56 @@
         </div><!--/.col (reddit)-->
       </div>
     </div>
-
-
   </div><!--/.row-->
 
   <!-- Ratings per star rating -->
   <div class="row">
-    <div class="col-12 col-lg-6">
-      <tabset>
-        <tab heading="IMDb Ratings">
-          <h5>Number of ratings per star-rating</h5>
-          <div class="chart-wrapper">
-            <canvas baseChart class="chart"
-                    [datasets]="barChartData"
-                    [labels]="barChartLabels"
-                    [options]="barChartOptions"
-                    [colors]="barChartColors"
-                    [legend]="barChartLegend"
-                    [chartType]="barChartType"
-                    (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)"></canvas>
+    <div class="col-12 col-md-6">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+            <div class="col-12">
+              <div class="chart-wrapper">
+                <canvas baseChart class="chart"
+                        [datasets]="barChartData"
+                        [labels]="barChartLabels"
+                        [options]="barChartOptions"
+                        [colors]="barChartColors"
+                        [legend]="barChartLegend"
+                        [chartType]="barChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+              <h4 class="text-lg-center">Number of ratings per star-rating</h4>
+            </div><!--/.col-->
           </div>
-        </tab>
-        <tab heading="Trakt.tv">
-          2. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-          dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-          commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-          nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
-          id est laborum.
-        </tab>
-      </tabset>
-    </div><!--/.col-->
-    <div class="col-12 col-lg-6">
-      <tabset>
-        <tab heading="IMDb Ratings">
-          <h5>Average rating per season</h5>
-          <div class="chart-wrapper">
-            <canvas baseChart class="chart"
-                    [datasets]="barChartData"
-                    [labels]="barChartLabels"
-                    [options]="barChartOptions"
-                    [colors]="barChartColors"
-                    [legend]="barChartLegend"
-                    [chartType]="barChartType"
-                    (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+            <div class="col-12">
+              <div class="chart-wrapper">
+                <canvas baseChart class="chart"
+                        [datasets]="barChartData"
+                        [labels]="barChartLabels"
+                        [options]="barChartOptions"
+                        [colors]="barChartColors"
+                        [legend]="barChartLegend"
+                        [chartType]="barChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+              <h4 class="text-lg-center">Average rating per season</h4>
+            </div><!--/.col-->
           </div>
-        </tab>
-        <tab heading="Trakt.tv">
-          2. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-          dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-          commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-          nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim
-          id est laborum.
-        </tab>
-      </tabset>
-    </div><!--/.col-->
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Viewers -->
