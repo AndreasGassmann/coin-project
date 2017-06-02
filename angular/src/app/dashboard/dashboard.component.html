@@ -1,13 +1,13 @@
 <div class="page__dashboard animated fadeIn">
   <div class="row">
-    <div class="col-12"><h1 class="display-3">Choose a show</h1></div>
+    <div class="col-12"><h1 class="display-3" style="margin-bottom: 3rem;">Choose a show</h1></div>
   </div>
   <div class="row">
-    <div *ngFor="let s of shows" class="col-3" routerLinkActive="active" [routerLink]="['/show/', s.id]">
-      <div class="card">
+    <div *ngFor="let s of shows" class="col-12 col-sm-6 col-lg-3" routerLinkActive="active" [routerLink]="['/show/', s.id]">
+      <div class="card text-center">
         <img src="{{s.image}}" class="card-img-top img-fluid"/>
         <div class="card-block">
-          <h5 class="card-title">{{s.name}}</h5>
+          <h3 class="card-title">{{s.name}}</h3>
         </div>
       </div><!--/.col-->
     </div><!--/.ngFor-->
