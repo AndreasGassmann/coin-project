@@ -5,6 +5,7 @@
     <div class="col-12 col-md-12">
       <div class="card">
         <span *ngIf="show">
+          <!-- TODO: crop image from bottom for larger images -->
             <img class="card-img-top img-fluid" src="{{show.titleimage}}">
         </span>
       </div>
@@ -13,11 +14,11 @@
 
   <!-- Meta Info -->
   <div class="row">
-    <div class="col-12 col-md-4">
+    <div class="col-12 col-lg-3">
       <div class="card">
         <div class="card-block">
           <h3>Info</h3>
-          <table class="table table-responsive">
+          <table class="table table-responsive" style="margin-bottom: 1.75rem;">
             <tbody>
             <tr>
               <th scope="row">Title</th>
@@ -50,7 +51,7 @@
     </div><!--/.col-->
 
 
-    <div class="col-12 col-md-8">
+    <div class="col-12 col-lg-9">
       <div class="row">
 
         <!-- Season selection -->
@@ -61,7 +62,7 @@
                 <div class="row">
                   <div *ngFor="let s of show.seasons" class="col-12 col-md-2" routerLinkActive="active">
                     <a [routerLink]="['season/', s.id]">
-                    <div class="card card-inverse card-info">
+                    <div class="card card-inverse card-info no-vertical-margin">
                       <!--<img src="http://www.cultjer.com/img/ug_photo/2015_10/72623720151004152641.jpg" class="card-img-top" height="200" width="auto"/>-->
                       <div class="card-block">
                         <h4 class="card-title text-center">Season {{s.id}}</h4>
@@ -115,7 +116,7 @@
                           height="50" width="auto">
                       </div>
                       <div class="h4 mb-0">87.273</div>
-                      <p class="text-muted text-uppercase font-weight-bold">IMDb Ratings</p>
+                      <p class="text-muted text-uppercase font-weight-bold">Ratings</p>
                     </div>
                   </div>
                 </div><!--/.col-->
@@ -144,7 +145,7 @@
 
   <!-- Ratings per star rating -->
   <div class="row">
-    <div class="col-lg-4 col-sm-12">
+    <div class="col-12 col-lg-6">
       <tabset>
         <tab heading="IMDb Ratings">
           <h5>Number of ratings per star-rating</h5>
@@ -169,7 +170,7 @@
         </tab>
       </tabset>
     </div><!--/.col-->
-    <div class="col-lg-4 col-sm-12">
+    <div class="col-12 col-lg-6">
       <tabset>
         <tab heading="IMDb Ratings">
           <h5>Average rating per season</h5>
