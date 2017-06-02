@@ -148,15 +148,15 @@ export class ShowComponent implements OnInit {
   public lineChart5Legend: boolean = false;
   public lineChart5Type: string = 'line';
 
-  // barChart1
-  public barChart1Data:Array<any> = [
+  // Viewers
+  public viewersData:Array<any> = [
     {
       data: [2.5, 3.8, 4.9, 6.8, 6.8, 7.69],
       label: 'Mio. Viewers'
     }
   ];
-  public barChart1Labels:Array<any> = ['Season 1', 'Season 2', 'Season 3', 'Season 4', 'Season 5', 'Season 6'];
-  public barChart1Options:any = {
+  public viewersLabels:Array<any> = ['Season 1', 'Season 2', 'Season 3', 'Season 4', 'Season 5', 'Season 6'];
+  public viewersOptions:any = {
     maintainAspectRatio: false,
     scales: {
       xAxes: [{
@@ -168,55 +168,80 @@ export class ShowComponent implements OnInit {
       }]
     },
     legend: {
-      display: false
+      display: true
     }
   };
-  public barChart1Colours:Array<any> = [
+  public viewersColours:Array<any> = [
     {
       backgroundColor: 'rgba(255,255,255,.3)',
       borderWidth: 0
     }
   ];
-  public barChart1Legend:boolean = false;
-  public barChart1Type:string = 'bar';
+  public viewersLegend:boolean = false;
+  public viewersType:string = 'bar';
 
-  // barChart
-  public barChartOptions: any = {
+  // Rating Distribution
+  public ratingDistributionOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true,
   };
-  public barChartColors: Array<any> = [
-  { // grey
-    backgroundColor: 'rgba(255, 0, 0, 0.5)',
-    borderColor: 'rgba(148,159,177,1)',
+  public ratingDistributionColors: Array<any> = [
+  { // yellow
+    backgroundColor: 'rgba(248, 203, 0, 0.75)',
+    borderColor: 'rgba(211,165,0,1)',
     pointBackgroundColor: 'rgba(148,159,177,1)',
     pointBorderColor: '#fff',
     pointHoverBackgroundColor: '#fff',
     pointHoverBorderColor: 'rgba(148,159,177,0.8)'
   },
-  { // dark grey
-    backgroundColor: 'rgba(77,83,96,0.2)',
-    borderColor: 'rgba(77,83,96,1)',
+  { // red
+    backgroundColor: 'rgba(248,108,107,0.75)',
+    borderColor: 'rgba(196),101,101,1)',
     pointBackgroundColor: 'rgba(77,83,96,1)',
     pointBorderColor: '#fff',
     pointHoverBackgroundColor: '#fff',
     pointHoverBorderColor: 'rgba(77,83,96,1)'
-  },
-  { // grey
-    backgroundColor: 'rgba(148,159,177,0.2)',
-    borderColor: 'rgba(148,159,177,1)',
-    pointBackgroundColor: 'rgba(148,159,177,1)',
-    pointBorderColor: '#fff',
-    pointHoverBackgroundColor: '#fff',
-    pointHoverBorderColor: 'rgba(148,159,177,0.8)'
   }
 ];
-  public barChartLabels: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  public ratingDistributionLabels: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
   public barChartType: string = 'bar';
-  public barChartLegend: boolean = false;
+  public ratingDistributionLegend: boolean = true;
 
-  public barChartData: any[] = [
-    {data: [65, 59, 80, 81, 75, 78, 80, 70, 62, 74], label: 'Star Rating'}
+  public ratingDistributionData: any[] = [
+    {data: [65, 59, 80, 81, 75, 78, 80, 70, 62, 74], label: 'IMDb'},
+    {data: [22, 74, 28, 81, 74, 78, 45, 62, 89, 12], label: 'Trakt.tv'}
+  ];
+
+  // Average Rating
+  public averageRatingOptions: any = {
+    scaleShowVerticalLines: false,
+    responsive: true,
+  };
+  public averageRatingColors: Array<any> = [
+    { // yellow
+      backgroundColor: 'rgba(248, 203, 0, 0.75)',
+      borderColor: 'rgba(211,165,0,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+    { // red
+      backgroundColor: 'rgba(248,108,107,0.75)',
+      borderColor: 'rgba(196),101,101,1)',
+      pointBackgroundColor: 'rgba(77,83,96,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(77,83,96,1)'
+    }
+  ];
+  public averageRatingLabels: string[] = ['1', '2', '3', '4', '5', '6'];
+  //public barChartType: string = 'bar';
+  public averageRatingLegend: boolean = true;
+
+  public averageRatingData: any[] = [
+    {data: [6.5, 7.3, 7.8, 8.3, 8.0, 9.3], label: 'IMDb'},
+    {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Trakt.tv'}
   ];
 
   constructor(private cdr: ChangeDetectorRef, private route: ActivatedRoute, private _apiService: ApiService) {

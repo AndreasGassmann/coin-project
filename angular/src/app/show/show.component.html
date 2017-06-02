@@ -149,11 +149,11 @@
             <div class="col-12">
               <div class="chart-wrapper">
                 <canvas baseChart class="chart"
-                        [datasets]="barChartData"
-                        [labels]="barChartLabels"
-                        [options]="barChartOptions"
-                        [colors]="barChartColors"
-                        [legend]="barChartLegend"
+                        [datasets]="ratingDistributionData"
+                        [labels]="ratingDistributionLabels"
+                        [options]="ratingDistributionOptions"
+                        [colors]="ratingDistributionColors"
+                        [legend]="ratingDistributionLegend"
                         [chartType]="barChartType"
                         (chartHover)="chartHovered($event)"
                         (chartClick)="chartClicked($event)">
@@ -172,10 +172,10 @@
             <div class="col-12">
               <div class="chart-wrapper">
                 <canvas baseChart class="chart"
-                        [datasets]="barChartData"
-                        [labels]="barChartLabels"
-                        [options]="barChartOptions"
-                        [colors]="barChartColors"
+                        [datasets]="averageRatingData"
+                        [labels]="averageRatingLabels"
+                        [options]="averageRatingOptions"
+                        [colors]="averageRatingColors"
                         [legend]="barChartLegend"
                         [chartType]="barChartType"
                         (chartHover)="chartHovered($event)"
@@ -200,12 +200,12 @@
         </div>
         <div class="chart-wrapper px-1" style="height:100px;">
           <canvas baseChart class="chart"
-                  [datasets]="barChart1Data"
-                  [labels]="barChart1Labels"
-                  [options]="barChart1Options"
-                  [colors]="barChart1Colours"
-                  [legend]="barChart1Legend"
-                  [chartType]="barChart1Type"
+                  [datasets]="viewersData"
+                  [labels]="viewersLabels"
+                  [options]="viewersOptions"
+                  [colors]="viewersColours"
+                  [legend]="viewersLegend"
+                  [chartType]="viewersType"
                   (chartHover)="chartHovered($event)"
                   (chartClick)="chartClicked($event)"></canvas>
         </div>
