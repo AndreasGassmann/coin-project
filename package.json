@@ -11,6 +11,7 @@
     "csvtojson": "^1.1.5",
     "emotional": "0.0.3",
     "imdb-api": "^3.0.0",
+    "kcors": "^2.2.1",
     "koa": "^2.2.0",
     "koa-router": "^7.1.1",
     "koa-static": "^3.0.0",
@@ -22,6 +23,7 @@
     "scraperjs": "^1.2.0",
     "sentiment": "^4.0.0",
     "sequelize": "^3.30.4",
+    "stopword": "^0.1.1",
     "twitter": "^1.7.0",
     "winston": "^2.3.1"
   },

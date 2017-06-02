@@ -2,9 +2,12 @@
 const Koa = require('koa');
 const Router = require('koa-router');
 const serve = require('koa-static');
+const cors = require('kcors');
 
 // Creating the "webserver"
 const app = new Koa();
+
+app.use(cors());
 
 // Load the logger module and create a new instance with the name 'server.js'
 const log = require('./modules/logger')('server.js');
