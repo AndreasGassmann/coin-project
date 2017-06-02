@@ -28,7 +28,7 @@ export class EpisodeComponent implements OnInit {
     },
     { // red
       backgroundColor: 'rgba(248,108,107,0.75)',
-      borderColor: 'rgba(196),101,101,1)',
+      borderColor: 'rgba(196,101,101,1)',
       pointBackgroundColor: 'rgba(77,83,96,1)',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
