@@ -104,6 +104,47 @@ export class ShowComponent implements OnInit {
   };
   public crrLineChartType: string = 'line';
 
+  // Line Chart: Sentiment for specific characters (IMDb)
+  public characterSentimentChartData: Array<any> = [
+    {
+      data: [
+        0.89
+      ],
+      label: 'Jon Snow'
+    },
+    {
+      data: [
+        0.23
+      ],
+      label: 'Joffrey Baratheon'
+    },
+    {
+      data: [
+        0.71
+      ],
+      label: 'Tyrion Lannister'
+    },
+    {
+      data: [
+        0.40
+      ],
+      label: 'Cersei Lannister'
+    }
+  ];
+  public characterSentimentChartLabels: Array<any> = [''];
+  public characterSentimentChartOptions: any = {
+    maintainAspectRatio: true,
+    scales: {
+      yAxes: [{
+        ticks: {
+          suggestedMin: 0,
+          suggestedMax: 1
+        }
+      }]
+    }
+  };
+  public characterSentimentChartType: string = 'bar';
+
 
   // barChart2
   public barChart2Data: Array<any> = [
@@ -114,22 +155,6 @@ export class ShowComponent implements OnInit {
   ];
   public barChart2Labels: Array<any> = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   public barChart2Options: any = {
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        display: false,
-        barPercentage: 0.6,
-      }],
-      yAxes: [{
-        display: false,
-        ticks: {
-          beginAtZero: true,
-        }
-      }]
-    },
-    legend: {
-      display: false
-    }
   };
   public barChart2Colours: Array<any> = [
     {
