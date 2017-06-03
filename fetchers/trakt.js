@@ -71,14 +71,14 @@ let getNextEpisode = (showName, seasonNr, episodeNr) => {
         nextEpisode = episodesArray.find(e => {
             return e.season === seasonNr + 1 && e.number === 1;
         });
-        if (!nextEpisode) {
-            trakt('https://api.trakt.tv/shows/' + showName + '/seasons/' + seasonNr + '/comments/newest?limit=1000').then(simpleSuccessHandler(showName, 'season-' + seasonNr)).catch(errorHandler);
+        if (nextEpisode) {
+            trakt('https://api.trakt.tv/shows/' + showName + '/seasons/' + (seasonNr + 1) + '/comments/newest?limit=1000').then(simpleSuccessHandler(showName, 'season-' + seasonNr)).catch(errorHandler);
         }
     }
     if (!nextEpisode) return null;
     return { season: nextEpisode.season, episode: nextEpisode.number };
 };
 
-fetchShow('the-big-bang-theory');
-//fetchShow('13-reasons-why');
-//fetchShow('game-of-thrones');
+//fetchShow('the-big-bang-theory');
+fetchShow('13-reasons-why');
+fetchShow('game-of-thrones');
