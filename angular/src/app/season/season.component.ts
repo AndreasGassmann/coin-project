@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
+import { Observable } from "rxjs";
+import { ApiService } from "../shared/api.service";
 
 @Component({
   selector: 'app-season',
@@ -7,7 +10,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SeasonComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private _apiService: ApiService) {
+    const showId = route.params.map(p => p.id);
+    const seasonId = route.params.map(p => p.seasonId);
+
+    Observable.combineLatest(
+      showId,
+      seasonId
+    ).subscribe(
+      data => {
+        console.log(data);
+        this._apiService.getSeason(data[0], data[1]).then(res => {
+          console.log(res);
+        });
+      },
+      err => console.error(err)
+    );
+  }
 
   ngOnInit() {
   }

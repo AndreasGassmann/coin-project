@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
+import { Observable } from "rxjs";
+import { ApiService } from "app/shared/api.service";
 
 @Component({
   selector: 'app-episode',
@@ -7,7 +10,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EpisodeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private _apiService: ApiService) {
+    const showId = route.params.map(p => p.id);
+    const seasonId = route.params.map(p => p.seasonId);
+    const episodeId = route.params.map(p => p.episodeId);
+
+    Observable.combineLatest(
+      showId,
+      seasonId,
+      episodeId
+    ).subscribe(
+      data => {
+        console.log(data);
+        this._apiService.getEpisode(data[0], data[1], data[2]).then(res => {
+          console.log(res);
+        });
+      },
+      err => console.error(err)
+    );
+  }
 
   ngOnInit() {
   }

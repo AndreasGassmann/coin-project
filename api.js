@@ -319,17 +319,22 @@ router.get('/show/:id', async(ctx, next) => {
     ctx.body = show.length === 1 ? show[0] : show;
 });
 
-router.get('/show/:id/seasons/', async(ctx, next) => {
+router.get('/show/:id/season/', async(ctx, next) => {
     if (!ctx.params.id) return;
     let show = shows.filter(s => s.id == ctx.params.id);
     ctx.body = show.length === 1 ? show[0] : show;
 });
 
-router.get('/show/:id/seasons/:seasonId', async(ctx, next) => {
-    if (!ctx.params.id) return;
-    let show = shows.filter(s => s.id == ctx.params.id);
-    let season = show.seasons.filter(e => e.id == ctx.params.seasonId)
-    ctx.body = season.length === 1 ? season[0] : season;
+router.get('/show/:id/season/:seasonId', async(ctx, next) => {
+    ctx.body = {};
+});
+
+router.get('/show/:id/season/:seasonId/episode', async(ctx, next) => {
+    ctx.body = {};
+});
+
+router.get('/show/:id/season/:seasonId/episode/:episodesId', async(ctx, next) => {
+    ctx.body = {};
 });
 
 
