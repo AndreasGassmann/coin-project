@@ -1,13 +1,14 @@
 let sentiment = require('sentiment');
 let emotional = require('emotional');
 let natural = require('natural');
+const db = require('./db.js');
 
 let TfIdf = natural.TfIdf,
     tfidf = new TfIdf();
 
 let comments = require('./data/game-of-thrones-comments.json');
 
-emotional.load(() => {
+/*emotional.load(() => {
     comments.forEach(c => {
         console.log(c.comment);
         console.log('User rating: ' + c.user_rating);
@@ -31,4 +32,65 @@ emotional.load(() => {
     // tfidf.tfidfs(word, function(i, measure) {
     //     console.log('document #' + i + ' is ' + measure);
     // });
+});*/
+
+db.init().then((db) => {
+
+    // returns array with the amount of 1-10 star ratings per TV-Show for imdb and trakt ratings
+    let getRatingDistributionShowLevel = function(showId){
+		return new Promise(function(resolve, reject){
+			// initialize empty array of 1-10 star ratings
+			let imdbRatingDistribution = [];
+			for (let i=1; i <= 10; i++){
+				imdbRatingDistribution[i] = 0;
+			}
+
+			let traktRatingDistribution = [];
+			for (let i=1; i <= 10; i++){
+				traktRatingDistribution[i] = 0;
+			}
+
+			let promises = [];
+
+			// fetch all imdb ratings for tvShowId
+			promises.push(db.sequelize.models.imdbUserReview.findAll({
+				//where: {tvShowId: showId} // auskommentiert, da in der db keine showId hinterlegt ist
+			}));
+			// fetch all trakt ratings for tvShowId
+			promises.push(db.sequelize.models.traktComment.findAll({
+				//where: {tvShowId: showId} // auskommentiert, da in der db keine showId hinterlegt ist
+			}));
+
+			Promise.all(promises).then(function(data){
+				let imdbRatings = data[0];
+				let traktRatings = data[1];
+
+				// add any rating occurrence to the array
+				for (let index in imdbRatings){
+					if (imdbRatings[index].rating !== null){
+						imdbRatingDistribution[imdbRatings[index].rating]++;
+					}
+				}
+				// add any rating occurrence to the array
+				for (let index in traktRatings){
+					if (traktRatings[index].rating !== null){
+						traktRatingDistribution[traktRatings[index].userRating]++;
+					}
+				}
+
+				let distributionOfRatings = [];
+				distributionOfRatings.push(imdbRatingDistribution);
+				distributionOfRatings.push(traktRatingDistribution);
+
+				// resolve (return) the array with both distributions
+				resolve(distributionOfRatings);
+			});
+        });
+    };
+
+
+    getRatingDistributionShowLevel(0);
+
+
+
 });
