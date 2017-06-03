@@ -8,7 +8,7 @@ let TfIdf = natural.TfIdf,
 
 let comments = require('./data/game-of-thrones-comments.json');
 
-/*emotional.load(() => {
+emotional.load(() => {
     comments.forEach(c => {
         console.log(c.comment);
         console.log('User rating: ' + c.user_rating);
@@ -32,19 +32,19 @@ let comments = require('./data/game-of-thrones-comments.json');
     // tfidf.tfidfs(word, function(i, measure) {
     //     console.log('document #' + i + ' is ' + measure);
     // });
-});*/
+});
 
 db.init().then((db) => {
 
     // returns array with the amount of 1-10 star ratings per TV-Show for imdb and trakt ratings
     let getRatingDistributionShowLevel = function(showId){
 		return new Promise(function(resolve, reject){
-			// initialize empty array of 1-10 star ratings
+			// initialize empty array of 1-10 star ratings (imdb)
 			let imdbRatingDistribution = [];
 			for (let i=1; i <= 10; i++){
 				imdbRatingDistribution[i] = 0;
 			}
-
+            // initialize empty array of 1-10 star ratings (trakt)
 			let traktRatingDistribution = [];
 			for (let i=1; i <= 10; i++){
 				traktRatingDistribution[i] = 0;
@@ -61,6 +61,7 @@ db.init().then((db) => {
 				//where: {tvShowId: showId} // auskommentiert, da in der db keine showId hinterlegt ist
 			}));
 
+            // when all ratings where fetched (promises resolved), then fill the arrays.
 			Promise.all(promises).then(function(data){
 				let imdbRatings = data[0];
 				let traktRatings = data[1];
