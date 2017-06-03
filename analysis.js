@@ -36,10 +36,27 @@ emotional.load(() => {
 
 db.init().then((db) => {
 
-    // returns array with the amount of 1-10 star ratings per TV-Show for imdb and trakt ratings
-    let getRatingDistributionShowLevel = function(showId){
+	/**
+	 * Fetches distribution of star ratings
+	 * @param {string} level - tvshow, season or episode level is accepted
+     * @param {int} id - id of the requested level. Eg. 0 for the first show/season/episode.
+	 * @returns {Promise<Object>} A promise to an array with the amount of 1-10 star ratings for imdb and trakt ratings for each level.
+	 */
+    let getRatingDistribution = function(level, id){
 		return new Promise(function(resolve, reject){
-			// initialize empty array of 1-10 star ratings (imdb)
+
+		    let levelParam;
+		    if (level === 'tvshow'){
+		        levelParam = 'tvShowId';
+            }else if(level === 'season'){
+                levelParam = 'seasonId';
+            }else if (level === 'episode'){
+                levelParam = 'episodeId';
+            }else{
+                reject('level parameter is not tvshow, season or episode');
+            }
+
+		    // initialize empty array of 1-10 star ratings (imdb)
 			let imdbRatingDistribution = [];
 			for (let i=1; i <= 10; i++){
 				imdbRatingDistribution[i] = 0;
@@ -54,11 +71,11 @@ db.init().then((db) => {
 
 			// fetch all imdb ratings for tvShowId
 			promises.push(db.sequelize.models.imdbUserReview.findAll({
-				//where: {tvShowId: showId} // auskommentiert, da in der db keine showId hinterlegt ist
+				where: {levelParam: id}
 			}));
 			// fetch all trakt ratings for tvShowId
 			promises.push(db.sequelize.models.traktComment.findAll({
-				//where: {tvShowId: showId} // auskommentiert, da in der db keine showId hinterlegt ist
+				where: {levelParam: id}
 			}));
 
             // when all ratings where fetched (promises resolved), then fill the arrays.
@@ -90,7 +107,10 @@ db.init().then((db) => {
     };
 
 
-    getRatingDistributionShowLevel(0);
+    getRatingDistribution(0).then(function(distribution){
+        "use strict";
+        console.log('yay distribution')
+    });
 
 
 
