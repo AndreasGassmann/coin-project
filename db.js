@@ -59,6 +59,11 @@ module.exports.init = () => {
         });
         episode.belongsTo(season);
 
+        let episodePlot = sequelize.define('episode_plot', {
+            plot: Sequelize.TEXT
+        });
+		episodePlot.belongsTo(episode);
+
         season.hasMany(episode);
 
         let imdbUserReview = sequelize.define('imdbUserReview', {

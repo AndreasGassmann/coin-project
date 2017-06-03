@@ -45,6 +45,7 @@ db.init().then((db) => {
     let getRatingDistribution = function(level, id){
 		return new Promise(function(resolve, reject){
 
+		    // set the parameter for the 'where'-clause to the right attribute of the database table.
 		    let levelParam;
 		    if (level === 'tvshow'){
 		        levelParam = 'tvShowId';
@@ -107,7 +108,7 @@ db.init().then((db) => {
     };
 
 
-    getRatingDistribution(0).then(function(distribution){
+    getRatingDistribution('tvshow', 0).then(function(distribution){
         "use strict";
         console.log('yay distribution')
     });
