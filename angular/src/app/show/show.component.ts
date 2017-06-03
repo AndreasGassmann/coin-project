@@ -271,7 +271,7 @@ export class ShowComponent implements OnInit {
   },
   { // red
     backgroundColor: 'rgba(248,108,107,0.75)',
-    borderColor: 'rgba(196),101,101,1)',
+    borderColor: 'rgba(196,101,101,1)',
     pointBackgroundColor: 'rgba(77,83,96,1)',
     pointBorderColor: '#fff',
     pointHoverBackgroundColor: '#fff',
@@ -303,7 +303,7 @@ export class ShowComponent implements OnInit {
     },
     { // red
       backgroundColor: 'rgba(248,108,107,0.75)',
-      borderColor: 'rgba(196),101,101,1)',
+      borderColor: 'rgba(196,101,101,1)',
       pointBackgroundColor: 'rgba(77,83,96,1)',
       pointBorderColor: '#fff',
       pointHoverBackgroundColor: '#fff',
@@ -481,6 +481,8 @@ export class ShowComponent implements OnInit {
   public chartHovered(e: any): void {
     console.log(e);
   }
+
+  public barChartLegend: boolean = true;
 
   // lineChart
   public lineChartData: Array<any> = [

@@ -44,4 +44,12 @@ export class EpisodeComponent implements OnInit {
     {data: [3, 9, 14, 9, 6, 5, 18, 10, 18, 8], label: 'Trakt.tv'}
   ];
 
+  // events
+  public chartClicked(e: any): void {
+    console.log(e);
+  }
+
+  public chartHovered(e: any): void {
+    console.log(e);
+  }
 }
