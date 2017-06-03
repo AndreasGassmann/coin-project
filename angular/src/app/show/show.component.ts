@@ -76,7 +76,8 @@ export class ShowComponent implements OnInit {
         {x: '9 stars', y: 0.89},
         {x: '10 stars', y: 1},
       ],
-      label: 'Normalized average sentiment (IMDb) per rating'
+      label: 'Normalized average sentiment (IMDb) per rating',
+      pointRadius: 5
     },
     {
     data: [
@@ -114,7 +115,7 @@ export class ShowComponent implements OnInit {
     },
     {
       data: [
-        0.23
+        -0.23
       ],
       label: 'Joffrey Baratheon'
     },
@@ -126,7 +127,7 @@ export class ShowComponent implements OnInit {
     },
     {
       data: [
-        0.40
+        -0.40
       ],
       label: 'Cersei Lannister'
     }
@@ -137,7 +138,7 @@ export class ShowComponent implements OnInit {
     scales: {
       yAxes: [{
         ticks: {
-          suggestedMin: 0,
+          suggestedMin: -1,
           suggestedMax: 1
         }
       }]
