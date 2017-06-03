@@ -115,7 +115,18 @@ module.exports.init = () => {
             content_SentimentObject: Sequelize.TEXT,
             content_emotionalObject: Sequelize.TEXT,
             content_termFrequencyObject: Sequelize.TEXT
+        });
 
+        let RedditComments = sequelize.define('RedditComments', {
+            commentID: Sequelize.STRING,
+            parentID: Sequelize.STRING,
+            content: Sequelize.STRING,
+            score: Sequelize.INTEGER,
+            commentedOnDate: Sequelize.DATE,
+            subreddit: Sequelize.STRING,
+            content_SentimentObject: Sequelize.TEXT,
+            content_emotionalObject: Sequelize.TEXT,
+            content_termFrequencyObject: Sequelize.TEXT
         });
 //        RedditPosts.belongsTo(tvShow);
 //        RedditPosts.belongsTo(episode);
