@@ -482,6 +482,8 @@ export class ShowComponent implements OnInit {
     console.log(e);
   }
 
+  public barChartLegend: boolean = true;
+
   // lineChart
   public lineChartData: Array<any> = [
     {data: [65, 59, 80, 81, 56, 55, 40], label: 'Reviews'},

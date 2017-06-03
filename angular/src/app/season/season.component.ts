@@ -222,4 +222,14 @@ export class SeasonComponent implements OnInit {
     }]
   };
 
+  public barChartLegend: boolean = true;
+
+  // events
+  public chartClicked(e: any): void {
+    console.log(e);
+  }
+
+  public chartHovered(e: any): void {
+    console.log(e);
+  }
 }
