@@ -6,7 +6,7 @@
       <div class="card">
         <span *ngIf="show">
           <!-- TODO: crop image from bottom for larger images -->
-            <img class="card-img-top img-fluid" src="{{show.titleimage}}">
+            <img class="card-img-top img-fluid DB_TODO" src="{{show.titleimage}}">
         </span>
       </div>
     </div>
@@ -22,27 +22,27 @@
             <tbody>
               <tr>
                 <th scope="row">Title</th>
-                <td><span *ngIf="show" [innerHtml]="show.name"></span></td>
+                <td class="DB_DONE"><span *ngIf="show" [innerHtml]="show.name"></span></td>
               </tr>
               <tr>
                 <th scope="row">Genre</th>
-                <td>Fantasy</td>
+                <td class="DB_TODO">Fantasy</td>
               </tr>
               <tr>
                 <th scope="row">Seasons</th>
-                <td><span *ngIf="show" [innerHtml]="show.seasons.length"></span></td>
+                <td class="DB_TODO"><span *ngIf="show" [innerHtml]="show.seasons.length"></span></td>
               </tr>
               <tr>
                 <th scope="row">Episodes per Season</th>
-                <td><span *ngIf="show" [innerHtml]="show.seasons[0].episodes.length"></span></td>
+                <td class="DB_TODO"><span *ngIf="show" [innerHtml]="show.seasons[0].episodes.length"></span></td>
               </tr>
               <tr>
                 <th scope="row">Duration per Episode</th>
-                <td>50-67min</td>
+                <td class="DB_TODO">50-67min</td>
               </tr>
               <tr>
                 <th scope="row">Original release</th>
-                <td>April 17, 2011 – present</td>
+                <td class="DB_TODO">April 17, 2011 – present</td>
               </tr>
             </tbody>
           </table>
@@ -65,7 +65,7 @@
                     <div class="card card-inverse card-info no-vertical-margin">
                       <!--<img src="http://www.cultjer.com/img/ug_photo/2015_10/72623720151004152641.jpg" class="card-img-top" height="200" width="auto"/>-->
                       <div class="card-block">
-                        <h4 class="card-title text-center" style="margin-bottom: 0;">Season {{s.id}}</h4>
+                        <h4 class="card-title text-center DB_TODO" style="margin-bottom: 0;">Season {{s.id}}</h4>
                       </div>
                     </div>
                       </a>
@@ -88,7 +88,7 @@
                         <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/Reddit_logo_and_wordmark.svg/1280px-Reddit_logo_and_wordmark.svg.png"
                           height="50" width="auto">
                       </div>
-                      <div class="h4 mb-0">167.906</div>
+                      <div class="h4 mb-0 DB_TODO">167.906</div>
                       <p class="text-muted text-uppercase font-weight-bold">Posts</p>
                     </div>
                   </div>
@@ -101,7 +101,7 @@
                         <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/Reddit_logo_and_wordmark.svg/1280px-Reddit_logo_and_wordmark.svg.png"
                           height="50" width="auto">
                       </div>
-                      <div class="h4 mb-0">1,7 Mio</div>
+                      <div class="h4 mb-0 DB_TODO">1,7 Mio</div>
                       <p class="text-muted text-uppercase font-weight-bold">Comments</p>
                     </div>
                   </div>
@@ -113,7 +113,7 @@
                       <div class="h1 text-muted text-right mb-2">
                         <img src="http://ia.media-imdb.com/images/M/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE@._V1_.png" height="50" width="auto">
                       </div>
-                      <div class="h4 mb-0">87.273</div>
+                      <div class="h4 mb-0 DB_TODO">87.273</div>
                       <p class="text-muted text-uppercase font-weight-bold">Ratings</p>
                     </div>
                   </div>
@@ -125,7 +125,7 @@
                       <div class="h1 text-muted text-right mb-2">
                         <img src="http://ia.media-imdb.com/images/M/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE@._V1_.png" height="50" width="auto">
                       </div>
-                      <div class="h4 mb-0">{{show?.imdbRating}}</div>
+                      <div class="h4 mb-0 DB_DONE">{{show?.imdbRating}}</div>
                       <p class="text-muted text-uppercase font-weight-bold">Avg. Rating </p>
                     </div>
                   </div>
@@ -145,7 +145,7 @@
   <div class="row">
     <div class="col-12 col-md-6">
       <div class="card">
-        <div class="card-block">
+        <div class="card-block DB_TODO">
           <div class="row">
             <div class="col-12">
               <div class="chart-wrapper">
@@ -163,7 +163,7 @@
     </div>
     <div class="col-12 col-md-6">
       <div class="card">
-        <div class="card-block">
+        <div class="card-block DB_TODO">
           <div class="row">
             <div class="col-12">
               <div class="chart-wrapper">
@@ -185,7 +185,7 @@
     <div class="col-12 col-md-6">
       <!-- Card: Correlation between review sentiment and rating -->
       <div class="card">
-        <div class="card-block">
+        <div class="card-block DB_TODO">
           <h3>Correlation between review sentiment and rating (IMDb)</h3>
           <div class="chart-wrapper">
             <!--iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;" -->
@@ -199,7 +199,7 @@
     <div class="col-12 col-md-6">
       <!-- Card: Sentiment for specific characters (IMDb) -->
       <div class="card">
-        <div class="card-block">
+        <div class="card-block DB_TODO">
           <h3>Sentiment for specific characters (IMDb)</h3>
           <div class="chart-wrapper">
             <!--iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;" -->
@@ -231,7 +231,7 @@
     <!--/.col-->
     <div class="col-12 col-md-3">
       <div class="card">
-        <div class="card-block">
+        <div class="card-block DB_TODO">
           <div class="row">
             <div class="col-12">
               <div class="chart-wrapper">
@@ -260,7 +260,7 @@
             </a>
           </div>
         </div>
-        <div class="card-block">
+        <div class="card-block DB_TODO">
           <div class="chart-wrapper">
             <canvas baseChart class="chart" [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
               (chartClick)="chartClicked($event)"></canvas>
