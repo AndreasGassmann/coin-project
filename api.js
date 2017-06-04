@@ -77,6 +77,7 @@ let getShowFromDb = (showId) => {
                     'titleimage': staticData[dbShow.id]['titleimage'],
                     'episodes': 70,
                     'viewers': 51301,
+                    'imdbRating': dbShow.rating,
                     'rating': {
                         '1': 5,
                         '2': 57,
