@@ -4,58 +4,15 @@
   <div class="row">
     <div class="col-12 col-md-12">
       <div class="card">
-        <span *ngIf="show">
           <!-- TODO: crop image from bottom for larger images -->
-            <img class="card-img-top img-fluid DB_TODO" src="{{show.titleimage}}">
-        </span>
+            <img class="card-img-top img-fluid" src="{{show?.titleimage}}" width="100%">
       </div>
     </div>
   </div>
 
-  <!-- Meta Info -->
   <div class="row">
-    <div class="col-12 col-lg-3">
-      <div class="card">
-        <div class="card-block">
-          <h3>Info</h3>
-          <table class="table table-responsive" style="margin-bottom: 1.75rem;">
-            <tbody>
-              <tr>
-                <th scope="row">Title</th>
-                <td ><span *ngIf="show" [innerHtml]="show.name"></span></td>
-              </tr>
-              <tr>
-                <th scope="row">Genres</th>
-                <td >{{show?.genres}}</td>
-              </tr>
-              <tr>
-                <th scope="row">Seasons</th>
-                <td ><span *ngIf="show" [innerHtml]="show.seasonsCount"></span></td>
-              </tr>
-              <tr>
-                <th scope="row">Episodes per Season <span style="color: red;">TODO this can vary!</span></th>
-                <td ><span *ngIf="show" [innerHtml]="show.seasons[0].totalepisodes"></span></td>
-              </tr>
-              <tr>
-                <th scope="row">Episodes (total)</th>
-                <td ><span *ngIf="show" [innerHtml]="show.episodesCount"></span></td>
-              </tr>
-              <tr>
-                <th scope="row">Duration per Episode</th>
-                <td >{{show?.runtime}} min</td>
-              </tr>
-              <tr>
-                <th scope="row">Original release</th>
-                <td >{{show?.releaseDate | date: "mediumDate"}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
 
-    <div class="col-12 col-lg-9">
+    <div class="col-12 col-lg-12">
       <div class="row">
 
         <!-- Season selection -->
@@ -80,57 +37,110 @@
           </div>
         </div>
 
-        <!-- reddit and imdb -->
+        <!-- Meta Info -->
         <div class="col-12">
           <div class="card">
             <div class="card-block">
+
+              <div class="row">
+                <div class="col-md-4 col-sm-6 col-lg-2">
+                  <div class="card">
+                    <div class="card-block text-center" style="height: 10.7rem;">
+                      <div class="text-muted text-uppercase font-weight-bold">Title</div>
+                      <div class="h2 py-1">{{show?.name}}</div>
+                    </div>
+                  </div>
+                </div><!--/.col-->
+                <div class="col-md-4 col-sm-6 col-lg-2">
+                  <div class="card">
+                    <div class="card-block text-center" style="height: 10.7rem;">
+                      <div class="text-muted text-uppercase font-weight-bold">Genre</div>
+                      <div class="h2 py-1">{{show?.genres}}</div>
+                    </div>
+                  </div>
+                </div><!--/.col-->
+                <div class="col-md-4 col-sm-6 col-lg-2">
+                  <div class="card" >
+                    <div class="card-block text-center" style="height: 10.7rem;">
+                      <div class="text-muted text-uppercase font-weight-bold">Seasons</div>
+                      <div class="h2 py-1">{{show?.seasonsCount}}</div>
+                    </div>
+                  </div>
+                </div><!--/.col-->
+                <div class="col-md-4 col-sm-6 col-lg-2">
+                  <div class="card">
+                    <div class="card-block text-center" style="height: 10.7rem;">
+                      <div class="text-muted text-uppercase font-weight-bold">Episodes (total)</div>
+                      <div class="h2 py-1">{{show?.episodesCount}}</div>
+                    </div>
+                  </div>
+                </div><!--/.col-->
+                <div class="col-md-4 col-sm-6 col-lg-2">
+                  <div class="card">
+                    <div class="card-block text-center" style="height: 10.7rem;">
+                      <div class="text-muted text-uppercase font-weight-bold">Duration per Episode</div>
+                      <div class="h2 py-1">{{show?.runtime}} min</div>
+                    </div>
+                  </div>
+                </div><!--/.col-->
+                <div class="col-md-4 col-sm-6 col-lg-2">
+                  <div class="card">
+                    <div class="card-block text-center" style="height: 10.7rem;">
+                      <div class="text-muted text-uppercase font-weight-bold">Original release</div>
+                      <div class="h2 py-1">{{show?.releaseDate | date: "mediumDate"}}</div>
+                    </div>
+                  </div>
+                </div><!--/.col-->
+              </div>
+
+              <!-- reddit and imdb -->
               <div class="row">
                 <div class="col-6 col-md-3">
-                  <div class="card no-vertical-margin card-outline-info">
+                  <div class="card no-vertical-margin card-info">
                     <div class="card-block">
                       <div class="h1 text-muted text-right mb-2">
                         <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/Reddit_logo_and_wordmark.svg/1280px-Reddit_logo_and_wordmark.svg.png"
                           height="50" width="auto">
                       </div>
-                      <div class="h4 mb-0 DB_TODO">167.906</div>
-                      <p class="text-muted text-uppercase font-weight-bold">Posts</p>
+                      <div class="h1 mb-0">167.906</div>
+                      <p class="text-uppercase font-weight-bold">Posts</p>
                     </div>
                   </div>
                 </div>
                 <!--/.col-->
                 <div class="col-6 col-md-3">
-                  <div class="card no-vertical-margin card-outline-info">
+                  <div class="card no-vertical-margin card-info">
                     <div class="card-block">
                       <div class="h1 text-muted text-right mb-2">
                         <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/82/Reddit_logo_and_wordmark.svg/1280px-Reddit_logo_and_wordmark.svg.png"
                           height="50" width="auto">
                       </div>
-                      <div class="h4 mb-0 DB_TODO">1,7 Mio</div>
-                      <p class="text-muted text-uppercase font-weight-bold">Comments</p>
+                      <div class="h1 mb-0">1,7 Mio</div>
+                      <p class="text-uppercase font-weight-bold">Comments</p>
                     </div>
                   </div>
                 </div>
                 <!--/.col-->
                 <div class="col-6 col-md-3">
-                  <div class="card no-vertical-margin card-outline-warning">
+                  <div class="card no-vertical-margin card-warning">
                     <div class="card-block">
                       <div class="h1 text-muted text-right mb-2">
                         <img src="http://ia.media-imdb.com/images/M/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE@._V1_.png" height="50" width="auto">
                       </div>
-                      <div class="h4 mb-0">{{show?.imdbUserReviewsCount}}</div>
-                      <p class="text-muted text-uppercase font-weight-bold">User Reviews</p>
+                      <div class="h1 mb-0">{{show?.imdbUserReviewsCount | number}}</div>
+                      <p class="text-uppercase font-weight-bold">User Reviews</p>
                     </div>
                   </div>
                 </div>
                 <!--/.col-->
                 <div class="col-6 col-md-3">
-                  <div class="card no-vertical-margin card-outline-warning">
+                  <div class="card no-vertical-margin card-warning">
                     <div class="card-block">
-                      <div class="h1 text-muted text-right mb-2">
+                      <div class="h2 text-muted text-right mb-2">
                         <img src="http://ia.media-imdb.com/images/M/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE@._V1_.png" height="50" width="auto">
                       </div>
-                      <div class="h4 mb-0">{{show?.imdbRating}}</div>
-                      <p class="text-muted text-uppercase font-weight-bold">Avg. Rating </p>
+                      <div class="h1 mb-0">{{show?.imdbRating | number}}</div>
+                      <p class="text-uppercase font-weight-bold">Avg. Rating </p>
                     </div>
                   </div>
                 </div>
@@ -216,8 +226,6 @@
     </div>
   </div>
 
-
-
   <!-- Viewers -->
   <div class="row">
     <div class="col-sm-6 col-lg-4">
@@ -297,8 +305,11 @@
 
       </div>
     </div>
+  </div>
 
-    <div class="col-sm-6 col-md-6">
+  <!-- Word cloud -->
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
       <button class="btn btn-primary btn-sm" type="button" (click)="setFilter('all')">All</button>
       <button class="btn btn-success btn-sm" type="button" (click)="setFilter('pos')">Positive</button>
       <button class="btn btn-danger btn-sm" type="button" (click)="setFilter('neg')">Negative</button>
@@ -307,6 +318,7 @@
       </div>
     </div>
   </div>
+
   <div class="row">
     <div class="col-sm-6 col-md-2">
       <div class="card card-inverse card-info">

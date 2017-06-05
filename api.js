@@ -15,20 +15,20 @@ dbConnection.init().then(res => {
 // TODO make static data dynamic in queries, then delete this object
 staticData = {
     '1': {
-        'image': "http://thetvdb.com/banners/fanart/original/121361-15.jpg",
-        'titleimage': "https://red.elbenwald.de/media/image/3a/49/87/game-of-thrones_cat.jpg"
+        'image': "../assets/img/show-cards/game-of-thrones.jpg",
+        'titleimage': "../assets/img/title-images/game-of-thrones.jpg"
     },
     '2': {
-        'image': "http://thetvdb.com/banners/fanart/original/80379-38.jpg",
-        'titleimage': "https://red.elbenwald.de/media/image/e5/96/fc/big-bang-theorycat.jpg"
+        'image': "../assets/img/show-cards/big-bang-theory.jpg",
+        'titleimage': "../assets/img/title-images/big-bang-theory.jpg"
     },
     '3': {
-        'image': "http://www.returndates.com/backgrounds/criminalminds.jpg",
-        'titleimage': "http://www.asset1.net/tv/pictures/show/criminal-minds/Criminal-Minds-S10-LB-1.jpg"
+        'image': "../assets/img/show-cards/criminal-minds.jpg",
+        'titleimage': "../assets/img/title-images/criminal-minds.jpg"
     },
     '4': {
-        'image': "http://thetvdb.com/banners/fanart/original/323168-10.jpg",
-        'titleimage': "https://img-www.tf-cdn.com/show/2/13-reasons-why.jpeg?_v=20170307014747&w=1024&h=342&dpr=2&auto=compress&fit=crop&crop=faces,top"
+        'image': "../assets/img/show-cards/13-reasons-why.jpg",
+        'titleimage': "../assets/img/title-images/13-reasons-why.jpg"
     }
 };
 

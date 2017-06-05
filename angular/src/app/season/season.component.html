@@ -1,6 +1,21 @@
 <div class="animated fadeIn">
-  <p class="lead" *ngIf="show">{{show.name}}</p>
-  <h1 *ngIf="season" class="display-3">Season {{season.seasonNumber}}</h1>
+
+  <!-- Title image -->
+  <div class="row">
+    <div class="col-12 col-md-12">
+      <div class="card">
+          <!-- TODO: crop image from bottom for larger images -->
+        <img class="card-img-top img-fluid" src="{{show?.titleimage}}" width="100%">
+      </div>
+    </div>
+  </div>
+</div>
+
+  <p class="lead">{{show?.name}}</p>
+  <h1 class="display-3" style="margin-bottom: 3rem;">
+    Season {{season?.seasonNumber}}
+    <small><img *ngIf="show && show.id==1" src="http://vignette1.wikia.nocookie.net/gameofthrones/images/d/da/House_Stark_Sigil_(transparent).png" width="100" height="auto"></small>
+  </h1>
 
   <div class="row">
     <div class="col-12">
@@ -67,7 +82,6 @@
         </div>
       </div>
     </div>
-    <img src="http://vignette1.wikia.nocookie.net/gameofthrones/images/d/da/House_Stark_Sigil_(transparent).png" width="150" height="auto">
   </div>
 
 <!-- Bar Chart Flo -->

@@ -346,8 +346,8 @@ export class ShowComponent implements OnInit {
         }
         this.pieChartLabels = labels;
         this.pieChartData = data;
-      })
-    })
+      });
+    });
 
   }
 
