@@ -125,6 +125,7 @@ let getSeasonFromDb = (showId, seasonId) => {
         }).then(season => {
             let resolveSeason = {
                 'id': season.id,
+                'seasonNumber': season.seasonNumber,
                 'episodesCount': season.totalepisodes,
                 'imdbRating': season.average_imdb_rating,
                 'imdbUserReviewsCount': season.imdb_review_count,
