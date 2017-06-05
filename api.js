@@ -77,7 +77,7 @@ let getShowFromDb = (showId) => {
             where: { id: showId },
             include: [{
                 model: db.sequelize.models.season,
-                attributes: ['id', 'seasonNumber'],
+                attributes: ['id', 'seasonNumber', 'average_imdb_rating'],
                 include: [{
                     model: db.sequelize.models.episode,
                     attributes: ['id', 'name', 'episodeNumber'],
@@ -95,7 +95,7 @@ let getShowFromDb = (showId) => {
             let imdbUserReviewRatings = {};
             _.range(1, 11).forEach(x => imdbUserReviewRatings[x] = 0);
             dbShow.seasons.forEach(season => {
-                let tempSeason = { id: season.id, seasonNumber: season.seasonNumber };
+                let tempSeason = { id: season.id, seasonNumber: season.seasonNumber, average_imdb_rating: season.average_imdb_rating };
                 let tempEpisodes = [];
                 season.episodes.forEach(episode => {
                     episodesCount += 1;
