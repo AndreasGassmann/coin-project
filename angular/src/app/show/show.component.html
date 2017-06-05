@@ -30,11 +30,15 @@
               </tr>
               <tr>
                 <th scope="row">Seasons</th>
-                <td class="DB_DONE"><span *ngIf="show" [innerHtml]="show.seasons.length"></span></td>
+                <td class="DB_DONE"><span *ngIf="show" [innerHtml]="show.seasonsCount"></span></td>
               </tr>
               <tr>
                 <th scope="row">Episodes per Season <span style="color: red;">TODO this can vary!</span></th>
                 <td class="DB_DONE"><span *ngIf="show" [innerHtml]="show.seasons[0].episodes.length"></span></td>
+              </tr>
+              <tr>
+                <th scope="row">Episodes (total)</th>
+                <td class="DB_DONE"><span *ngIf="show" [innerHtml]="show.episodesCount"></span></td>
               </tr>
               <tr>
                 <th scope="row">Duration per Episode</th>
@@ -236,7 +240,7 @@
             <div class="col-12">
               <div class="chart-wrapper">
                 <canvas baseChart class="chart" [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)"></canvas>
+                  (chartClick)="chartClicked($event)"></canvas>
               </div>
               <h4 class="text-lg-center">Distribution of Ratings</h4>
               <p class="text-lg-center">(Alternative zu Balkendiagramm oben)</p>
@@ -418,15 +422,8 @@
     </div>
     <div class="card-block">
       <div class="chart-wrapper">
-        <canvas baseChart class="chart"
-                [datasets]="lineChartData"
-                [labels]="lineChartLabels"
-                [options]="lineChartOptions"
-                [colors]="lineChartColours"
-                [legend]="lineChartLegend"
-                [chartType]="lineChartType"
-                (chartHover)="chartHovered($event)"
-                (chartClick)="chartClicked($event)"></canvas>
+        <canvas baseChart class="chart" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColours"
+          [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
       </div>
     </div>
   </div>
