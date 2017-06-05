@@ -108,7 +108,7 @@ let getShowFromDb = (showId) => {
                 'runtime': dbShow.runtime,
                 'genres': dbShow.genres,
                 'releaseDate': dbShow.releaseDate,
-                'seasonsCount': dbShow.totalseasons,
+                'seasonsCount': seasons.length,
                 'episodesCount': dbShow.totalepisodes,
                 'viewers': 51301,
                 'imdbRating': dbShow.rating,

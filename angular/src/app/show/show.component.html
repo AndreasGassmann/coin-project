@@ -22,31 +22,31 @@
             <tbody>
               <tr>
                 <th scope="row">Title</th>
-                <td class="DB_DONE"><span *ngIf="show" [innerHtml]="show.name"></span></td>
+                <td ><span *ngIf="show" [innerHtml]="show.name"></span></td>
               </tr>
               <tr>
                 <th scope="row">Genres</th>
-                <td class="DB_DONE">{{show?.genres}}</td>
+                <td >{{show?.genres}}</td>
               </tr>
               <tr>
                 <th scope="row">Seasons</th>
-                <td class="DB_DONE"><span *ngIf="show" [innerHtml]="show.seasonsCount"></span></td>
+                <td ><span *ngIf="show" [innerHtml]="show.seasonsCount"></span></td>
               </tr>
               <tr>
                 <th scope="row">Episodes per Season <span style="color: red;">TODO this can vary!</span></th>
-                <td class="DB_DONE"><span *ngIf="show" [innerHtml]="show.seasons[0].episodes.length"></span></td>
+                <td ><span *ngIf="show" [innerHtml]="show.seasons[0].episodes.length"></span></td>
               </tr>
               <tr>
                 <th scope="row">Episodes (total)</th>
-                <td class="DB_DONE"><span *ngIf="show" [innerHtml]="show.episodesCount"></span></td>
+                <td ><span *ngIf="show" [innerHtml]="show.episodesCount"></span></td>
               </tr>
               <tr>
                 <th scope="row">Duration per Episode</th>
-                <td class="DB_DONE">{{show?.runtime}} min</td>
+                <td >{{show?.runtime}} min</td>
               </tr>
               <tr>
                 <th scope="row">Original release</th>
-                <td class="DB_DONE">{{show?.releaseDate | date: "mediumDate"}}</td>
+                <td >{{show?.releaseDate | date: "mediumDate"}}</td>
               </tr>
             </tbody>
           </table>
@@ -69,7 +69,7 @@
                     <div class="card card-inverse card-info no-vertical-margin">
                       <!--<img src="http://www.cultjer.com/img/ug_photo/2015_10/72623720151004152641.jpg" class="card-img-top" height="200" width="auto"/>-->
                       <div class="card-block">
-                        <h4 class="card-title text-center DB_DONE" style="margin-bottom: 0;">Season {{s.seasonNumber}}</h4>
+                        <h4 class="card-title text-center" style="margin-bottom: 0;">Season {{s.seasonNumber}}</h4>
                       </div>
                     </div>
                       </a>
@@ -117,7 +117,7 @@
                       <div class="h1 text-muted text-right mb-2">
                         <img src="http://ia.media-imdb.com/images/M/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE@._V1_.png" height="50" width="auto">
                       </div>
-                      <div class="h4 mb-0 DB_DONE">{{show?.imdbUserReviewsCount}}</div>
+                      <div class="h4 mb-0">{{show?.imdbUserReviewsCount}}</div>
                       <p class="text-muted text-uppercase font-weight-bold">User Reviews</p>
                     </div>
                   </div>
@@ -129,7 +129,7 @@
                       <div class="h1 text-muted text-right mb-2">
                         <img src="http://ia.media-imdb.com/images/M/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE@._V1_.png" height="50" width="auto">
                       </div>
-                      <div class="h4 mb-0 DB_DONE">{{show?.imdbRating}}</div>
+                      <div class="h4 mb-0">{{show?.imdbRating}}</div>
                       <p class="text-muted text-uppercase font-weight-bold">Avg. Rating </p>
                     </div>
                   </div>
@@ -235,7 +235,7 @@
     <!--/.col-->
     <div class="col-12 col-md-3">
       <div class="card">
-        <div class="card-block DB_DONE">
+        <div class="card-block">
           <div class="row">
             <div class="col-12">
               <div class="chart-wrapper">
