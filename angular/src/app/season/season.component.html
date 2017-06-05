@@ -70,4 +70,26 @@
     <img src="http://vignette1.wikia.nocookie.net/gameofthrones/images/d/da/House_Stark_Sigil_(transparent).png" width="150" height="auto">
   </div>
 
+<!-- Bar Chart Flo -->
+  <div class="=row">
+    <div class="col-12 col-md-6">
+      <div class="card">
+        <div class="card-header">
+          Influence of guest stars on user ratings
+        </div>
+        <div class="card-block">
+          <div class="chart-wrapper">
+            <canvas baseChart class="chart"
+                    [datasets]="barChartData"
+                    [labels]="barChartLabels"
+                    [options]="barChartOptions"
+                    [legend]="barChartLegend2"
+                    [chartType]="barChartType2"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </div>

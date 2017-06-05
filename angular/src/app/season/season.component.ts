@@ -110,4 +110,19 @@ export class SeasonComponent implements OnInit {
   public chartHovered(e: any): void {
     console.log(e);
   }
+
+  // barChart
+  public barChartOptions: any = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  };
+  public barChartLabels: string[] = ['George W Bush', 'Ed Sheeran', 'Person XY', 'Person ABC', 'Person R', 'Person W', 'Person X'];
+  public barChartType2: string = 'bar';
+  public barChartLegend2: boolean = true;
+
+  public barChartData: any[] = [
+    {data: [9, 5, 8, 8, 6, 5, 4], label: 'Actual Rating of the episode'},
+    {data: [8, 8, 4, 9, 8, 7, 9], label: 'Average Rating of the season'}
+  ];
+
 }
