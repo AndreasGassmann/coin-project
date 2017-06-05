@@ -337,11 +337,11 @@ export class ShowComponent implements OnInit {
         console.log(this.show);
         let labels = [];
         let data = [];
-        for (let property in this.show.rating) {
-          if (this.show.rating.hasOwnProperty(property)) {
+        for (let property in this.show.imdbRatingDistribution) {
+          if (this.show.imdbRatingDistribution.hasOwnProperty(property)) {
             console.log('pushing');
             labels.push(property);
-            data.push(this.show.rating[property]);
+            data.push(this.show.imdbRatingDistribution[property]);
           }
         }
         this.pieChartLabels = labels;

@@ -38,17 +38,17 @@ let getShowsFromDb = () => {
     return new Promise((resolve, reject) => {
         db.sequelize.models.tvShow.findAll().then(dbShows => {
             console.log(dbShows);
-            var shows = [];
+            let shows = [];
             dbShows.forEach(function (dbShow) {
                 // TODO make dummy data dynamic!
-                var show = {
+                let show = {
                     'id': dbShow.id,
                     'name': dbShow.title,
                     'image': staticData[dbShow.id]['image'],
                     'titleimage': staticData[dbShow.id]['titleimage'],
                     'episodes': 70,
                     'viewers': 51301,
-                    'rating': {
+                    'imdbRatingDistribution': {
                         '1': 5,
                         '2': 57,
                         '3': 72,
@@ -61,7 +61,7 @@ let getShowsFromDb = () => {
                         '10': 1900
                     },
                     'seasons': 9
-                }
+                };
                 shows.push(show);
             });
             resolve(shows);
@@ -89,20 +89,20 @@ let getShowFromDb = (showId) => {
             }]
         }).then(dbShow => {
             dbShow = dbShow[0];
-            var seasons = [];
-            var episodesCount = 0;
-            var imdbUserReviewsCount = 0;
-            var imdbUserReviewRatings = {};
+            let seasons = [];
+            let episodesCount = 0;
+            let imdbUserReviewsCount = 0;
+            let imdbUserReviewRatings = {};
             _.range(1, 11).forEach(x => imdbUserReviewRatings[x] = 0);
             dbShow.seasons.forEach(season => {
-                var tempSeason = { id: season.id, seasonNumber: season.seasonNumber };
-                var tempEpisodes = [];
+                let tempSeason = { id: season.id, seasonNumber: season.seasonNumber };
+                let tempEpisodes = [];
                 season.episodes.forEach(episode => {
                     episodesCount += 1;
                     tempEpisodes.push({ id: episode.id, name: episode.name });
                     imdbUserReviewsCount += episode.imdbUserReviews.length;
                     episode.imdbUserReviews.forEach(imdbUserReview => {
-                        if (imdbUserReview.rating != null)
+                        if (imdbUserReview.rating !== null)
                             imdbUserReviewRatings[imdbUserReview.rating.toString()] += 1;
                     });
                 });
@@ -110,7 +110,7 @@ let getShowFromDb = (showId) => {
                 seasons.push(tempSeason);
             });
             // TODO make dummy data dynamic!
-            var show = {
+            let show = {
                 'id': dbShow.id,
                 'name': dbShow.title,
                 'image': staticData[dbShow.id]['image'],
@@ -123,9 +123,9 @@ let getShowFromDb = (showId) => {
                 'viewers': 51301,
                 'imdbRating': dbShow.rating,
                 'imdbUserReviewsCount': imdbUserReviewsCount,
-                'rating': imdbUserReviewRatings,
+                'imdbRatingDistribution': imdbUserReviewRatings,
                 'seasons': seasons
-            }
+            };
             resolve(show);
         });
     });
@@ -146,19 +146,19 @@ router.get('/', async (ctx, next) => {
 });
 
 router.get('/show/', async (ctx, next) => {
-    var shows = await getShowsFromDb();
+    let shows = await getShowsFromDb();
     ctx.body = shows;
 });
 
 router.get('/show/:id', async (ctx, next) => {
     if (!ctx.params.id) return;
-    var show = await getShowFromDb(ctx.params.id);
+    let show = await getShowFromDb(ctx.params.id);
     ctx.body = show;
 });
 
 router.get('/show/:id/season/', async (ctx, next) => {
     if (!ctx.params.id) return;
-    let show = shows.filter(s => s.id == ctx.params.id);
+    let show = shows.filter(s => s.id === ctx.params.id);
     ctx.body = show.length === 1 ? show[0] : show;
 });
 
