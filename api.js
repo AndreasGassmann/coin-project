@@ -81,30 +81,20 @@ let getShowFromDb = (showId) => {
                 include: [{
                     model: db.sequelize.models.episode,
                     attributes: ['id', 'name', 'episodeNumber'],
-                    include: [{
-                        model: db.sequelize.models.imdbUserReview,
-                        attributes: ['id', 'rating']
-                    }]
                 }]
+            }, {
+                model: db.sequelize.models.ratingDistribution,
+                attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
             }]
         }).then(dbShow => {
             dbShow = dbShow[0];
             let seasons = [];
-            let episodesCount = 0;
-            let imdbUserReviewsCount = 0;
-            let imdbUserReviewRatings = {};
-            _.range(1, 11).forEach(x => imdbUserReviewRatings[x] = 0);
+
             dbShow.seasons.forEach(season => {
                 let tempSeason = { id: season.id, seasonNumber: season.seasonNumber, average_imdb_rating: season.average_imdb_rating };
                 let tempEpisodes = [];
                 season.episodes.forEach(episode => {
-                    episodesCount += 1;
                     tempEpisodes.push({ id: episode.id, name: episode.name });
-                    imdbUserReviewsCount += episode.imdbUserReviews.length;
-                    episode.imdbUserReviews.forEach(imdbUserReview => {
-                        if (imdbUserReview.rating !== null)
-                            imdbUserReviewRatings[imdbUserReview.rating.toString()] += 1;
-                    });
                 });
                 tempSeason.episodes = tempEpisodes;
                 seasons.push(tempSeason);
@@ -118,12 +108,12 @@ let getShowFromDb = (showId) => {
                 'runtime': dbShow.runtime,
                 'genres': dbShow.genres,
                 'releaseDate': dbShow.releaseDate,
-                'seasonsCount': dbShow.totalseasons,
+                'seasonsCount': seasons.length,
                 'episodesCount': dbShow.totalepisodes,
                 'viewers': 51301,
                 'imdbRating': dbShow.rating,
                 'imdbUserReviewsCount': dbShow.imdb_review_count,
-                'imdbRatingDistribution': imdbUserReviewRatings,
+                'imdbRatingDistribution': dbShow.ratingDistribution,
                 'seasons': seasons
             };
             resolve(show);
