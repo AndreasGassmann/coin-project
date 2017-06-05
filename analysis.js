@@ -198,5 +198,25 @@ db.init().then((db) => {
 
     //saveAverageImdbRating(100);
 
-    saveImdbRatingDistribution(1);
+    //saveImdbRatingDistribution(1);
+
+    db.sequelize.models.tvShow.findAll({
+        where: { id: 1 },
+        include: [{
+            model: db.sequelize.models.season,
+            attributes: ['id', 'seasonNumber', 'average_imdb_rating'],
+            include: [{
+                model: db.sequelize.models.episode,
+                attributes: ['id', 'name', 'episodeNumber'],
+                include: [{
+                    model: db.sequelize.models.imdbUserReview,
+                    attributes: ['id', 'rating']
+                }]
+            }]
+        }, {
+            model: db.sequelize.models.ratingDistribution
+        }]
+    }).then(dbShow => {
+        console.log('Show: ' + JSON.stringify(dbShow))
+    })
 });
