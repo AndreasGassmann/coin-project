@@ -22,7 +22,7 @@ export class ShowComponent implements OnInit {
 
 
   // Pie
-  public pieChartLabels: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  public pieChartLabels: string[] = ['1 star', '2 stars', '3 stars', '4 stars', '5 stars', '6 stars', '7 stars', '8 stars', '9 stars', '10 stars'];
   public pieChartData: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 61, 2];
   public pieChartType: string = 'pie';
 
@@ -138,7 +138,7 @@ export class ShowComponent implements OnInit {
     scales: {
       yAxes: [{
         ticks: {
-          suggestedMin: -1,
+          suggestedMin: 0,
           suggestedMax: 1
         }
       }]
@@ -249,11 +249,6 @@ export class ShowComponent implements OnInit {
   ];
   public viewersLegend:boolean = false;
   public viewersType:string = 'bar';
-
-  // Pie distribution of ratings
-  public pie1ChartLabels: string[] = ['1 star', '2 stars', '3 stars', '4 stars', '5 stars', '6 stars', '7 stars', '8 stars', '9 stars', '10 stars'];
-  public pie1ChartData: number[] = [5, 7, 11, 6, 12, 10, 13, 13, 15, 8];
-  public pie1ChartType: string = 'pie';
 
   // Rating Distribution
   public ratingDistributionOptions: any = {

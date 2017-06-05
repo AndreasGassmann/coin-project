@@ -1,5 +1,6 @@
 const Router = require('koa-router');
 const dbConnection = require('./db');
+let _ = require('lodash');
 
 const router = new Router({
     prefix: '/api'
@@ -16,12 +17,12 @@ staticData = {
         'titleimage': "https://red.elbenwald.de/media/image/e5/96/fc/big-bang-theorycat.jpg"
     },
     '3': {
-        'image': "http://thetvdb.com/banners/fanart/original/323168-10.jpg",
-        'titleimage': "https://img-www.tf-cdn.com/show/2/13-reasons-why.jpeg?_v=20170307014747&w=1024&h=342&dpr=2&auto=compress&fit=crop&crop=faces,top"
-    },
-    '4': {
         'image': "http://www.returndates.com/backgrounds/criminalminds.jpg",
         'titleimage': "http://www.asset1.net/tv/pictures/show/criminal-minds/Criminal-Minds-S10-LB-1.jpg"
+    },
+    '4': {
+        'image': "http://thetvdb.com/banners/fanart/original/323168-10.jpg",
+        'titleimage': "https://img-www.tf-cdn.com/show/2/13-reasons-why.jpeg?_v=20170307014747&w=1024&h=342&dpr=2&auto=compress&fit=crop&crop=faces,top"
     }
 };
 
@@ -68,56 +69,58 @@ let getShowFromDb = (showId) => {
     return new Promise((resolve, reject) => {
         // TODO do initialization of db connection earlier (to avoid multiple db initializations)
         dbConnection.init().then(db => {
-            db.sequelize.models.tvShow.findById(showId).then(dbShow => {
+            db.sequelize.models.tvShow.findAll({
+                where: { id: showId },
+                include: [{
+                    model: db.sequelize.models.season,
+                    attributes: ['id', 'seasonNumber'],
+                    include: [{
+                        model: db.sequelize.models.episode,
+                        attributes: ['id', 'name', 'episodeNumber'],
+                        include: [{
+                            model: db.sequelize.models.imdbUserReview,
+                            attributes: ['id', 'rating']
+                        }]
+                    }]
+                }]
+            }).then(dbShow => {
+                dbShow = dbShow[0];
+                var seasons = [];
+                var episodesCount = 0;
+                var imdbUserReviewsCount = 0;
+                var imdbUserReviewRatings = {};
+                _.range(1, 11).forEach(x => imdbUserReviewRatings[x] = 0);
+                dbShow.seasons.forEach(season => {
+                    var tempSeason = { id: season.id, seasonNumber: season.seasonNumber };
+                    var tempEpisodes = [];
+                    season.episodes.forEach(episode => {
+                        episodesCount += 1;
+                        tempEpisodes.push({ id: episode.id, name: episode.name });
+                        imdbUserReviewsCount += episode.imdbUserReviews.length;
+                        episode.imdbUserReviews.forEach(imdbUserReview => {
+                            if (imdbUserReview.rating != null)
+                                imdbUserReviewRatings[imdbUserReview.rating.toString()] += 1;
+                        });
+                    });
+                    tempSeason.episodes = tempEpisodes;
+                    seasons.push(tempSeason);
+                });
                 // TODO make dummy data dynamic!
                 var show = {
                     'id': dbShow.id,
                     'name': dbShow.title,
                     'image': staticData[dbShow.id]['image'],
                     'titleimage': staticData[dbShow.id]['titleimage'],
-                    'episodes': 70,
+                    'runtime': dbShow.runtime,
+                    'genres': dbShow.genres,
+                    'releaseDate': dbShow.releaseDate,
+                    'seasonsCount': seasons.length,
+                    'episodesCount': episodesCount,
                     'viewers': 51301,
                     'imdbRating': dbShow.rating,
-                    'rating': {
-                        '1': 5,
-                        '2': 57,
-                        '3': 72,
-                        '4': 322,
-                        '5': 263,
-                        '6': 886,
-                        '7': 1201,
-                        '8': 2200,
-                        '9': 2301,
-                        '10': 1900
-                    },
-                    'seasons': [
-                        {
-                            id: 1,
-                            episodes: [{
-                                id: 1,
-                                name: 'Test'
-                            }, {
-                                id: 2,
-                                name: 'Test'
-                            }, {
-                                id: 3,
-                                name: 'Test'
-                            }]
-                        },
-                        {
-                            id: 2,
-                            episodes: [{
-                                id: 1,
-                                name: 'Test'
-                            }, {
-                                id: 2,
-                                name: 'Test'
-                            }, {
-                                id: 3,
-                                name: 'Test'
-                            }]
-                        }
-                    ]
+                    'imdbUserReviewsCount': imdbUserReviewsCount,
+                    'rating': imdbUserReviewRatings,
+                    'seasons': seasons
                 }
                 resolve(show);
             });

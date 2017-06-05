@@ -25,24 +25,24 @@
                 <td class="DB_DONE"><span *ngIf="show" [innerHtml]="show.name"></span></td>
               </tr>
               <tr>
-                <th scope="row">Genre</th>
-                <td class="DB_TODO">Fantasy</td>
+                <th scope="row">Genres</th>
+                <td class="DB_DONE">{{show?.genres}}</td>
               </tr>
               <tr>
                 <th scope="row">Seasons</th>
-                <td class="DB_TODO"><span *ngIf="show" [innerHtml]="show.seasons.length"></span></td>
+                <td class="DB_DONE"><span *ngIf="show" [innerHtml]="show.seasons.length"></span></td>
               </tr>
               <tr>
-                <th scope="row">Episodes per Season</th>
-                <td class="DB_TODO"><span *ngIf="show" [innerHtml]="show.seasons[0].episodes.length"></span></td>
+                <th scope="row">Episodes per Season <span style="color: red;">TODO this can vary!</span></th>
+                <td class="DB_DONE"><span *ngIf="show" [innerHtml]="show.seasons[0].episodes.length"></span></td>
               </tr>
               <tr>
                 <th scope="row">Duration per Episode</th>
-                <td class="DB_TODO">50-67min</td>
+                <td class="DB_DONE">{{show?.runtime}} min</td>
               </tr>
               <tr>
                 <th scope="row">Original release</th>
-                <td class="DB_TODO">April 17, 2011 – present</td>
+                <td class="DB_DONE">{{show?.releaseDate | date: "mediumDate"}}</td>
               </tr>
             </tbody>
           </table>
@@ -65,7 +65,7 @@
                     <div class="card card-inverse card-info no-vertical-margin">
                       <!--<img src="http://www.cultjer.com/img/ug_photo/2015_10/72623720151004152641.jpg" class="card-img-top" height="200" width="auto"/>-->
                       <div class="card-block">
-                        <h4 class="card-title text-center DB_TODO" style="margin-bottom: 0;">Season {{s.id}}</h4>
+                        <h4 class="card-title text-center DB_DONE" style="margin-bottom: 0;">Season {{s.seasonNumber}}</h4>
                       </div>
                     </div>
                       </a>
@@ -113,8 +113,8 @@
                       <div class="h1 text-muted text-right mb-2">
                         <img src="http://ia.media-imdb.com/images/M/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE@._V1_.png" height="50" width="auto">
                       </div>
-                      <div class="h4 mb-0 DB_TODO">87.273</div>
-                      <p class="text-muted text-uppercase font-weight-bold">Ratings</p>
+                      <div class="h4 mb-0 DB_DONE">{{show?.imdbUserReviewsCount}}</div>
+                      <p class="text-muted text-uppercase font-weight-bold">User Reviews</p>
                     </div>
                   </div>
                 </div>
@@ -231,13 +231,12 @@
     <!--/.col-->
     <div class="col-12 col-md-3">
       <div class="card">
-        <div class="card-block DB_TODO">
+        <div class="card-block DB_DONE">
           <div class="row">
             <div class="col-12">
               <div class="chart-wrapper">
-                <canvas baseChart class="chart" [data]="pie1ChartData" [labels]="pie1ChartLabels" [chartType]="pie1ChartType" (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)">
-                </canvas>
+                <canvas baseChart class="chart" [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
               </div>
               <h4 class="text-lg-center">Distribution of Ratings</h4>
               <p class="text-lg-center">(Alternative zu Balkendiagramm oben)</p>
@@ -252,20 +251,6 @@
   <div class="row">
     <div class="col-sm-6 col-lg-3">
       <div class="card">
-        <div class="card-header">
-          Pie Chart
-          <div class="card-actions">
-            <a href="http://www.chartjs.org">
-              <small class="text-muted">docs</small>
-            </a>
-          </div>
-        </div>
-        <div class="card-block DB_TODO">
-          <div class="chart-wrapper">
-            <canvas baseChart class="chart" [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType" (chartHover)="chartHovered($event)"
-              (chartClick)="chartClicked($event)"></canvas>
-          </div>
-        </div>
       </div>
       <div class="card">
         <div class="card-block p-0 clearfix">
@@ -277,7 +262,7 @@
       <div class="card">
         <div class="card-block p-0 clearfix">
           <i class="fa fa-clone bg-primary p-2 font-2xl mr-1 float-left"></i>
-          <div class="h5 text-primary mb-0 pt-1">{{show?.episodes}}</div>
+          <div class="h5 text-primary mb-0 pt-1">{{show?.seasons[0].episodes.length}}</div>
           <div class="text-muted text-uppercase font-weight-bold font-xs">Episodes</div>
         </div>
       </div>
@@ -308,14 +293,7 @@
 
       </div>
     </div>
-    <div class="col-sm-6 col-md-2">
-      <div *ngFor="let s of show?.seasons" routerLinkActive="active" [routerLink]="['/show/', show?.id, 'season', s.id]">
-        Season {{s.id}}
-        <div *ngFor="let e of s.episodes" routerLinkActive="active" [routerLink]="['/show/', show?.id, 'season', s.id, 'episode', e.id]">
-          Episode {{e.id}}
-        </div>
-      </div>
-    </div>
+
     <div class="col-sm-6 col-md-6">
       <button class="btn btn-primary btn-sm" type="button" (click)="setFilter('all')">All</button>
       <button class="btn btn-success btn-sm" type="button" (click)="setFilter('pos')">Positive</button>
