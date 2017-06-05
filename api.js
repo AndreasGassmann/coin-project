@@ -121,6 +121,36 @@ let getShowFromDb = (showId) => {
     });
 };
 
+let getSeasonFromDb = (showId, seasonId) => {
+    return new Promise((resolve, reject) => {
+        db.sequelize.models.season.findOne({
+            where: {seasonNumber: seasonId, tvShowId: showId},
+            include: [{
+                model: db.sequelize.models.episode,
+                attributes: ['id', 'name', 'episodeNumber', 'imdbRating'],
+            }, {
+                model: db.sequelize.models.ratingDistribution,
+                attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
+            }]
+        }).then(season => {
+            let resolveSeason = {
+                'id': season.id,
+                'episodesCount': season.totalepisodes,
+                'imdbRating': season.average_imdb_rating,
+                'imdbUserReviewsCount': season.imdb_review_count,
+                'imdbRatingDistribution': season.ratingDistribution,
+                'episodes': season.episodes
+            };
+
+            resolve(resolveSeason);
+        })
+    })
+};
+
+let getEpisodeFromDb = (showId, seasonId, episodeId) => {
+    // TODO: Implement it
+};
+
 router.use(async (ctx, next) => {
     if (!db) {
         ctx.body = { message: 'API starting up' };
@@ -153,7 +183,9 @@ router.get('/show/:id/season/', async (ctx, next) => {
 });
 
 router.get('/show/:id/season/:seasonId', async (ctx, next) => {
-    ctx.body = {};
+    if (!ctx.params.id || !ctx.params.seasonId) return;
+    let season = await getSeasonFromDb(ctx.params.id, ctx.params.seasonId);
+    ctx.body = season;
 });
 
 router.get('/show/:id/season/:seasonId/episode', async (ctx, next) => {

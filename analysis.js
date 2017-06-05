@@ -144,6 +144,9 @@ db.init().then((db) => {
         });
     };
 
+
+    // calculates and saves the RATING DISTRIBUTION for show, season and episodes
+    // calculates and saves total amount of episodes, seasons, ratings for all levels.
     let saveImdbRatingDistribution = function(limit){
         db.sequelize.models.tvShow.findAll({
             include: [{
