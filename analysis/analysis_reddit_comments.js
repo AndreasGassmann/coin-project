@@ -37,7 +37,7 @@ dbjs.init().then(res => {
 
     var i = 0;
     emotional.load(() => {
-        db.sequelize.query("SELECT * FROM RedditComments where subreddit <> 'gameofthrones'", { type: db.sequelize.QueryTypes.SELECT })
+        db.sequelize.query("SELECT * FROM RedditComments where subreddit <> 'gameofthrones' and subreddit <> 'bigbangtheory' and content_sentimentObject is null", { type: db.sequelize.QueryTypes.SELECT })
             .then(RedditComments => {
                 RedditComments.forEach(RedditComments => {
 

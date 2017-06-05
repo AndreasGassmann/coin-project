@@ -98,6 +98,7 @@ module.exports.init = () => {
         traktComment.belongsTo(episode);
 
         let RedditPosts = sequelize.define('RedditPosts', {
+            id: Sequelize.INTEGER,
             pID: Sequelize.STRING,
             subreddit: Sequelize.STRING,
             title: Sequelize.STRING,
@@ -119,8 +120,10 @@ module.exports.init = () => {
             content_emotionalObject: Sequelize.TEXT,
             content_termFrequencyObject: Sequelize.TEXT
         });
+        RedditPosts.belongsTo(tvShow);
 
         let RedditComments = sequelize.define('RedditComments', {
+            id: Sequelize.INTEGER,
             commentID: Sequelize.STRING,
             parentID: Sequelize.STRING,
             content: Sequelize.STRING,
@@ -131,6 +134,9 @@ module.exports.init = () => {
             content_emotionalObject: Sequelize.TEXT,
             content_termFrequencyObject: Sequelize.TEXT
         });
+        RedditComments.belongsTo(tvShow);
+        RedditComments.belongsTo(RedditPosts);
+
 
         let ratingDistribution = sequelize.define('ratingDistribution',{
             star1: Sequelize.INTEGER,
@@ -149,12 +155,13 @@ module.exports.init = () => {
         tvShow.belongsTo(ratingDistribution);
 
 
-//        RedditPosts.belongsTo(tvShow);
-//        RedditPosts.belongsTo(episode);
+
 
         episode.hasMany(imdbUserReview);
         episode.hasMany(traktComment);
-        episode.hasMany(RedditPosts);
+        tvShow.hasMany(RedditPosts);
+        tvShow.hasMany(RedditComments);
+//        episode.hasMany(RedditPosts);
 
         sequelize.sync({ force: false }).then(function () {
             resolve(db);
