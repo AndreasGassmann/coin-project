@@ -10,6 +10,10 @@ import { ApiService } from "app/shared/api.service";
 })
 export class EpisodeComponent implements OnInit {
 
+  public episode:any;
+  public season:any;
+  public show:any;
+
   constructor(private route: ActivatedRoute, private _apiService: ApiService) {
     const showId = route.params.map(p => p.id);
     const seasonId = route.params.map(p => p.seasonId);
@@ -23,7 +27,13 @@ export class EpisodeComponent implements OnInit {
       data => {
         console.log(data);
         this._apiService.getEpisode(data[0], data[1], data[2]).then(res => {
-          console.log(res);
+          this.episode = res;
+        });
+        this._apiService.getSeason(data[0], data[1]).then(res => {
+          this.season = res;
+        });
+        this._apiService.getShow(data[0]).then(res => {
+          this.show = res;
         });
       },
       err => console.error(err)
