@@ -88,17 +88,7 @@ let getShowFromDb = (showId) => {
             }]
         }).then(dbShow => {
             dbShow = dbShow[0];
-            let seasons = [];
 
-            dbShow.seasons.forEach(season => {
-                let tempSeason = { id: season.id, seasonNumber: season.seasonNumber, average_imdb_rating: season.average_imdb_rating };
-                let tempEpisodes = [];
-                season.episodes.forEach(episode => {
-                    tempEpisodes.push({ id: episode.id, name: episode.name });
-                });
-                tempSeason.episodes = tempEpisodes;
-                seasons.push(tempSeason);
-            });
             // TODO make dummy data dynamic!
             let show = {
                 'id': dbShow.id,
@@ -108,13 +98,13 @@ let getShowFromDb = (showId) => {
                 'runtime': dbShow.runtime,
                 'genres': dbShow.genres,
                 'releaseDate': dbShow.releaseDate,
-                'seasonsCount': seasons.length,
+                'seasonsCount': dbShow.seasons.length,
                 'episodesCount': dbShow.totalepisodes,
                 'viewers': 51301,
                 'imdbRating': dbShow.rating,
                 'imdbUserReviewsCount': dbShow.imdb_review_count,
                 'imdbRatingDistribution': dbShow.ratingDistribution,
-                'seasons': seasons
+                'seasons': dbShow.seasons
             };
             resolve(show);
         });

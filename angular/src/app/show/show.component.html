@@ -65,7 +65,7 @@
               <span *ngIf="show">
                 <div class="row">
                   <div *ngFor="let s of show.seasons" class="col-12 col-md-2" routerLinkActive="active">
-                    <a [routerLink]="['season/', s.id]">
+                    <a [routerLink]="['season/', s.seasonNumber]">
                     <div class="card card-inverse card-info no-vertical-margin">
                       <!--<img src="http://www.cultjer.com/img/ug_photo/2015_10/72623720151004152641.jpg" class="card-img-top" height="200" width="auto"/>-->
                       <div class="card-block">
