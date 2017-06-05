@@ -86,6 +86,12 @@ module.exports.init = () => {
         imdbUserReview.belongsTo(tvShow);
         imdbUserReview.belongsTo(episode);
 
+        let sentence = sequelize.define('sentence', {
+            content: Sequelize.TEXT
+        });
+        sentence.belongsTo(imdbUserReview);
+        imdbUserReview.hasMany(sentence);
+
         let traktComment = sequelize.define('traktComment', {
             title: Sequelize.STRING,
             isSpoiler: Sequelize.BOOLEAN,
