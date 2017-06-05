@@ -2,6 +2,7 @@ let sentiment = require('sentiment');
 let emotional = require('emotional');
 let natural = require('natural');
 const db = require('./db.js');
+let _ = require('lodash');
 
 let TfIdf = natural.TfIdf,
     tfidf = new TfIdf();
@@ -143,6 +144,59 @@ db.init().then((db) => {
         });
     };
 
-    saveAverageImdbRating(100);
+    let saveImdbRatingDistribution = function(limit){
+        db.sequelize.models.tvShow.findAll({
+            include: [{
+                model: db.sequelize.models.season,
+                attributes: ['id', 'seasonNumber'],
+                include: [{
+                    model: db.sequelize.models.episode,
+                    attributes: ['id', 'name', 'episodeNumber'],
+                    include: [{
+                        model: db.sequelize.models.imdbUserReview,
+                        attributes: ['id', 'rating']
+                    }]
+                }]
+            }]
+        }).then(dbShow => {
+            dbShow = dbShow[0];
+            let episodesCount = 0;
+            let imdbUserReviewsCount = 0;
+            let imdbUserReviewRatings = {};
 
+            _.range(1, 11).forEach(x => imdbUserReviewRatings[x] = 0);
+            dbShow.seasons.forEach(season => {
+                season.episodes.forEach(episode => {
+                    episodesCount += 1;
+                    imdbUserReviewsCount += episode.imdbUserReviews.length;
+                    episode.imdbUserReviews.forEach(imdbUserReview => {
+                        if (imdbUserReview.rating !== null)
+                            imdbUserReviewRatings[imdbUserReview.rating.toString()] += 1;
+                    });
+                });
+            });
+            db.sequelize.models.ratingDistribution.create({
+                star1: imdbUserReviewRatings[1],
+                star2: imdbUserReviewRatings[2],
+                star3: imdbUserReviewRatings[3],
+                star4: imdbUserReviewRatings[4],
+                star5: imdbUserReviewRatings[5],
+                star6: imdbUserReviewRatings[6],
+                star7: imdbUserReviewRatings[7],
+                star8: imdbUserReviewRatings[8],
+                star9: imdbUserReviewRatings[9],
+                star10: imdbUserReviewRatings[10],
+            }).then(function(ratingDistribution){
+                dbShow.setRatingDistribution(ratingDistribution);
+                dbShow.update({
+                    imdb_review_count: imdbUserReviewsCount,
+                    totalepisodes: episodesCount
+                })
+            });
+        });
+    };
+
+    //saveAverageImdbRating(100);
+
+    saveImdbRatingDistribution(1);
 });

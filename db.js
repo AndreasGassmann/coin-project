@@ -36,9 +36,11 @@ module.exports.init = () => {
             votes: Sequelize.INTEGER,
             imdbid: Sequelize.STRING,
             totalseasons: Sequelize.INTEGER,
+            totalepisodes: Sequelize.INTEGER,
             imdburl: Sequelize.STRING,
             startYear: Sequelize.INTEGER,
-            endYear: Sequelize.INTEGER
+            endYear: Sequelize.INTEGER,
+            imdb_review_count: Sequelize.INTEGER
         });
 
         let season = sequelize.define('season', {
@@ -129,6 +131,24 @@ module.exports.init = () => {
             content_emotionalObject: Sequelize.TEXT,
             content_termFrequencyObject: Sequelize.TEXT
         });
+
+        let ratingDistribution = sequelize.define('ratingDistribution',{
+            star1: Sequelize.INTEGER,
+            star2: Sequelize.INTEGER,
+            star3: Sequelize.INTEGER,
+            star4: Sequelize.INTEGER,
+            star5: Sequelize.INTEGER,
+            star6: Sequelize.INTEGER,
+            star7: Sequelize.INTEGER,
+            star8: Sequelize.INTEGER,
+            star9: Sequelize.INTEGER,
+            star10: Sequelize.INTEGER,
+        });
+        season.belongsTo(ratingDistribution);
+        episode.belongsTo(ratingDistribution);
+        tvShow.belongsTo(ratingDistribution);
+
+
 //        RedditPosts.belongsTo(tvShow);
 //        RedditPosts.belongsTo(episode);
 
