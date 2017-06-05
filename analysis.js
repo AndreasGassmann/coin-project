@@ -158,65 +158,98 @@ db.init().then((db) => {
                     }]
                 }]
             }]
-        }).then(dbShow => {
-            dbShow = dbShow[0];
-            let episodesCount = 0;
-            let imdbUserReviewsCount = 0;
-            let imdbUserReviewRatings = {};
+        }).then(dbShows => {
+           for (let index in dbShows){
+               let episodesCount = 0;
+               let imdbUserReviewsCount = 0;
+               let seasonImdbUserReviewsCount = 0;
+               let imdbUserReviewRatings = {};
+               let imdbUserReviewRatingsSeason = {};
+               let imdbUserReviewRatingsEpisode = {};
+               let seasonEpisodesCount = 0;
 
-            _.range(1, 11).forEach(x => imdbUserReviewRatings[x] = 0);
-            dbShow.seasons.forEach(season => {
-                season.episodes.forEach(episode => {
-                    episodesCount += 1;
-                    imdbUserReviewsCount += episode.imdbUserReviews.length;
-                    episode.imdbUserReviews.forEach(imdbUserReview => {
-                        if (imdbUserReview.rating !== null)
-                            imdbUserReviewRatings[imdbUserReview.rating.toString()] += 1;
-                    });
-                });
-            });
-            db.sequelize.models.ratingDistribution.create({
-                star1: imdbUserReviewRatings[1],
-                star2: imdbUserReviewRatings[2],
-                star3: imdbUserReviewRatings[3],
-                star4: imdbUserReviewRatings[4],
-                star5: imdbUserReviewRatings[5],
-                star6: imdbUserReviewRatings[6],
-                star7: imdbUserReviewRatings[7],
-                star8: imdbUserReviewRatings[8],
-                star9: imdbUserReviewRatings[9],
-                star10: imdbUserReviewRatings[10],
-            }).then(function(ratingDistribution){
-                dbShow.setRatingDistribution(ratingDistribution);
-                dbShow.update({
-                    imdb_review_count: imdbUserReviewsCount,
-                    totalepisodes: episodesCount
-                })
-            });
+               _.range(1, 11).forEach(x => imdbUserReviewRatings[x] = 0);
+               dbShows[index].seasons.forEach(season => {
+                   seasonEpisodesCount = 0;
+                   seasonImdbUserReviewsCount = 0;
+                   imdbUserReviewRatingsSeason = {};
+                   _.range(1, 11).forEach(x => imdbUserReviewRatingsSeason[x] = 0);
+                   season.episodes.forEach(episode => {
+                       imdbUserReviewRatingsEpisode = {};
+                       _.range(1, 11).forEach(x => imdbUserReviewRatingsEpisode[x] = 0);
+                       episodesCount += 1;
+                       seasonEpisodesCount += 1;
+                       imdbUserReviewsCount += episode.imdbUserReviews.length;
+                       seasonImdbUserReviewsCount += episode.imdbUserReviews.length;
+                       episode.imdbUserReviews.forEach(imdbUserReview => {
+                           if (imdbUserReview !== null && imdbUserReview.rating !== null)
+                               imdbUserReviewRatingsEpisode[imdbUserReview.rating] += 1;
+                               imdbUserReviewRatingsSeason[imdbUserReview.rating] += 1;
+                               imdbUserReviewRatings[imdbUserReview.rating] += 1;
+                       });
+                       db.sequelize.models.ratingDistribution.create({
+                           star1: imdbUserReviewRatingsEpisode[1],
+                           star2: imdbUserReviewRatingsEpisode[2],
+                           star3: imdbUserReviewRatingsEpisode[3],
+                           star4: imdbUserReviewRatingsEpisode[4],
+                           star5: imdbUserReviewRatingsEpisode[5],
+                           star6: imdbUserReviewRatingsEpisode[6],
+                           star7: imdbUserReviewRatingsEpisode[7],
+                           star8: imdbUserReviewRatingsEpisode[8],
+                           star9: imdbUserReviewRatingsEpisode[9],
+                           star10: imdbUserReviewRatingsEpisode[10],
+                       }).then(function(episodeRatingDistribution){
+                           episode.setRatingDistribution(episodeRatingDistribution);
+                           episode.update({
+                               imdb_review_count: episode.imdbUserReviews.length
+                           })
+                       });
+                   });
+                   db.sequelize.models.ratingDistribution.create({
+                       star1: imdbUserReviewRatingsSeason[1],
+                       star2: imdbUserReviewRatingsSeason[2],
+                       star3: imdbUserReviewRatingsSeason[3],
+                       star4: imdbUserReviewRatingsSeason[4],
+                       star5: imdbUserReviewRatingsSeason[5],
+                       star6: imdbUserReviewRatingsSeason[6],
+                       star7: imdbUserReviewRatingsSeason[7],
+                       star8: imdbUserReviewRatingsSeason[8],
+                       star9: imdbUserReviewRatingsSeason[9],
+                       star10: imdbUserReviewRatingsSeason[10],
+                   }).then(function(seasonRatingDistribution){
+                       season.setRatingDistribution(seasonRatingDistribution);
+                       season.update({
+                           imdb_review_count: seasonImdbUserReviewsCount,
+                           totalepisodes: seasonEpisodesCount
+                       })
+                   });
+               });
+               db.sequelize.models.ratingDistribution.create({
+                   star1: imdbUserReviewRatings[1],
+                   star2: imdbUserReviewRatings[2],
+                   star3: imdbUserReviewRatings[3],
+                   star4: imdbUserReviewRatings[4],
+                   star5: imdbUserReviewRatings[5],
+                   star6: imdbUserReviewRatings[6],
+                   star7: imdbUserReviewRatings[7],
+                   star8: imdbUserReviewRatings[8],
+                   star9: imdbUserReviewRatings[9],
+                   star10: imdbUserReviewRatings[10],
+               }).then(function(ratingDistribution){
+                   dbShows[index].setRatingDistribution(ratingDistribution);
+                   dbShows[index].update({
+                       imdb_review_count: imdbUserReviewsCount,
+                       totalepisodes: episodesCount
+                   })
+               });
+           }
+
         });
     };
 
     //saveAverageImdbRating(100);
 
-    //saveImdbRatingDistribution(1);
+    saveImdbRatingDistribution(100);
 
-    db.sequelize.models.tvShow.findAll({
-        where: { id: 1 },
-        include: [{
-            model: db.sequelize.models.season,
-            attributes: ['id', 'seasonNumber', 'average_imdb_rating'],
-            include: [{
-                model: db.sequelize.models.episode,
-                attributes: ['id', 'name', 'episodeNumber'],
-                include: [{
-                    model: db.sequelize.models.imdbUserReview,
-                    attributes: ['id', 'rating']
-                }]
-            }]
-        }, {
-            model: db.sequelize.models.ratingDistribution
-        }]
-    }).then(dbShow => {
-        console.log('Show: ' + JSON.stringify(dbShow))
-    })
+
 });
