@@ -519,4 +519,12 @@ export class ShowComponent implements OnInit {
   public lineChartLegend: boolean = true;
   public lineChartType: string = 'line';
 
+//Radar Chart
+//Radar Chart
+  public radarChartLabels: string[] = ['Game of Thrones', '13 reasons why', 'BigBangTheory', 'Criminal Minds'];
+
+  public radarChartData: any = [
+    {data: [65, 59, 90, 81], label: 'IMDb'},
+    {data: [28, 48, 40, 19], label: 'Reddit'}
+  ];
 }

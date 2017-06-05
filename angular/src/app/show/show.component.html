@@ -427,6 +427,31 @@
       </div>
     </div>
   </div>
+<!-- Radar Chart-->
+  <div class="=row">
+    <div class="col-12 col-md-6">
+      <div class="card">
+        <div class="card-header">
+          Social Media Activity
+          <div class="card-actions">
+            <a href="http://www.chartjs.org">
+              <small class="text-muted">docs</small>
+            </a>
+          </div>
+        </div>
+        <div class="card-block">
+          <div class="chart-wrapper">
+            <canvas baseChart class="chart"
+                    [datasets]="radarChartData"
+                    [labels]="radarChartLabels"
+                    [chartType]="radarChartType"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <!--/.col-->
 
 </div>
