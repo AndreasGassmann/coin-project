@@ -45,7 +45,9 @@ module.exports.init = () => {
 
         let season = sequelize.define('season', {
             seasonNumber: Sequelize.INTEGER,
-            average_imdb_rating: Sequelize.FLOAT
+            average_imdb_rating: Sequelize.FLOAT,
+            totalepisodes: Sequelize.INTEGER,
+            imdb_review_count: Sequelize.INTEGER
         });
         season.belongsTo(tvShow);
 
@@ -59,6 +61,7 @@ module.exports.init = () => {
             imdbRating: Sequelize.DECIMAL,
             traktId: Sequelize.STRING,
             traktRating: Sequelize.DECIMAL,
+            imdb_review_count: Sequelize.INTEGER
         });
         episode.belongsTo(season);
 
@@ -98,7 +101,7 @@ module.exports.init = () => {
         traktComment.belongsTo(episode);
 
         let RedditPosts = sequelize.define('RedditPosts', {
-            id: Sequelize.INTEGER,
+            id: {type: Sequelize.INTEGER, primaryKey: true},
             pID: Sequelize.STRING,
             subreddit: Sequelize.STRING,
             title: Sequelize.STRING,
@@ -123,7 +126,7 @@ module.exports.init = () => {
         RedditPosts.belongsTo(tvShow);
 
         let RedditComments = sequelize.define('RedditComments', {
-            id: Sequelize.INTEGER,
+            id: {type: Sequelize.INTEGER, primaryKey: true},
             commentID: Sequelize.STRING,
             parentID: Sequelize.STRING,
             content: Sequelize.STRING,
