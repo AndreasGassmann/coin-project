@@ -42,7 +42,8 @@ module.exports.init = () => {
         });
 
         let season = sequelize.define('season', {
-            seasonNumber: Sequelize.INTEGER
+            seasonNumber: Sequelize.INTEGER,
+            average_imdb_rating: Sequelize.FLOAT
         });
         season.belongsTo(tvShow);
 
@@ -55,7 +56,7 @@ module.exports.init = () => {
             imdbId: Sequelize.STRING,
             imdbRating: Sequelize.DECIMAL,
             traktId: Sequelize.STRING,
-            traktRating: Sequelize.DECIMAL
+            traktRating: Sequelize.DECIMAL,
         });
         episode.belongsTo(season);
 
