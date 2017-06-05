@@ -1,6 +1,5 @@
 const Router = require('koa-router');
 const dbConnection = require('./db');
-let _ = require('lodash');
 
 const router = new Router({
     prefix: '/api'
@@ -74,14 +73,10 @@ let getShowFromDb = (showId) => {
     console.log('getting show', showId);
     return new Promise((resolve, reject) => {
         db.sequelize.models.tvShow.findAll({
-            where: { id: showId },
+            where: {id: showId},
             include: [{
                 model: db.sequelize.models.season,
-                attributes: ['id', 'seasonNumber', 'average_imdb_rating'],
-                include: [{
-                    model: db.sequelize.models.episode,
-                    attributes: ['id', 'name', 'episodeNumber'],
-                }]
+                attributes: ['id', 'seasonNumber', 'average_imdb_rating', 'totalepisodes']
             }, {
                 model: db.sequelize.models.ratingDistribution,
                 attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
@@ -139,12 +134,30 @@ let getSeasonFromDb = (showId, seasonId) => {
 };
 
 let getEpisodeFromDb = (showId, seasonId, episodeId) => {
-    // TODO: Implement it
+    return new Promise((resolve, reject) => {
+        // TODO: Make it work!!!!!!!!!!!!!
+        db.sequelize.models.season.findOne({
+            where: {seasonNumber: seasonId, tvShowId: showId},
+            include: [{
+                model: db.sequelize.models.episode,
+                attributes: ['id', 'name', 'episodeNumber', 'imdbRating']
+            }, {
+                model: db.sequelize.models.ratingDistribution,
+                attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
+            }]
+        }).then(season => {
+            for (let index in season.episodes){
+                if (season.episodes[index].episodeNumber === episodeId){
+                    resolve(season.episodes[index]);
+                }
+            }
+        });
+    });
 };
 
 router.use(async (ctx, next) => {
     if (!db) {
-        ctx.body = { message: 'API starting up' };
+        ctx.body = {message: 'API starting up'};
     } else {
         await next();
     }
@@ -183,10 +196,11 @@ router.get('/show/:id/season/:seasonId/episode', async (ctx, next) => {
     ctx.body = {};
 });
 
-router.get('/show/:id/season/:seasonId/episode/:episodesId', async (ctx, next) => {
-    ctx.body = {};
+router.get('/show/:id/season/:seasonId/episode/:episodeId', async (ctx, next) => {
+    if (!ctx.params.id || !ctx.params.seasonId || !ctx.params.episodeId) return;
+    let episode = await getEpisodeFromDb(ctx.params.id, ctx.params.seasonId, ctx.params.episodeId);
+    ctx.body = episode;
 });
-
 
 
 module.exports = router;

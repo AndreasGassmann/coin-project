@@ -11,6 +11,7 @@ import { ApiService } from "../shared/api.service";
 export class SeasonComponent implements OnInit {
 
   public season: any;
+  public show: any;
 
   constructor(private route: ActivatedRoute, private _apiService: ApiService) {
     const showId = route.params.map(p => p.id);
@@ -21,10 +22,11 @@ export class SeasonComponent implements OnInit {
       seasonId
     ).subscribe(
       data => {
-        console.log(data);
         this._apiService.getSeason(data[0], data[1]).then(res => {
-          console.log(res);
           this.season = res;
+        });
+        this._apiService.getShow(data[0]).then(res => {
+          this.show = res;
         });
       },
       err => console.error(err)

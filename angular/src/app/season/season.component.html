@@ -1,5 +1,5 @@
 <div class="animated fadeIn">
-  <p class="lead">Game of Thrones</p>
+  <p class="lead" *ngIf="show">{{show.name}}</p>
   <h1 *ngIf="season" class="display-3">Season {{season.seasonNumber}}</h1>
 
   <div class="row">
