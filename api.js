@@ -135,7 +135,6 @@ let getSeasonFromDb = (showId, seasonId) => {
 
 let getEpisodeFromDb = (showId, seasonId, episodeId) => {
     return new Promise((resolve, reject) => {
-        // TODO: Make it work!!!!!!!!!!!!!
         db.sequelize.models.season.findOne({
             where: {seasonNumber: seasonId, tvShowId: showId},
             include: [{
@@ -147,7 +146,7 @@ let getEpisodeFromDb = (showId, seasonId, episodeId) => {
             }]
         }).then(season => {
             for (let index in season.episodes){
-                if (season.episodes[index].episodeNumber === episodeId){
+                if (season.episodes[index].episodeNumber === parseInt(episodeId)){
                     resolve(season.episodes[index]);
                 }
             }
