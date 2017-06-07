@@ -40,14 +40,18 @@ module.exports.init = () => {
             imdburl: Sequelize.STRING,
             startYear: Sequelize.INTEGER,
             endYear: Sequelize.INTEGER,
-            imdb_review_count: Sequelize.INTEGER
+            imdb_review_count: Sequelize.INTEGER,
+            redditPost_count: Sequelize.INTEGER,
+            redditComment_count: Sequelize.INTEGER
         });
 
         let season = sequelize.define('season', {
             seasonNumber: Sequelize.INTEGER,
             average_imdb_rating: Sequelize.FLOAT,
             totalepisodes: Sequelize.INTEGER,
-            imdb_review_count: Sequelize.INTEGER
+            imdb_review_count: Sequelize.INTEGER,
+            redditPost_count: Sequelize.INTEGER,
+            redditComment_count: Sequelize.INTEGER
         });
         season.belongsTo(tvShow);
 
@@ -55,13 +59,16 @@ module.exports.init = () => {
 
         let episode = sequelize.define('episode', {
             name: Sequelize.STRING,
+            tvShowId: Sequelize.INTEGER,
             episodeNumber: Sequelize.INTEGER,
             releaseDate: Sequelize.DATE,
             imdbId: Sequelize.STRING,
             imdbRating: Sequelize.DECIMAL,
             traktId: Sequelize.STRING,
             traktRating: Sequelize.DECIMAL,
-            imdb_review_count: Sequelize.INTEGER
+            imdb_review_count: Sequelize.INTEGER,
+            redditPost_count: Sequelize.INTEGER,
+            redditComment_count: Sequelize.INTEGER
         });
         episode.belongsTo(season);
 
@@ -127,7 +134,9 @@ module.exports.init = () => {
             title_termFrequencyObject: Sequelize.TEXT,
             content_SentimentObject: Sequelize.TEXT,
             content_emotionalObject: Sequelize.TEXT,
-            content_termFrequencyObject: Sequelize.TEXT
+            content_termFrequencyObject: Sequelize.TEXT,
+            tvShowID: Sequelize.INTEGER,
+            episodeID: Sequelize.INTEGER
         });
         RedditPosts.belongsTo(tvShow);
 
@@ -141,10 +150,11 @@ module.exports.init = () => {
             subreddit: Sequelize.STRING,
             content_SentimentObject: Sequelize.TEXT,
             content_emotionalObject: Sequelize.TEXT,
-            content_termFrequencyObject: Sequelize.TEXT
+            content_termFrequencyObject: Sequelize.TEXT,
+            tvShowID: Sequelize.INTEGER
         });
         RedditComments.belongsTo(tvShow);
-        RedditComments.belongsTo(RedditPosts);
+//        RedditComments.belongsTo(RedditPosts);
 
 
         let ratingDistribution = sequelize.define('ratingDistribution',{
