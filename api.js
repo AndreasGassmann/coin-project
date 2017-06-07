@@ -99,7 +99,9 @@ let getShowFromDb = (showId) => {
                 'imdbRating': dbShow.rating,
                 'imdbUserReviewsCount': dbShow.imdb_review_count,
                 'imdbRatingDistribution': dbShow.ratingDistribution,
-                'seasons': dbShow.seasons
+                'redditPostCount': 153820, // TODO: make dynamik
+                'redditCommentCount': 1733853, // TODO: make dynamik
+                'seasons': dbShow.seasons,
             };
             resolve(show);
         });
