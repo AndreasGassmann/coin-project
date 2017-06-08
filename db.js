@@ -182,7 +182,6 @@ module.exports.init = () => {
         });
 
 
-
         episode.hasMany(imdbUserReview);
         episode.hasMany(traktComment);
         tvShow.hasMany(RedditPosts);
