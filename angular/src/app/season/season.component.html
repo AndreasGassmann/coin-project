@@ -10,10 +10,10 @@
   </div>
 </div>
 
-<p class="lead cursor-pointer"  [routerLink]="['/show/', show?.id]">{{show?.name}}</p>
+<p class="lead cursor-pointer" [routerLink]="['/show/', show?.id]">{{show?.name}}</p>
 <h1 class="display-3" style="margin-bottom: 3rem;">
   Season {{season?.seasonNumber}}
-  <small><img *ngIf="show && show.id==1"
+  <small><img *ngIf="show && show?.id==1"
               src="http://vignette1.wikia.nocookie.net/gameofthrones/images/d/da/House_Stark_Sigil_(transparent).png"
               width="100" height="auto"></small>
 </h1>
@@ -99,11 +99,12 @@
 
 <!-- Ratings per star rating -->
 <div class="row">
-  <div class="col-12 col-md-6">
+  <div class="col-12">
     <div class="card">
       <div class="card-block">
         <div class="row">
-          <div class="col-12">
+          <div class="offset-lg-2 col-lg-8 col-12">
+            <h2 class="text-lg-center">Distribution of Ratings</h2>
             <div class="chart-wrapper">
               <canvas baseChart class="chart"
                       [datasets]="ratingDistributionData"
@@ -116,17 +117,20 @@
                       (chartClick)="chartClicked($event)">
               </canvas>
             </div>
-            <h4 class="text-lg-center">Distribution of Ratings</h4>
           </div><!--/.col-->
         </div>
       </div>
     </div>
   </div>
-  <div class="col-12 col-md-6">
+</div>
+
+<div class="row">
+  <div class="col-12">
     <div class="card">
       <div class="card-block">
         <div class="row">
-          <div class="col-12">
+          <div class="offset-lg-2 col-lg-8 col-12">
+            <h2 class="text-lg-center">Average rating per episode</h2>
             <div class="chart-wrapper">
               <canvas baseChart class="chart"
                       [datasets]="averageRatingData"
@@ -139,7 +143,6 @@
                       (chartClick)="chartClicked($event)">
               </canvas>
             </div>
-            <h4 class="text-lg-center">Average rating per episode</h4>
           </div><!--/.col-->
         </div>
       </div>
@@ -149,21 +152,23 @@
 
 <!-- Bar Chart Flo -->
 <div class="=row">
-  <div class="col-12 col-md-6">
+  <div class="col-12">
     <div class="card">
-      <div class="card-header">
-        Influence of guest stars on user ratings
-      </div>
       <div class="card-block">
-        <div class="chart-wrapper">
-          <canvas baseChart class="chart"
-                  [datasets]="barChartData"
-                  [labels]="barChartLabels"
-                  [options]="barChartOptions"
-                  [legend]="barChartLegend2"
-                  [chartType]="barChartType2"
-                  (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)"></canvas>
+        <div class="row">
+          <div class="offset-lg-2 col-lg-8 col-12">
+            <h2 class="text-center">Influence of guest stars on user ratings</h2>
+            <div class="chart-wrapper">
+              <canvas baseChart class="chart"
+                      [datasets]="barChartData"
+                      [labels]="barChartLabels"
+                      [options]="barChartOptions"
+                      [legend]="barChartLegend2"
+                      [chartType]="barChartType2"
+                      (chartHover)="chartHovered($event)"
+                      (chartClick)="chartClicked($event)"></canvas>
+            </div>
+          </div>
         </div>
       </div>
     </div>

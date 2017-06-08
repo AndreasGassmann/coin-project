@@ -77,7 +77,7 @@ export class ShowComponent implements OnInit {
         {x: '10 stars', y: 1},
       ],
       label: 'Normalized average sentiment (IMDb) per rating',
-      pointRadius: 5
+      pointRadius: 7
     },
     {
     data: [
@@ -335,17 +335,34 @@ export class ShowComponent implements OnInit {
         this.show = res;
 
         console.log(this.show);
+
+        // Imdb Rating Distribution
         let labels = [];
-        let data = [];
+        let imdbDistributionData = [];
         for (let property in this.show.imdbRatingDistribution) {
           if (this.show.imdbRatingDistribution.hasOwnProperty(property)) {
             console.log('pushing');
             labels.push(property);
-            data.push(this.show.imdbRatingDistribution[property]);
+            imdbDistributionData.push(this.show.imdbRatingDistribution[property]);
           }
         }
         this.pieChartLabels = labels;
-        this.pieChartData = data;
+        this.pieChartData = imdbDistributionData;
+        this.ratingDistributionData = [
+          {data: imdbDistributionData, label: 'IMDb'},
+          {data: [3, 9, 14, 9, 6, 5, 18, 10, 18, 8], label: 'Trakt.tv'}
+        ];
+
+        // Average Imdb season rating
+        let imdbSeasonAvgRating = [];
+        for (let index in this.show.seasons){
+          imdbSeasonAvgRating.push(this.show.seasons[index].average_imdb_rating);
+        }
+        this.averageRatingData = [
+          {data: imdbSeasonAvgRating, label: 'IMDb'},
+          {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Trakt.tv'}
+        ];
+        // TODO: Also use Trakt data which is not there yet
       });
     });
 

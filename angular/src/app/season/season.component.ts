@@ -24,6 +24,30 @@ export class SeasonComponent implements OnInit {
       data => {
         this._apiService.getSeason(data[0], data[1]).then(res => {
           this.season = res;
+
+          // Imdb Rating Distribution
+          let imdbDistributionData = [];
+          for (let property in this.season.imdbRatingDistribution) {
+            if (this.season.imdbRatingDistribution.hasOwnProperty(property)) {
+              imdbDistributionData.push(this.season.imdbRatingDistribution[property]);
+            }
+          }
+          this.ratingDistributionData = [
+            {data: imdbDistributionData, label: 'IMDb'},
+            {data: [3, 9, 14, 9, 6, 5, 18, 10, 18, 8], label: 'Trakt.tv'}
+          ];
+
+
+          // Average Imdb season rating
+          let imdbSeasonAvgRating = [];
+          for (let index in this.season.episodes){
+            imdbSeasonAvgRating.push(this.season.episodes[index].imdbRating);
+          }
+          this.averageRatingData = [
+            {data: imdbSeasonAvgRating, label: 'IMDb'},
+            {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Trakt.tv'}
+          ];
+          // TODO: Also use Trakt data which is not there yet
         });
         this._apiService.getShow(data[0]).then(res => {
           this.show = res;

@@ -4,7 +4,6 @@
   <div class="row">
     <div class="col-12 col-md-12">
       <div class="card">
-          <!-- TODO: crop image from bottom for larger images -->
         <img class="card-img-top img-fluid" src="{{show?.titleimage}}" width="100%">
       </div>
     </div>
@@ -76,11 +75,12 @@
   </div>
 
   <div class="row">
-    <div class="col-12 col-md-6">
+    <div class="col-12">
       <div class="card">
         <div class="card-block">
           <div class="row">
-            <div class="col-12">
+            <div class="offset-lg-2 col-lg-8 col-12">
+              <h2 class="text-lg-center">Distribution of Ratings</h2>
               <div class="chart-wrapper">
                 <canvas baseChart class="chart"
                         [datasets]="ratingDistributionData"
@@ -93,13 +93,14 @@
                         (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
-              <h4 class="text-lg-center">Distribution of Ratings</h4>
             </div><!--/.col-->
           </div>
         </div>
       </div>
     </div>
+  </div>
 
+<div class="row">
     <div class="col-12 col-md-6">
       <div class="card text-center">
         <div class="card-block">
