@@ -135,8 +135,6 @@ module.exports.init = () => {
             content_SentimentObject: Sequelize.TEXT,
             content_emotionalObject: Sequelize.TEXT,
             content_termFrequencyObject: Sequelize.TEXT,
-            tvShowID: Sequelize.INTEGER,
-            episodeID: Sequelize.INTEGER
         });
         RedditPosts.belongsTo(tvShow);
 
@@ -151,7 +149,6 @@ module.exports.init = () => {
             content_SentimentObject: Sequelize.TEXT,
             content_emotionalObject: Sequelize.TEXT,
             content_termFrequencyObject: Sequelize.TEXT,
-            tvShowID: Sequelize.INTEGER
         });
         RedditComments.belongsTo(tvShow);
 //        RedditComments.belongsTo(RedditPosts);

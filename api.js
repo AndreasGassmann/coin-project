@@ -99,8 +99,8 @@ let getShowFromDb = (showId) => {
                 'imdbRating': dbShow.rating,
                 'imdbUserReviewsCount': dbShow.imdb_review_count,
                 'imdbRatingDistribution': dbShow.ratingDistribution,
-                'redditPostCount': 153820, // TODO: make dynamik
-                'redditCommentCount': 1733853, // TODO: make dynamik
+                'redditPost_count': dbShow.redditPost_count,
+                'redditComment_count': dbShow.redditComment_count,
                 'seasons': dbShow.seasons,
             };
             resolve(show);
@@ -127,6 +127,8 @@ let getSeasonFromDb = (showId, seasonId) => {
                 'imdbRating': season.average_imdb_rating,
                 'imdbUserReviewsCount': season.imdb_review_count,
                 'imdbRatingDistribution': season.ratingDistribution,
+                'redditPost_count': season.redditPost_count,
+                'redditComment_count': season.redditComment_count,
                 'episodes': season.episodes
             };
 
@@ -141,10 +143,11 @@ let getEpisodeFromDb = (showId, seasonId, episodeId) => {
             where: {seasonNumber: seasonId, tvShowId: showId},
             include: [{
                 model: db.sequelize.models.episode,
-                attributes: ['id', 'name', 'episodeNumber', 'imdbRating']
-            }, {
-                model: db.sequelize.models.ratingDistribution,
-                attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
+                attributes: ['id', 'name', 'episodeNumber', 'imdbRating', 'imdb_review_count', 'redditPost_count', 'redditComment_count'],
+                include: [{
+                    model: db.sequelize.models.ratingDistribution,
+                    attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
+                }]
             }]
         }).then(season => {
             for (let index in season.episodes){
