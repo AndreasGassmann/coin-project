@@ -170,7 +170,16 @@ module.exports.init = () => {
         episode.belongsTo(ratingDistribution);
         tvShow.belongsTo(ratingDistribution);
 
-
+        let characters = sequelize.define('characters',{
+            id: {type: Sequelize.INTEGER, primaryKey: true},
+            name: Sequelize.STRING,
+            imdb_numOfAppearances: Sequelize.INTEGER,
+            imdb_sentimentScoreAvg: Sequelize.FLOAT,
+            imdb_sentimentScoreTotal: Sequelize.INTEGER,
+            imdb_sentimentComparativeAvg: Sequelize.FLOAT,
+            imdb_emotionalitySubjectivityAvg: Sequelize.FLOAT,
+            imdb_emotionalityPolarityAvg: Sequelize.FLOAT
+        });
 
 
         episode.hasMany(imdbUserReview);
