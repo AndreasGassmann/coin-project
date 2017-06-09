@@ -321,13 +321,8 @@ export class ShowComponent implements OnInit {
 
   };
   public redditDistributionColors: Array<any> = [
-    { // yellow
-      backgroundColor: 'rgba(248, 203, 0, 0.75)',
-      borderColor: 'rgba(211,165,0,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    { // blue
+      backgroundColor: 'rgba(122, 174, 255, 0.75)',
     }
   ];
   public redditDistributionLabels: string[] = [];
@@ -364,7 +359,6 @@ export class ShowComponent implements OnInit {
         let imdbDistributionData = [];
         for (let property in this.show.imdbRatingDistribution) {
           if (this.show.imdbRatingDistribution.hasOwnProperty(property)) {
-            console.log('pushing');
             labels.push(property);
             imdbDistributionData.push(this.show.imdbRatingDistribution[property]);
           }

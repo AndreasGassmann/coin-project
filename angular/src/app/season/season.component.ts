@@ -13,53 +13,6 @@ export class SeasonComponent implements OnInit {
   public season: any;
   public show: any;
 
-  constructor(private route: ActivatedRoute, private _apiService: ApiService) {
-    const showId = route.params.map(p => p.id);
-    const seasonId = route.params.map(p => p.seasonId);
-
-    Observable.combineLatest(
-      showId,
-      seasonId
-    ).subscribe(
-      data => {
-        this._apiService.getSeason(data[0], data[1]).then(res => {
-          this.season = res;
-
-          // Imdb Rating Distribution
-          let imdbDistributionData = [];
-          for (let property in this.season.imdbRatingDistribution) {
-            if (this.season.imdbRatingDistribution.hasOwnProperty(property)) {
-              imdbDistributionData.push(this.season.imdbRatingDistribution[property]);
-            }
-          }
-          this.ratingDistributionData = [
-            {data: imdbDistributionData, label: 'IMDb'},
-            {data: [3, 9, 14, 9, 6, 5, 18, 10, 18, 8], label: 'Trakt.tv'}
-          ];
-
-
-          // Average Imdb season rating
-          let imdbSeasonAvgRating = [];
-          for (let index in this.season.episodes){
-            imdbSeasonAvgRating.push(this.season.episodes[index].imdbRating);
-          }
-          this.averageRatingData = [
-            {data: imdbSeasonAvgRating, label: 'IMDb'},
-            {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Trakt.tv'}
-          ];
-          // TODO: Also use Trakt data which is not there yet
-        });
-        this._apiService.getShow(data[0]).then(res => {
-          this.show = res;
-        });
-      },
-      err => console.error(err)
-    );
-  }
-
-  ngOnInit() {
-  }
-
   // Rating Distribution
   public ratingDistributionOptions: any = {
     scaleShowVerticalLines: false,
@@ -115,13 +68,31 @@ export class SeasonComponent implements OnInit {
       pointHoverBorderColor: 'rgba(77,83,96,1)'
     }
   ];
-  public averageRatingLabels: string[] = ['Episode 1', 'Episode 2', 'Episode 3', 'Episode 4', 'Episode 5', 'Episode 6','Episode 7', 'Episode 8', 'Episode 9', 'Episode 10'];
-  //public barChartType: string = 'bar';
+  public averageRatingLabels: string[] = [];
   public averageRatingLegend: boolean = true;
 
   public averageRatingData: any[] = [
     {data: [6.5, 7.3, 7.8, 8.3, 8.0, 9.3, 7.8, 8.3, 8.0, 9.3], label: 'IMDb'},
     {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5, 6.5, 7.3, 7.8, 9.8], label: 'Trakt.tv'}
+  ];
+
+  // reddit comments per episode
+  public redditDistributionOptions: any = {
+    scaleShowVerticalLines: false,
+    responsive: true,
+
+  };
+  public redditDistributionColors: Array<any> = [
+    { // blue
+      backgroundColor: 'rgba(122, 174, 255, 0.75)',
+    }
+  ];
+  public redditDistributionLabels: string[] = [];
+  public redditDistributionLegend: boolean = true;
+  public lineChartType: string = 'line';
+
+  public redditDistributionData: any[] = [
+    {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Reddit Comments'}
   ];
 
   public barChartLegend: boolean = true;
@@ -148,5 +119,65 @@ export class SeasonComponent implements OnInit {
     {data: [9, 5, 8, 8, 6, 5, 4], label: 'Actual Rating of the episode'},
     {data: [8, 8, 4, 9, 8, 7, 9], label: 'Average Rating of the season'}
   ];
+
+  constructor(private route: ActivatedRoute, private _apiService: ApiService) {
+    const showId = route.params.map(p => p.id);
+    const seasonId = route.params.map(p => p.seasonId);
+
+    Observable.combineLatest(
+      showId,
+      seasonId
+    ).subscribe(
+      data => {
+        this._apiService.getSeason(data[0], data[1]).then(res => {
+          this.season = res;
+
+          // Imdb Rating Distribution
+          let imdbDistributionData = [];
+          for (let property in this.season.imdbRatingDistribution) {
+            if (this.season.imdbRatingDistribution.hasOwnProperty(property)) {
+              imdbDistributionData.push(this.season.imdbRatingDistribution[property]);
+            }
+          }
+          this.ratingDistributionData = [
+            {data: imdbDistributionData, label: 'IMDb'},
+            {data: [3, 9, 14, 9, 6, 5, 18, 10, 18, 8], label: 'Trakt.tv'}
+          ];
+
+
+          // Average Imdb season rating
+          let imdbSeasonAvgRating = [];
+          for (let index in this.season.episodes){
+            imdbSeasonAvgRating.push(this.season.episodes[index].imdbRating);
+            this.averageRatingLabels.push('Episode ' + (parseInt(index)+1));
+          }
+          this.averageRatingData = [
+            {data: imdbSeasonAvgRating, label: 'IMDb'},
+            {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Trakt.tv'}
+          ];
+          // TODO: Also use Trakt data which is not there yet
+
+          // Reddit Distribution
+          let redditComments = [];
+          for (let index in this.season.episodes){
+            redditComments.push(this.season.episodes[index].redditComment_count);
+            this.redditDistributionLabels.push('Episode ' + (parseInt(index)+1));
+          }
+          this.redditDistributionData = [
+            {data: redditComments, label: 'Reddit Comments'}
+          ];
+        });
+        this._apiService.getShow(data[0]).then(res => {
+          this.show = res;
+        });
+      },
+      err => console.error(err)
+    );
+  }
+
+  ngOnInit() {
+  }
+
+
 
 }
