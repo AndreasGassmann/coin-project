@@ -189,7 +189,8 @@
                         [options]="averageRatingOptions"
                         [colors]="averageRatingColors" [legend]="barChartLegend" [chartType]="barChartType"
                         (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)">
+                        (chartClick)="chartClicked($event)"
+                        id="avgRatingChart">
                 </canvas>
               </div>
             </div>
@@ -240,6 +241,31 @@
                         [chartType]="characterSentimentChartType"></canvas>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+            <div class="offset-lg-2 col-lg-8 col-12">
+              <h2 class="text-lg-center">Reddit Comments per Season</h2>
+              <div class="chart-wrapper">
+                <canvas baseChart class="chart" [datasets]="redditDistributionData" [labels]="redditDistributionLabels"
+                        [options]="redditDistributionOptions"
+                        [colors]="redditDistributionColors" [legend]="barChartLegend" [chartType]="lineChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"
+                        id="redditCommentsPerSeason">
+                </canvas>
+              </div>
+            </div>
+            <!--/.col-->
           </div>
         </div>
       </div>

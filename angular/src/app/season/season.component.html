@@ -8,170 +8,196 @@
       </div>
     </div>
   </div>
-</div>
 
-<p class="lead cursor-pointer" [routerLink]="['/show/', show?.id]">{{show?.name}}</p>
-<h1 class="display-3" style="margin-bottom: 3rem;">
-  Season {{season?.seasonNumber}}
-  <small><img *ngIf="show && show?.id==1"
-              src="http://vignette1.wikia.nocookie.net/gameofthrones/images/d/da/House_Stark_Sigil_(transparent).png"
-              width="100" height="auto"></small>
-</h1>
 
-<div class="row">
-  <div class="col-12">
+  <p class="lead cursor-pointer" [routerLink]="['/show/', show?.id]">{{show?.name}}</p>
+  <h1 class="display-3" style="margin-bottom: 3rem;">
+    Season {{season?.seasonNumber}}
+    <small><img *ngIf="show && show?.id==1"
+                src="http://vignette1.wikia.nocookie.net/gameofthrones/images/d/da/House_Stark_Sigil_(transparent).png"
+                width="100" height="auto"></small>
+  </h1>
 
-    <!-- Episode selection -->
-    <div class="card text-center">
-      <div class="card-block">
+  <div class="row">
+    <div class="col-12">
+
+      <!-- Episode selection -->
+      <div class="card text-center">
+        <div class="card-block">
           <span *ngIf="season">
               <span *ngFor="let e of season.episodes" routerLinkActive="active">
                 <button type="button" class="btn btn-primary btn-lg btn-space"
                         [routerLink]="['episode/', e.episodeNumber]">Episode {{e.episodeNumber}}</button>
               </span>
           </span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-block">
-        <!-- reddit and imdb -->
-        <div class="row">
-          <div class="col-6 col-md-3">
-            <div class="card no-vertical-margin card-info">
-              <div class="card-block">
-                <div class="h1 text-muted text-right mb-2">
-                  <img src="../../assets/img/logos/reddit.png"
-                       height="50" width="auto">
-                </div>
-                <div class="h1 mb-0">{{season?.redditPost_count | number}}</div>
-                <p class="text-uppercase font-weight-bold">Posts</p>
-              </div>
-            </div>
-          </div>
-          <!--/.col-->
-          <div class="col-6 col-md-3">
-            <div class="card no-vertical-margin card-info">
-              <div class="card-block">
-                <div class="h1 text-muted text-right mb-2">
-                  <img src="../../assets/img/logos/reddit.png"
-                       height="50" width="auto">
-                </div>
-                <div class="h1 mb-0">{{season?.redditComment_count | number}}</div>
-                <p class="text-uppercase font-weight-bold">Comments</p>
-              </div>
-            </div>
-          </div>
-          <!--/.col-->
-          <div class="col-6 col-md-3">
-            <div class="card no-vertical-margin card-warning">
-              <div class="card-block">
-                <div class="h1 text-muted text-right mb-2">
-                  <img src="../../assets/img/logos/imdb.png" height="50" width="auto">
-                </div>
-                <div class="h1 mb-0">{{season?.imdbUserReviewsCount | number}}</div>
-                <p class="text-uppercase font-weight-bold">User Reviews</p>
-              </div>
-            </div>
-          </div>
-          <!--/.col-->
-          <div class="col-6 col-md-3">
-            <div class="card no-vertical-margin card-warning">
-              <div class="card-block">
-                <div class="h2 text-muted text-right mb-2">
-                  <img src="../../assets/img/logos/imdb.png" height="50" width="auto">
-                </div>
-                <div class="h1 mb-0">{{season?.imdbRating | number}}</div>
-                <p class="text-uppercase font-weight-bold">Avg. Rating </p>
-              </div>
-            </div>
-          </div>
-          <!--/.col-->
-        </div><!--/.row-->
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Ratings per star rating -->
-<div class="row">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-block">
-        <div class="row">
-          <div class="offset-lg-2 col-lg-8 col-12">
-            <h2 class="text-lg-center">Distribution of Ratings</h2>
-            <div class="chart-wrapper">
-              <canvas baseChart class="chart"
-                      [datasets]="ratingDistributionData"
-                      [labels]="ratingDistributionLabels"
-                      [options]="ratingDistributionOptions"
-                      [colors]="ratingDistributionColors"
-                      [legend]="ratingDistributionLegend"
-                      [chartType]="barChartType"
-                      (chartHover)="chartHovered($event)"
-                      (chartClick)="chartClicked($event)">
-              </canvas>
-            </div>
-          </div><!--/.col-->
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="row">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-block">
-        <div class="row">
-          <div class="offset-lg-2 col-lg-8 col-12">
-            <h2 class="text-lg-center">Average rating per episode</h2>
-            <div class="chart-wrapper">
-              <canvas baseChart class="chart"
-                      [datasets]="averageRatingData"
-                      [labels]="averageRatingLabels"
-                      [options]="averageRatingOptions"
-                      [colors]="averageRatingColors"
-                      [legend]="barChartLegend"
-                      [chartType]="barChartType"
-                      (chartHover)="chartHovered($event)"
-                      (chartClick)="chartClicked($event)">
-              </canvas>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-block">
+          <!-- reddit and imdb -->
+          <div class="row">
+            <div class="col-6 col-md-3">
+              <div class="card no-vertical-margin card-info">
+                <div class="card-block">
+                  <div class="h1 text-muted text-right mb-2">
+                    <img src="../../assets/img/logos/reddit.png"
+                         height="50" width="auto">
+                  </div>
+                  <div class="h1 mb-0">{{season?.redditPost_count | number}}</div>
+                  <p class="text-uppercase font-weight-bold">Posts</p>
+                </div>
+              </div>
             </div>
-          </div><!--/.col-->
+            <!--/.col-->
+            <div class="col-6 col-md-3">
+              <div class="card no-vertical-margin card-info">
+                <div class="card-block">
+                  <div class="h1 text-muted text-right mb-2">
+                    <img src="../../assets/img/logos/reddit.png"
+                         height="50" width="auto">
+                  </div>
+                  <div class="h1 mb-0">{{season?.redditComment_count | number}}</div>
+                  <p class="text-uppercase font-weight-bold">Comments</p>
+                </div>
+              </div>
+            </div>
+            <!--/.col-->
+            <div class="col-6 col-md-3">
+              <div class="card no-vertical-margin card-warning">
+                <div class="card-block">
+                  <div class="h1 text-muted text-right mb-2">
+                    <img src="../../assets/img/logos/imdb.png" height="50" width="auto">
+                  </div>
+                  <div class="h1 mb-0">{{season?.imdbUserReviewsCount | number}}</div>
+                  <p class="text-uppercase font-weight-bold">User Reviews</p>
+                </div>
+              </div>
+            </div>
+            <!--/.col-->
+            <div class="col-6 col-md-3">
+              <div class="card no-vertical-margin card-warning">
+                <div class="card-block">
+                  <div class="h2 text-muted text-right mb-2">
+                    <img src="../../assets/img/logos/imdb.png" height="50" width="auto">
+                  </div>
+                  <div class="h1 mb-0">{{season?.imdbRating | number}}</div>
+                  <p class="text-uppercase font-weight-bold">Avg. Rating </p>
+                </div>
+              </div>
+            </div>
+            <!--/.col-->
+          </div><!--/.row-->
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Bar Chart Flo -->
-<div class="=row">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-block">
-        <div class="row">
-          <div class="offset-lg-2 col-lg-8 col-12">
-            <h2 class="text-center">Influence of guest stars on user ratings</h2>
-            <div class="chart-wrapper">
-              <canvas baseChart class="chart"
-                      [datasets]="barChartData"
-                      [labels]="barChartLabels"
-                      [options]="barChartOptions"
-                      [legend]="barChartLegend2"
-                      [chartType]="barChartType2"
-                      (chartHover)="chartHovered($event)"
-                      (chartClick)="chartClicked($event)"></canvas>
-            </div>
+  <!-- Ratings per star rating -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+            <div class="offset-lg-2 col-lg-8 col-12">
+              <h2 class="text-lg-center">Distribution of Ratings</h2>
+              <div class="chart-wrapper">
+                <canvas baseChart class="chart"
+                        [datasets]="ratingDistributionData"
+                        [labels]="ratingDistributionLabels"
+                        [options]="ratingDistributionOptions"
+                        [colors]="ratingDistributionColors"
+                        [legend]="ratingDistributionLegend"
+                        [chartType]="barChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+            </div><!--/.col-->
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+            <div class="offset-lg-2 col-lg-8 col-12">
+              <h2 class="text-lg-center">Average rating per episode</h2>
+              <div class="chart-wrapper">
+                <canvas baseChart class="chart"
+                        [datasets]="averageRatingData"
+                        [labels]="averageRatingLabels"
+                        [options]="averageRatingOptions"
+                        [colors]="averageRatingColors"
+                        [legend]="barChartLegend"
+                        [chartType]="barChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+            </div><!--/.col-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bar Chart Flo -->
+  <div class="=row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+            <div class="offset-lg-2 col-lg-8 col-12">
+              <h2 class="text-center">Influence of guest stars on user ratings</h2>
+              <div class="chart-wrapper">
+                <canvas baseChart class="chart"
+                        [datasets]="barChartData"
+                        [labels]="barChartLabels"
+                        [options]="barChartOptions"
+                        [legend]="barChartLegend2"
+                        [chartType]="barChartType2"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-block">
+          <div class="row">
+            <div class="offset-lg-2 col-lg-8 col-12">
+              <h2 class="text-lg-center">Reddit Comments per Episode</h2>
+              <div class="chart-wrapper">
+                <canvas baseChart class="chart" [datasets]="redditDistributionData" [labels]="redditDistributionLabels"
+                        [options]="redditDistributionOptions"
+                        [colors]="redditDistributionColors" [legend]="barChartLegend" [chartType]="lineChartType"
+                        (chartHover)="chartHovered($event)"
+                        (chartClick)="chartClicked($event)">
+                </canvas>
+              </div>
+            </div>
+            <!--/.col-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 </div>

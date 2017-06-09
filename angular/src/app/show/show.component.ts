@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 declare let cloud: any;
 declare let draw: any;
 declare let d3: any;
+declare let Chart: any;
 
 @Component({
   selector: 'app-show',
@@ -173,7 +174,7 @@ export class ShowComponent implements OnInit {
       label: 'Series A'
     }
   ];
-  //public lineChart5Labels: Array<any> = ['January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
   public lineChart5Labels: Array<any> = new Array(500);
   public lineChart5Options: any = {
     animation: {
@@ -305,13 +306,35 @@ export class ShowComponent implements OnInit {
       pointHoverBorderColor: 'rgba(77,83,96,1)'
     }
   ];
-  public averageRatingLabels: string[] = ['Season 1', 'Season 2', 'Season 3', 'Season 4', 'Season 5', 'Season 6'];
-  //public barChartType: string = 'bar';
+  public averageRatingLabels: string[] = [];
   public averageRatingLegend: boolean = true;
 
   public averageRatingData: any[] = [
     {data: [6.5, 7.3, 7.8, 8.3, 8.0, 9.3], label: 'IMDb'},
     {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Trakt.tv'}
+  ];
+
+  // reddit comments per seasons
+  public redditDistributionOptions: any = {
+    scaleShowVerticalLines: false,
+    responsive: true,
+
+  };
+  public redditDistributionColors: Array<any> = [
+    { // yellow
+      backgroundColor: 'rgba(248, 203, 0, 0.75)',
+      borderColor: 'rgba(211,165,0,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    }
+  ];
+  public redditDistributionLabels: string[] = [];
+  public redditDistributionLegend: boolean = true;
+
+  public redditDistributionData: any[] = [
+    {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Reddit Comments'}
   ];
 
   constructor(private cdr: ChangeDetectorRef, private route: ActivatedRoute, private _apiService: ApiService) {
@@ -357,12 +380,24 @@ export class ShowComponent implements OnInit {
         let imdbSeasonAvgRating = [];
         for (let index in this.show.seasons){
           imdbSeasonAvgRating.push(this.show.seasons[index].average_imdb_rating);
+          this.averageRatingLabels.push('Season ' + (parseInt(index)+1));
         }
         this.averageRatingData = [
           {data: imdbSeasonAvgRating, label: 'IMDb'},
           {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Trakt.tv'}
         ];
+
         // TODO: Also use Trakt data which is not there yet
+
+        // Reddit Distribution
+        let redditComments = [];
+        for (let index in this.show.seasons){
+          redditComments.push(this.show.seasons[index].redditComment_count);
+          this.redditDistributionLabels.push('Season ' + (parseInt(index)+1));
+        }
+        this.redditDistributionData = [
+          {data: redditComments, label: 'Reddit Comments'}
+        ];
       });
     });
 

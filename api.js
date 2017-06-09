@@ -76,7 +76,7 @@ let getShowFromDb = (showId) => {
             where: {id: showId},
             include: [{
                 model: db.sequelize.models.season,
-                attributes: ['id', 'seasonNumber', 'average_imdb_rating', 'totalepisodes']
+                attributes: ['id', 'seasonNumber', 'average_imdb_rating', 'totalepisodes', 'redditPost_count', 'redditComment_count']
             }, {
                 model: db.sequelize.models.ratingDistribution,
                 attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
@@ -114,7 +114,7 @@ let getSeasonFromDb = (showId, seasonId) => {
             where: {seasonNumber: seasonId, tvShowId: showId},
             include: [{
                 model: db.sequelize.models.episode,
-                attributes: ['id', 'name', 'episodeNumber', 'imdbRating'],
+                attributes: ['id', 'name', 'episodeNumber', 'imdbRating', 'redditPost_count', 'redditComment_count'],
             }, {
                 model: db.sequelize.models.ratingDistribution,
                 attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
