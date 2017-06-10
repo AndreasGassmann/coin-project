@@ -178,7 +178,13 @@ module.exports.init = () => {
             imdb_sentimentScoreTotal: Sequelize.INTEGER,
             imdb_sentimentComparativeAvg: Sequelize.FLOAT,
             imdb_emotionalitySubjectivityAvg: Sequelize.FLOAT,
-            imdb_emotionalityPolarityAvg: Sequelize.FLOAT
+            imdb_emotionalityPolarityAvg: Sequelize.FLOAT,
+            reddit_numOfAppearances: Sequelize.INTEGER,
+            reddit_sentimentScoreAvg: Sequelize.FLOAT,
+            reddit_sentimentScoreTotal: Sequelize.INTEGER,
+            reddit_sentimentComparativeAvg: Sequelize.FLOAT,
+            reddit_emotionalitySubjectivityAvg: Sequelize.FLOAT,
+            reddit_emotionalityPolarityAvg: Sequelize.FLOAT,
         });
 
 

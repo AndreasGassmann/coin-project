@@ -159,6 +159,27 @@ let getEpisodeFromDb = (showId, seasonId, episodeId) => {
     });
 };
 
+let getCharacterStats = function () {
+    return new Promise((resolve, reject) => {
+        db.sequelize.models.characters.findAll(
+            {
+                attributes: ['name', 'imdb_numOfAppearances', 'imdb_sentimentScoreAvg', 'imdb_sentimentScoreTotal', 'imdb_sentimentComparativeAvg',
+            'imdb_emotionalitySubjectivityAvg',
+            'imdb_emotionalityPolarityAvg',
+            'reddit_numOfAppearances',
+            'reddit_sentimentScoreAvg',
+            'reddit_sentimentScoreTotal',
+            'reddit_sentimentComparativeAvg',
+            'reddit_emotionalitySubjectivityAvg',
+            'reddit_emotionalityPolarityAvg'
+        ]
+            }
+        ).then(function (characterStats){
+            resolve(characterStats);
+        });
+    });
+};
+
 router.use(async (ctx, next) => {
     if (!db) {
         ctx.body = {message: 'API starting up'};
@@ -198,6 +219,11 @@ router.get('/show/:id/season/:seasonId', async (ctx, next) => {
 
 router.get('/show/:id/season/:seasonId/episode', async (ctx, next) => {
     ctx.body = {};
+});
+
+router.get('/characters/', async(ctx, next) => {
+    let characterStats = await getCharacterStats();
+    ctx.body = characterStats;
 });
 
 router.get('/show/:id/season/:seasonId/episode/:episodeId', async (ctx, next) => {
