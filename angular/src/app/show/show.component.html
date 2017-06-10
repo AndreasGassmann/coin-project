@@ -224,7 +224,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="show?.id ==1">
     <div class="col-12">
       <!-- Card: Sentiment for specific characters (IMDb) -->
       <div class="card">
@@ -232,11 +232,12 @@
           <div class="row">
             <div class="offset-lg-2 col-lg-8 col-12">
               <h2 class="text-center">Sentiment for specific characters (IMDb)</h2>
+              <!-- TODO: Replace this text! -->
+              <p class="lead">Insert here a short description of what values are displayed and what they indicate. Also explain what sentiment is. Not longer than 2-3 lines. </p>
               <div class="chart-wrapper">
                 <!--iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;" -->
                 <!--/iframe-->
-                <canvas baseChart class="chart" style="display: block; height: 139px; width: 349px;" width="698"
-                        height="278" [datasets]="characterSentimentChartData"
+                <canvas baseChart class="chart" [datasets]="characterSentimentChartData"
                         [labels]="characterSentimentChartLabels" [options]="characterSentimentChartOptions"
                         [chartType]="characterSentimentChartType"></canvas>
               </div>
@@ -272,24 +273,9 @@
     </div>
   </div>
 
-  <!-- Viewers -->
-  <div class="row">
-    <div class="col-sm-6 col-lg-4">
-      <div class="card card-inverse card-primary">
-        <div class="card-block pb-0">
-          <h4 class="mb-0">5.36 Mio.</h4>
-          <p>Average Viewers</p>
-        </div>
-        <div class="chart-wrapper px-1" style="height:100px;">
-          <canvas baseChart class="chart" [datasets]="viewersData" [labels]="viewersLabels" [options]="viewersOptions"
-                  [colors]="viewersColours"
-                  [legend]="viewersLegend" [chartType]="viewersType" (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)"></canvas>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-    <div class="col-12 col-md-3">
+
+  <!--<div class="row">
+    <!--<div class="col-12 col-md-3">
       <div class="card">
         <div class="card-block">
           <div class="row">
@@ -302,63 +288,12 @@
               <h4 class="text-lg-center">Distribution of Ratings</h4>
               <p class="text-lg-center">(Alternative zu Balkendiagramm oben)</p>
             </div>
-            <!--/.col-->
+
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-6 col-lg-3">
-      <div class="card">
-      </div>
-      <div class="card">
-        <div class="card-block p-0 clearfix">
-          <i class="fa fa-globe bg-primary p-2 font-2xl mr-1 float-left"></i>
-          <div class="h5 text-primary mb-0 pt-1">{{show?.seasons.length}}</div>
-          <div class="text-muted text-uppercase font-weight-bold font-xs">Seasons</div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-block p-0 clearfix">
-          <i class="fa fa-clone bg-primary p-2 font-2xl mr-1 float-left"></i>
-          <div class="h5 text-primary mb-0 pt-1">{{show?.seasons[0].totalepisodes}}</div>
-          <div class="text-muted text-uppercase font-weight-bold font-xs">Episodes</div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header card-header-inverse card-header-primary">
-          <div class="font-weight-bold">
-            <span>SALE</span>
-            <span class="float-right">$1.890,65</span>
-          </div>
-          <div>
-            <span>
-              <small>Today 6:43 AM</small>
-            </span>
-            <span class="float-right">
-              <small>+432,50 (15,78%)</small>
-            </span>
-          </div>
-          <div class="chart-wrapper" style="height:38px;">
-            <canvas baseChart class="chart" [datasets]="lineChart4Data" [labels]="lineChart4Labels"
-                    [options]="lineChart4Options" [colors]="lineChart4Colours"
-                    [legend]="lineChart4Legend" [chartType]="lineChart4Type" (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)"></canvas>
-          </div>
-          <div class="chart-wrapper" style="height:38px;">
-            <canvas baseChart class="chart" [datasets]="barChart2Data" [labels]="barChart2Labels"
-                    [options]="barChart2Options" [colors]="barChart2Colours"
-                    [legend]="barChart2Legend" [chartType]="barChart2Type" (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)"></canvas>
-          </div>
-        </div>
-
-
-      </div>
-    </div>
-  </div>
+  </div>-->
 
   <!-- Word cloud -->
   <div class="row">
@@ -372,105 +307,6 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-sm-6 col-md-2">
-      <div class="card card-inverse card-info">
-        <div class="card-block">
-          <div class="h1 text-muted text-right mb-2">
-            <i class="icon-people"></i>
-          </div>
-          <div class="h4 mb-0">{{show?.viewers}}</div>
-          <small class="text-muted text-uppercase font-weight-bold">Viewers</small>
-          <div class="progress progress-white progress-xs mt-1">
-            <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
-                 aria-valuemax="100"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-    <div class="col-sm-6 col-md-2">
-      <div class="card card-inverse card-success">
-        <div class="card-block">
-          <div class="h1 text-muted text-right mb-2">
-            <i class="icon-user-follow"></i>
-          </div>
-          <div class="h4 mb-0">385</div>
-          <small class="text-muted text-uppercase font-weight-bold">New Clients</small>
-          <div class="progress progress-white progress-xs mt-1">
-            <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
-                 aria-valuemax="100"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-    <div class="col-sm-6 col-md-2">
-      <div class="card card-inverse card-warning">
-        <div class="card-block">
-          <div class="h1 text-muted text-right mb-2">
-            <i class="icon-basket-loaded"></i>
-          </div>
-          <div class="h4 mb-0">1238</div>
-          <small class="text-muted text-uppercase font-weight-bold">Products sold</small>
-          <div class="progress progress-white progress-xs mt-1">
-            <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
-                 aria-valuemax="100"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-    <div class="col-sm-6 col-md-2">
-      <div class="card card-inverse card-primary">
-        <div class="card-block">
-          <div class="h1 text-muted text-right mb-2">
-            <i class="icon-pie-chart"></i>
-          </div>
-          <div class="h4 mb-0">28%</div>
-          <small class="text-muted text-uppercase font-weight-bold">Returning Visitors</small>
-          <div class="progress progress-white progress-xs mt-1">
-            <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
-                 aria-valuemax="100"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-    <div class="col-sm-6 col-md-2">
-      <div class="card card-inverse card-danger">
-        <div class="card-block">
-          <div class="h1 text-muted text-right mb-2">
-            <i class="icon-speedometer"></i>
-          </div>
-          <div class="h4 mb-0">5:34:11</div>
-          <small class="text-muted text-uppercase font-weight-bold">Avg. Time</small>
-          <div class="progress progress-white progress-xs mt-1">
-            <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
-                 aria-valuemax="100"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-    <div class="col-sm-6 col-md-2">
-      <div class="card card-inverse card-info">
-        <div class="card-block">
-          <div class="h1 text-muted text-right mb-2">
-            <i class="icon-speech"></i>
-          </div>
-          <div class="h4 mb-0">972</div>
-          <small class="text-muted text-uppercase font-weight-bold">Comments</small>
-          <div class="progress progress-white progress-xs mt-1">
-            <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
-                 aria-valuemax="100"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-  </div>
-  <!--/.row-->
   <div class="card">
     <div class="card-block text-center">
       <div class="text-muted small text-uppercase font-weight-bold">Title</div>

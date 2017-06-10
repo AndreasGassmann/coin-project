@@ -14,6 +14,7 @@ declare let Chart: any;
 })
 export class ShowComponent implements OnInit {
   public show;
+  public characterStats;
 
   public brandPrimary: string = '#20a8d8';
   public brandSuccess: string = '#4dbd74';
@@ -23,8 +24,8 @@ export class ShowComponent implements OnInit {
 
 
   // Pie
-  public pieChartLabels: string[] = ['1 star', '2 stars', '3 stars', '4 stars', '5 stars', '6 stars', '7 stars', '8 stars', '9 stars', '10 stars'];
-  public pieChartData: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 61, 2];
+  //public pieChartLabels: string[] = ['1 star', '2 stars', '3 stars', '4 stars', '5 stars', '6 stars', '7 stars', '8 stars', '9 stars', '10 stars'];
+  //public pieChartData: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 61, 2];
   public pieChartType: string = 'pie';
 
   // lineChart4
@@ -363,8 +364,8 @@ export class ShowComponent implements OnInit {
             imdbDistributionData.push(this.show.imdbRatingDistribution[property]);
           }
         }
-        this.pieChartLabels = labels;
-        this.pieChartData = imdbDistributionData;
+        //this.pieChartLabels = labels;
+        //this.pieChartData = imdbDistributionData;
         this.ratingDistributionData = [
           {data: imdbDistributionData, label: 'IMDb'},
           {data: [3, 9, 14, 9, 6, 5, 18, 10, 18, 8], label: 'Trakt.tv'}
@@ -392,6 +393,17 @@ export class ShowComponent implements OnInit {
         this.redditDistributionData = [
           {data: redditComments, label: 'Reddit Comments'}
         ];
+
+        // If the show is GoT get Character Stats
+        if (this.show.id === 1){
+          this._apiService.getCharacters().then(res => {
+            this.characterStats = res;
+
+            for (let index in this.characterStats){
+              this.characterSentimentChartData.push({label: this.characterStats[index].name, data: [this.characterStats.imdb_sentimentScoreAvg]});
+            }
+          });
+        }
       });
     });
 
