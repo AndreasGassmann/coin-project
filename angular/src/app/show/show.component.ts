@@ -1,3 +1,5 @@
+let _ = require('lodash');
+
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ApiService } from '../shared/api.service';
 import { ActivatedRoute } from '@angular/router';
@@ -108,39 +110,14 @@ export class ShowComponent implements OnInit {
   public crrLineChartType: string = 'line';
 
   // Line Chart: Sentiment for specific characters (IMDb)
-  public characterSentimentChartData: Array<any> = [
-    {
-      data: [
-        0.89
-      ],
-      label: 'Jon Snow'
-    },
-    {
-      data: [
-        -0.23
-      ],
-      label: 'Joffrey Baratheon'
-    },
-    {
-      data: [
-        0.71
-      ],
-      label: 'Tyrion Lannister'
-    },
-    {
-      data: [
-        -0.40
-      ],
-      label: 'Cersei Lannister'
-    }
-  ];
+  public characterSentimentChartData: Array<any> = _.range(0,21).map(x => { return {data: [0.1], label: 'TEST'}; });
   public characterSentimentChartLabels: Array<any> = [''];
   public characterSentimentChartOptions: any = {
     maintainAspectRatio: true,
     scales: {
       yAxes: [{
         ticks: {
-          suggestedMin: 0,
+          suggestedMin: -1,
           suggestedMax: 1
         }
       }]
@@ -395,13 +372,20 @@ export class ShowComponent implements OnInit {
         ];
 
         // If the show is GoT get Character Stats
-        if (this.show.id === 1){
+        if (this.show.id === 1) {
           this._apiService.getCharacters().then(res => {
             this.characterStats = res;
+            console.log(this.show.id);
 
+            let characterSentimentChartDataTemp = [];
             for (let index in this.characterStats){
-              this.characterSentimentChartData.push({label: this.characterStats[index].name, data: [this.characterStats.imdb_sentimentScoreAvg]});
+              characterSentimentChartDataTemp.push({label: this.characterStats[index].name, data: [this.characterStats[index].imdb_sentimentScoreAvg]});
             }
+            
+            console.log(characterSentimentChartDataTemp);
+            console.log(this.characterSentimentChartData);
+            this.characterSentimentChartData.length = characterSentimentChartDataTemp.length;
+            this.characterSentimentChartData = characterSentimentChartDataTemp;
           });
         }
       });
