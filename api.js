@@ -166,12 +166,12 @@ let getCharacterStats = function () {
                 attributes: ['name', 'imdb_numOfAppearances', 'imdb_sentimentScoreAvg', 'imdb_sentimentScoreTotal', 'imdb_sentimentComparativeAvg',
             'imdb_emotionalitySubjectivityAvg',
             'imdb_emotionalityPolarityAvg',
-            'reddit_numOfAppearances',
-            'reddit_sentimentScoreAvg',
-            'reddit_sentimentScoreTotal',
-            'reddit_sentimentComparativeAvg',
-            'reddit_emotionalitySubjectivityAvg',
-            'reddit_emotionalityPolarityAvg'
+            'redditCon_numOfAppearances',
+            'redditCon_sentimentScoreAvg',
+            'redditCon_sentimentScoreTotal',
+            'redditCon_sentimentComparativeAvg',
+            'redditCon_emotionalitySubjectivityAvg',
+            'redditCon_emotionalityPolarityAvg'
         ]
             }
         ).then(function (characterStats){
