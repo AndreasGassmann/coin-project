@@ -15,20 +15,20 @@ dbConnection.init().then(res => {
 // TODO make static data dynamic in queries, then delete this object
 staticData = {
     '1': {
-        'image': "http://thetvdb.com/banners/fanart/original/121361-15.jpg",
-        'titleimage': "https://red.elbenwald.de/media/image/3a/49/87/game-of-thrones_cat.jpg"
+        'image': "../assets/img/show-cards/game-of-thrones.jpg",
+        'titleimage': "../assets/img/title-images/game-of-thrones.jpg"
     },
     '2': {
-        'image': "http://thetvdb.com/banners/fanart/original/80379-38.jpg",
-        'titleimage': "https://red.elbenwald.de/media/image/e5/96/fc/big-bang-theorycat.jpg"
+        'image': "../assets/img/show-cards/big-bang-theory.jpg",
+        'titleimage': "../assets/img/title-images/big-bang-theory.jpg"
     },
     '3': {
-        'image': "http://www.returndates.com/backgrounds/criminalminds.jpg",
-        'titleimage': "http://www.asset1.net/tv/pictures/show/criminal-minds/Criminal-Minds-S10-LB-1.jpg"
+        'image': "../assets/img/show-cards/criminal-minds.jpg",
+        'titleimage': "../assets/img/title-images/criminal-minds.jpg"
     },
     '4': {
-        'image': "http://thetvdb.com/banners/fanart/original/323168-10.jpg",
-        'titleimage': "https://img-www.tf-cdn.com/show/2/13-reasons-why.jpeg?_v=20170307014747&w=1024&h=342&dpr=2&auto=compress&fit=crop&crop=faces,top"
+        'image': "../assets/img/show-cards/13-reasons-why.jpg",
+        'titleimage': "../assets/img/title-images/13-reasons-why.jpg"
     }
 };
 
@@ -76,7 +76,7 @@ let getShowFromDb = (showId) => {
             where: {id: showId},
             include: [{
                 model: db.sequelize.models.season,
-                attributes: ['id', 'seasonNumber', 'average_imdb_rating', 'totalepisodes']
+                attributes: ['id', 'seasonNumber', 'average_imdb_rating', 'totalepisodes', 'redditPost_count', 'redditComment_count']
             }, {
                 model: db.sequelize.models.ratingDistribution,
                 attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
@@ -99,7 +99,9 @@ let getShowFromDb = (showId) => {
                 'imdbRating': dbShow.rating,
                 'imdbUserReviewsCount': dbShow.imdb_review_count,
                 'imdbRatingDistribution': dbShow.ratingDistribution,
-                'seasons': dbShow.seasons
+                'redditPost_count': dbShow.redditPost_count,
+                'redditComment_count': dbShow.redditComment_count,
+                'seasons': dbShow.seasons,
             };
             resolve(show);
         });
@@ -112,7 +114,7 @@ let getSeasonFromDb = (showId, seasonId) => {
             where: {seasonNumber: seasonId, tvShowId: showId},
             include: [{
                 model: db.sequelize.models.episode,
-                attributes: ['id', 'name', 'episodeNumber', 'imdbRating'],
+                attributes: ['id', 'name', 'episodeNumber', 'imdbRating', 'redditPost_count', 'redditComment_count'],
             }, {
                 model: db.sequelize.models.ratingDistribution,
                 attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
@@ -125,6 +127,8 @@ let getSeasonFromDb = (showId, seasonId) => {
                 'imdbRating': season.average_imdb_rating,
                 'imdbUserReviewsCount': season.imdb_review_count,
                 'imdbRatingDistribution': season.ratingDistribution,
+                'redditPost_count': season.redditPost_count,
+                'redditComment_count': season.redditComment_count,
                 'episodes': season.episodes
             };
 
@@ -139,10 +143,11 @@ let getEpisodeFromDb = (showId, seasonId, episodeId) => {
             where: {seasonNumber: seasonId, tvShowId: showId},
             include: [{
                 model: db.sequelize.models.episode,
-                attributes: ['id', 'name', 'episodeNumber', 'imdbRating']
-            }, {
-                model: db.sequelize.models.ratingDistribution,
-                attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
+                attributes: ['id', 'name', 'episodeNumber', 'imdbRating', 'imdb_review_count', 'redditPost_count', 'redditComment_count'],
+                include: [{
+                    model: db.sequelize.models.ratingDistribution,
+                    attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
+                }]
             }]
         }).then(season => {
             for (let index in season.episodes){
@@ -150,6 +155,27 @@ let getEpisodeFromDb = (showId, seasonId, episodeId) => {
                     resolve(season.episodes[index]);
                 }
             }
+        });
+    });
+};
+
+let getCharacterStats = function () {
+    return new Promise((resolve, reject) => {
+        db.sequelize.models.characters.findAll(
+            {
+                attributes: ['name', 'imdb_numOfAppearances', 'imdb_sentimentScoreAvg', 'imdb_sentimentScoreTotal', 'imdb_sentimentComparativeAvg',
+            'imdb_emotionalitySubjectivityAvg',
+            'imdb_emotionalityPolarityAvg',
+            'reddit_numOfAppearances',
+            'reddit_sentimentScoreAvg',
+            'reddit_sentimentScoreTotal',
+            'reddit_sentimentComparativeAvg',
+            'reddit_emotionalitySubjectivityAvg',
+            'reddit_emotionalityPolarityAvg'
+        ]
+            }
+        ).then(function (characterStats){
+            resolve(characterStats);
         });
     });
 };
@@ -193,6 +219,11 @@ router.get('/show/:id/season/:seasonId', async (ctx, next) => {
 
 router.get('/show/:id/season/:seasonId/episode', async (ctx, next) => {
     ctx.body = {};
+});
+
+router.get('/characters/', async(ctx, next) => {
+    let characterStats = await getCharacterStats();
+    ctx.body = characterStats;
 });
 
 router.get('/show/:id/season/:seasonId/episode/:episodeId', async (ctx, next) => {

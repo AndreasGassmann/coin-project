@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 declare let cloud: any;
 declare let draw: any;
 declare let d3: any;
+declare let Chart: any;
 
 @Component({
   selector: 'app-show',
@@ -13,6 +14,7 @@ declare let d3: any;
 })
 export class ShowComponent implements OnInit {
   public show;
+  public characterStats;
 
   public brandPrimary: string = '#20a8d8';
   public brandSuccess: string = '#4dbd74';
@@ -22,8 +24,8 @@ export class ShowComponent implements OnInit {
 
 
   // Pie
-  public pieChartLabels: string[] = ['1 star', '2 stars', '3 stars', '4 stars', '5 stars', '6 stars', '7 stars', '8 stars', '9 stars', '10 stars'];
-  public pieChartData: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 61, 2];
+  //public pieChartLabels: string[] = ['1 star', '2 stars', '3 stars', '4 stars', '5 stars', '6 stars', '7 stars', '8 stars', '9 stars', '10 stars'];
+  //public pieChartData: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 61, 2];
   public pieChartType: string = 'pie';
 
   // lineChart4
@@ -77,7 +79,7 @@ export class ShowComponent implements OnInit {
         {x: '10 stars', y: 1},
       ],
       label: 'Normalized average sentiment (IMDb) per rating',
-      pointRadius: 5
+      pointRadius: 7
     },
     {
     data: [
@@ -173,7 +175,7 @@ export class ShowComponent implements OnInit {
       label: 'Series A'
     }
   ];
-  //public lineChart5Labels: Array<any> = ['January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
   public lineChart5Labels: Array<any> = new Array(500);
   public lineChart5Options: any = {
     animation: {
@@ -305,13 +307,30 @@ export class ShowComponent implements OnInit {
       pointHoverBorderColor: 'rgba(77,83,96,1)'
     }
   ];
-  public averageRatingLabels: string[] = ['Season 1', 'Season 2', 'Season 3', 'Season 4', 'Season 5', 'Season 6'];
-  //public barChartType: string = 'bar';
+  public averageRatingLabels: string[] = [];
   public averageRatingLegend: boolean = true;
 
   public averageRatingData: any[] = [
     {data: [6.5, 7.3, 7.8, 8.3, 8.0, 9.3], label: 'IMDb'},
     {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Trakt.tv'}
+  ];
+
+  // reddit comments per seasons
+  public redditDistributionOptions: any = {
+    scaleShowVerticalLines: false,
+    responsive: true,
+
+  };
+  public redditDistributionColors: Array<any> = [
+    { // blue
+      backgroundColor: 'rgba(122, 174, 255, 0.75)',
+    }
+  ];
+  public redditDistributionLabels: string[] = [];
+  public redditDistributionLegend: boolean = true;
+
+  public redditDistributionData: any[] = [
+    {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Reddit Comments'}
   ];
 
   constructor(private cdr: ChangeDetectorRef, private route: ActivatedRoute, private _apiService: ApiService) {
@@ -335,19 +354,58 @@ export class ShowComponent implements OnInit {
         this.show = res;
 
         console.log(this.show);
+
+        // Imdb Rating Distribution
         let labels = [];
-        let data = [];
+        let imdbDistributionData = [];
         for (let property in this.show.imdbRatingDistribution) {
           if (this.show.imdbRatingDistribution.hasOwnProperty(property)) {
-            console.log('pushing');
             labels.push(property);
-            data.push(this.show.imdbRatingDistribution[property]);
+            imdbDistributionData.push(this.show.imdbRatingDistribution[property]);
           }
         }
-        this.pieChartLabels = labels;
-        this.pieChartData = data;
-      })
-    })
+        //this.pieChartLabels = labels;
+        //this.pieChartData = imdbDistributionData;
+        this.ratingDistributionData = [
+          {data: imdbDistributionData, label: 'IMDb'},
+          {data: [3, 9, 14, 9, 6, 5, 18, 10, 18, 8], label: 'Trakt.tv'}
+        ];
+
+        // Average Imdb season rating
+        let imdbSeasonAvgRating = [];
+        for (let index in this.show.seasons){
+          imdbSeasonAvgRating.push(this.show.seasons[index].average_imdb_rating);
+          this.averageRatingLabels.push('Season ' + (parseInt(index)+1));
+        }
+        this.averageRatingData = [
+          {data: imdbSeasonAvgRating, label: 'IMDb'},
+          {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Trakt.tv'}
+        ];
+
+        // TODO: Also use Trakt data which is not there yet
+
+        // Reddit Distribution
+        let redditComments = [];
+        for (let index in this.show.seasons){
+          redditComments.push(this.show.seasons[index].redditComment_count);
+          this.redditDistributionLabels.push('Season ' + (parseInt(index)+1));
+        }
+        this.redditDistributionData = [
+          {data: redditComments, label: 'Reddit Comments'}
+        ];
+
+        // If the show is GoT get Character Stats
+        if (this.show.id === 1){
+          this._apiService.getCharacters().then(res => {
+            this.characterStats = res;
+
+            for (let index in this.characterStats){
+              this.characterSentimentChartData.push({label: this.characterStats[index].name, data: [this.characterStats.imdb_sentimentScoreAvg]});
+            }
+          });
+        }
+      });
+    });
 
   }
 

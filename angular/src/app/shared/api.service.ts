@@ -35,4 +35,8 @@ export class ApiService {
     return this.http.get( environment.host + '/api/show/' + showId + '/season/' + seasonId + '/episode/' + episodeId).map(res => res.json()).toPromise();
   }
 
+  getCharacters() {
+    return this.http.get( environment.host + '/api/characters/').map(res => res.json()).toPromise();
+  }
+
 }

@@ -28,6 +28,20 @@ export class EpisodeComponent implements OnInit {
         console.log(data);
         this._apiService.getEpisode(data[0], data[1], data[2]).then(res => {
           this.episode = res;
+
+          // Imdb Rating Distribution
+          let imdbDistributionData = [];
+          for (let property in this.episode.ratingDistribution) {
+            if (this.episode.ratingDistribution.hasOwnProperty(property)) {
+              imdbDistributionData.push(this.episode.ratingDistribution[property]);
+            }
+          }
+          this.ratingDistributionData = [
+            {data: imdbDistributionData, label: 'IMDb'},
+            {data: [3, 9, 14, 9, 6, 5, 18, 10, 18, 8], label: 'Trakt.tv'}
+          ];
+
+          // TODO: Use Trakt data which is not there yet
         });
         this._apiService.getSeason(data[0], data[1]).then(res => {
           this.season = res;
