@@ -89,7 +89,7 @@ export class SeasonComponent implements OnInit {
   ];
   public redditDistributionLabels: string[] = [];
   public redditDistributionLegend: boolean = true;
-  public lineChartType: string = 'line';
+  public lineChartType: string = 'bar';
 
   public redditDistributionData: any[] = [
     {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Reddit Comments'}
