@@ -110,8 +110,8 @@ export class ShowComponent implements OnInit {
   public crrLineChartType: string = 'line';
 
   // Line Chart: Sentiment for specific characters (IMDb)
-  public characterSentimentChartData: Array<any> = _.range(0,21).map(x => { return {data: [0.1], label: 'TEST'}; });
-  public characterSentimentChartLabels: Array<any> = [''];
+  public characterSentimentChartData: Array<any> = [ {data: _.range(0,21).map(x => 0.1), label: "IMDb"}, { data: _.range(0,21).map(x => 0.2), label: "Reddit"}];
+  public characterSentimentChartLabels: Array<any> = _.range(0,21).map(x => "CharacterLabel" + x);
   public characterSentimentChartOptions: any = {
     maintainAspectRatio: true,
     scales: {
@@ -144,58 +144,6 @@ export class ShowComponent implements OnInit {
   ];
   public barChart2Legend: boolean = false;
   public barChart2Type: string = 'bar';
-
-  // lineChart5
-  public lineChart5Data: Array<{ data: any[], label: string }> = [
-    {
-      data: new Array(500),
-      label: 'Series A'
-    }
-  ];
-
-  public lineChart5Labels: Array<any> = new Array(500);
-  public lineChart5Options: any = {
-    animation: {
-      duration: 0
-    },
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        display: false,
-        points: false,
-      }],
-      yAxes: [{
-        display: false,
-      }]
-    },
-    elements: { point: { radius: 0 } },
-    legend: {
-      display: false
-    }
-  };
-  public lineChart5Info: Array<any> = [
-    {
-      backgroundColor: 'transparent',
-      borderColor: this.brandInfo,
-      borderWidth: 2
-    }
-  ];
-  public lineChart5Success: Array<any> = [
-    {
-      backgroundColor: 'transparent',
-      borderColor: this.brandInfo,
-      borderWidth: 2
-    }
-  ];
-  public lineChart5Warning: Array<any> = [
-    {
-      backgroundColor: 'transparent',
-      borderColor: this.brandWarning,
-      borderWidth: 2
-    }
-  ];
-  public lineChart5Legend: boolean = false;
-  public lineChart5Type: string = 'line';
 
   // Viewers
   public viewersData:Array<any> = [
@@ -312,19 +260,6 @@ export class ShowComponent implements OnInit {
 
   constructor(private cdr: ChangeDetectorRef, private route: ActivatedRoute, private _apiService: ApiService) {
 
-    setInterval(() => {
-      let label = this.lineChart5Data[0].label;
-      let lineData = this.lineChart5Data[0].data.slice(1);
-      let last = lineData[lineData.length - 1];
-      if (!last) {
-        last = 0;
-      }
-      let rand = (Math.round(Math.random() * 5) - 2.5);
-      lineData.push(last + rand);
-      this.lineChart5Data = [{ data: lineData, label: label }];
-    }, 50);
-    //this.cdr.detectChanges();
-
     const id = route.params.map(p => p.id);
     id.subscribe(showId => {
       this._apiService.getShow(showId).then(res => {
@@ -375,17 +310,32 @@ export class ShowComponent implements OnInit {
         if (this.show.id === 1) {
           this._apiService.getCharacters().then(res => {
             this.characterStats = res;
-            console.log(this.show.id);
 
-            let characterSentimentChartDataTemp = [];
+            let characterSentimentChartDataTemp = {imdb: [], reddit: []};
             for (let index in this.characterStats){
-              characterSentimentChartDataTemp.push({label: this.characterStats[index].name, data: [this.characterStats[index].imdb_sentimentScoreAvg]});
+              characterSentimentChartDataTemp.imdb.push({name: this.characterStats[index].name, data: [this.characterStats[index].imdb_sentimentScoreAvg]});
+              characterSentimentChartDataTemp.reddit.push({name: this.characterStats[index].name, data: [this.characterStats[index].redditTit_sentimentScoreAvg]});
             }
+            let tempCharacterLabels = [];
+            let tempImdbData = [];
+            characterSentimentChartDataTemp.imdb.forEach(element => {
+              tempCharacterLabels.push(element.name);
+              tempImdbData.push(parseFloat(element.data));
+            });
+            let tempRedditData = [];
+            characterSentimentChartDataTemp.reddit.forEach(element => {
+              tempRedditData.push(parseFloat(element.data));
+            });
             
-            console.log(characterSentimentChartDataTemp);
-            console.log(this.characterSentimentChartData);
-            this.characterSentimentChartData.length = characterSentimentChartDataTemp.length;
-            this.characterSentimentChartData = characterSentimentChartDataTemp;
+            // TODO GW: Is it possible to resize a chart data array once it is initialized?
+            // I could not make it work, therefore the size has to be known when initializing the data array for the chart.
+            // -> // this.characterSentimentChartData.length = characterSentimentChartDataTemp.length;
+            this.characterSentimentChartLabels = tempCharacterLabels;
+            this.cdr.detectChanges();
+            this.characterSentimentChartData = [
+              {data: tempImdbData, label: "IMDb"},
+              {data: tempRedditData, label: "Reddit"}
+            ];
           });
         }
       });
@@ -520,45 +470,6 @@ export class ShowComponent implements OnInit {
   }
 
   public barChartLegend: boolean = true;
-
-  // lineChart
-  public lineChartData: Array<any> = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Reviews'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Comments'},
-    {data: [18, 48, 77, 9, 100, 27, 40], label: 'Posts'}
-  ];
-  public lineChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  public lineChartOptions: any = {
-    animation: false,
-    responsive: true
-  };
-  public lineChartColours: Array<any> = [
-    { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    },
-    { // dark grey
-      backgroundColor: 'rgba(77,83,96,0.2)',
-      borderColor: 'rgba(77,83,96,1)',
-      pointBackgroundColor: 'rgba(77,83,96,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(77,83,96,1)'
-    },
-    { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    }
-  ];
-  public lineChartLegend: boolean = true;
   public lineChartType: string = 'line';
 
 
