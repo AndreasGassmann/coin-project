@@ -381,7 +381,7 @@ export class ShowComponent implements OnInit {
             for (let index in this.characterStats){
               characterSentimentChartDataTemp.push({label: this.characterStats[index].name, data: [this.characterStats[index].imdb_sentimentScoreAvg]});
             }
-            
+
             console.log(characterSentimentChartDataTemp);
             console.log(this.characterSentimentChartData);
             this.characterSentimentChartData.length = characterSentimentChartDataTemp.length;
@@ -559,7 +559,7 @@ export class ShowComponent implements OnInit {
     }
   ];
   public lineChartLegend: boolean = true;
-  public lineChartType: string = 'line';
+  public lineChartType: string = 'bar';
 
 
 //Radar Chart
