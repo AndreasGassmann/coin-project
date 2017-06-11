@@ -45,21 +45,10 @@ let getShowsFromDb = () => {
                     'name': dbShow.title,
                     'image': staticData[dbShow.id]['image'],
                     'titleimage': staticData[dbShow.id]['titleimage'],
-                    'episodes': 70,
-                    'viewers': 51301,
-                    'imdbRatingDistribution': {
-                        '1': 5,
-                        '2': 57,
-                        '3': 72,
-                        '4': 322,
-                        '5': 263,
-                        '6': 886,
-                        '7': 1201,
-                        '8': 2200,
-                        '9': 2301,
-                        '10': 1900
-                    },
-                    'seasons': 9
+                    'imdbUserReviewsCount': dbShow.imdb_review_count,
+                    'imdbRatingDistribution': dbShow.ratingDistribution,
+                    'redditPost_count': dbShow.redditPost_count,
+                    'redditComment_count': dbShow.redditComment_count,
                 };
                 shows.push(show);
             });
@@ -166,12 +155,12 @@ let getCharacterStats = function () {
                 attributes: ['name', 'imdb_numOfAppearances', 'imdb_sentimentScoreAvg', 'imdb_sentimentScoreTotal', 'imdb_sentimentComparativeAvg',
             'imdb_emotionalitySubjectivityAvg',
             'imdb_emotionalityPolarityAvg',
-            'redditCon_numOfAppearances',
-            'redditCon_sentimentScoreAvg',
-            'redditCon_sentimentScoreTotal',
-            'redditCon_sentimentComparativeAvg',
-            'redditCon_emotionalitySubjectivityAvg',
-            'redditCon_emotionalityPolarityAvg'
+            'redditTit_numOfAppearances',
+            'redditTit_sentimentScoreAvg',
+            'redditTit_sentimentScoreTotal',
+            'redditTit_sentimentComparativeAvg',
+            'redditTit_emotionalitySubjectivityAvg',
+            'redditTit_emotionalityPolarityAvg'
         ]
             }
         ).then(function (characterStats){
