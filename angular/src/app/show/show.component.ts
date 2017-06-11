@@ -69,37 +69,37 @@ export class ShowComponent implements OnInit {
   public crrLineChartData: Array<any> = [
     {
       data: [
-        {x: '1 star', y: 0},
-        {x: '2 stars', y: 0.31},
-        {x: '3 stars', y: 0.48},
-        {x: '4 stars', y: 0.37},
-        {x: '5 stars', y: 0.49},
-        {x: '6 stars', y: 0.52},
-        {x: '7 stars', y: 0.69},
-        {x: '8 stars', y: 0.67},
-        {x: '9 stars', y: 0.89},
-        {x: '10 stars', y: 1},
+        { x: '1 star', y: 0 },
+        { x: '2 stars', y: 0.31 },
+        { x: '3 stars', y: 0.48 },
+        { x: '4 stars', y: 0.37 },
+        { x: '5 stars', y: 0.49 },
+        { x: '6 stars', y: 0.52 },
+        { x: '7 stars', y: 0.69 },
+        { x: '8 stars', y: 0.67 },
+        { x: '9 stars', y: 0.89 },
+        { x: '10 stars', y: 1 },
       ],
       label: 'Normalized average sentiment (IMDb) per rating',
       pointRadius: 7
     },
     {
-    data: [
-      {x: '1 star', y: 0.1325},
-      {x: '2 stars', y: 0.22324},
-      {x: '3 stars', y: 0.31413},
-      {x: '4 stars', y: 0.40502},
-      {x: '5 stars', y: 0.49591},
-      {x: '6 stars', y: 0.5868},
-      {x: '7 stars', y: 0.67769},
-      {x: '8 stars', y: 0.76858},
-      {x: '9 stars', y: 0.85947},
-      {x: '10 stars', y: 0.95036},
+      data: [
+        { x: '1 star', y: 0.1325 },
+        { x: '2 stars', y: 0.22324 },
+        { x: '3 stars', y: 0.31413 },
+        { x: '4 stars', y: 0.40502 },
+        { x: '5 stars', y: 0.49591 },
+        { x: '6 stars', y: 0.5868 },
+        { x: '7 stars', y: 0.67769 },
+        { x: '8 stars', y: 0.76858 },
+        { x: '9 stars', y: 0.85947 },
+        { x: '10 stars', y: 0.95036 },
       ],
-    label: 'Line of best fit (linear regression)',
-    showLine: true,
-    pointRadius: 0,
-    fill: false
+      label: 'Line of best fit (linear regression)',
+      showLine: true,
+      pointRadius: 0,
+      fill: false
     }
   ];
   // labels (x axis): rating in stars (1,2,..10)
@@ -110,8 +110,8 @@ export class ShowComponent implements OnInit {
   public crrLineChartType: string = 'line';
 
   // Line Chart: Sentiment for specific characters (IMDb)
-  public characterSentimentChartData: Array<any> = [ {data: _.range(0,21).map(x => 0.1), label: "IMDb"}, { data: _.range(0,21).map(x => 0.2), label: "Reddit"}];
-  public characterSentimentChartLabels: Array<any> = _.range(0,21).map(x => "CharacterLabel" + x);
+  public characterSentimentChartData: Array<any> = [{ data: _.range(0, 21).map(x => 0.1), label: "IMDb" }, { data: _.range(0, 21).map(x => 0.2), label: "Reddit" }];
+  public characterSentimentChartLabels: Array<any> = _.range(0, 21).map(x => "CharacterLabel" + x);
   public characterSentimentChartOptions: any = {
     maintainAspectRatio: true,
     scales: {
@@ -146,14 +146,14 @@ export class ShowComponent implements OnInit {
   public barChart2Type: string = 'bar';
 
   // Viewers
-  public viewersData:Array<any> = [
+  public viewersData: Array<any> = [
     {
       data: [2.5, 3.8, 4.9, 6.8, 6.8, 7.69],
       label: 'Mio. Viewers'
     }
   ];
-  public viewersLabels:Array<any> = ['Season 1', 'Season 2', 'Season 3', 'Season 4', 'Season 5', 'Season 6'];
-  public viewersOptions:any = {
+  public viewersLabels: Array<any> = ['Season 1', 'Season 2', 'Season 3', 'Season 4', 'Season 5', 'Season 6'];
+  public viewersOptions: any = {
     maintainAspectRatio: false,
     scales: {
       xAxes: [{
@@ -168,14 +168,14 @@ export class ShowComponent implements OnInit {
       display: true
     }
   };
-  public viewersColours:Array<any> = [
+  public viewersColours: Array<any> = [
     {
       backgroundColor: 'rgba(255,255,255,.3)',
       borderWidth: 0
     }
   ];
-  public viewersLegend:boolean = false;
-  public viewersType:string = 'bar';
+  public viewersLegend: boolean = false;
+  public viewersType: string = 'bar';
 
   // Rating Distribution
   public ratingDistributionOptions: any = {
@@ -183,30 +183,30 @@ export class ShowComponent implements OnInit {
     responsive: true,
   };
   public ratingDistributionColors: Array<any> = [
-  { // yellow
-    backgroundColor: 'rgba(248, 203, 0, 0.75)',
-    borderColor: 'rgba(211,165,0,1)',
-    pointBackgroundColor: 'rgba(148,159,177,1)',
-    pointBorderColor: '#fff',
-    pointHoverBackgroundColor: '#fff',
-    pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-  },
-  { // red
-    backgroundColor: 'rgba(248,108,107,0.75)',
-    borderColor: 'rgba(196,101,101,1)',
-    pointBackgroundColor: 'rgba(77,83,96,1)',
-    pointBorderColor: '#fff',
-    pointHoverBackgroundColor: '#fff',
-    pointHoverBorderColor: 'rgba(77,83,96,1)'
-  }
-];
+    { // yellow
+      backgroundColor: 'rgba(248, 203, 0, 0.75)',
+      borderColor: 'rgba(211,165,0,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+    { // red
+      backgroundColor: 'rgba(248,108,107,0.75)',
+      borderColor: 'rgba(196,101,101,1)',
+      pointBackgroundColor: 'rgba(77,83,96,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(77,83,96,1)'
+    }
+  ];
   public ratingDistributionLabels: string[] = ['1 star', '2 stars', '3 stars', '4 stars', '5 stars', '6 stars', '7 stars', '8 stars', '9 stars', '10 stars'];
   public barChartType: string = 'bar';
   public ratingDistributionLegend: boolean = true;
 
   public ratingDistributionData: any[] = [
-    {data: [5, 7, 11, 6, 12, 10, 13, 13, 15, 8], label: 'IMDb'},
-    {data: [3, 9, 14, 9, 6, 5, 18, 10, 18, 8], label: 'Trakt.tv'}
+    { data: [5, 7, 11, 6, 12, 10, 13, 13, 15, 8], label: 'IMDb' },
+    { data: [3, 9, 14, 9, 6, 5, 18, 10, 18, 8], label: 'Trakt.tv' }
   ];
 
   // Average Rating
@@ -236,8 +236,8 @@ export class ShowComponent implements OnInit {
   public averageRatingLegend: boolean = true;
 
   public averageRatingData: any[] = [
-    {data: [6.5, 7.3, 7.8, 8.3, 8.0, 9.3], label: 'IMDb'},
-    {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Trakt.tv'}
+    { data: [6.5, 7.3, 7.8, 8.3, 8.0, 9.3], label: 'IMDb' },
+    { data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Trakt.tv' }
   ];
 
   // reddit comments per seasons
@@ -255,10 +255,20 @@ export class ShowComponent implements OnInit {
   public redditDistributionLegend: boolean = true;
 
   public redditDistributionData: any[] = [
-    {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Reddit Comments'}
+    { data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Reddit Comments' }
   ];
 
   constructor(private cdr: ChangeDetectorRef, private route: ActivatedRoute, private _apiService: ApiService) {
+
+    this._apiService.getShows().then(res => {
+      console.log(res);
+
+      this.radarChartData = [
+        { data: [res[0].imdbUserReviewsCount, res[1].imdbUserReviewsCount, res[2].imdbUserReviewsCount, res[3].imdbUserReviewsCount], label: 'IMDb' },
+        { data: [res[0].redditComment_count, res[1].redditComment_count, res[2].redditComment_count, res[3].redditComment_count], label: 'Reddit' }
+      ];
+    });
+
 
     const id = route.params.map(p => p.id);
     id.subscribe(showId => {
@@ -279,31 +289,31 @@ export class ShowComponent implements OnInit {
         //this.pieChartLabels = labels;
         //this.pieChartData = imdbDistributionData;
         this.ratingDistributionData = [
-          {data: imdbDistributionData, label: 'IMDb'},
-          {data: [3, 9, 14, 9, 6, 5, 18, 10, 18, 8], label: 'Trakt.tv'}
+          { data: imdbDistributionData, label: 'IMDb' },
+          { data: [3, 9, 14, 9, 6, 5, 18, 10, 18, 8], label: 'Trakt.tv' }
         ];
 
         // Average Imdb season rating
         let imdbSeasonAvgRating = [];
-        for (let index in this.show.seasons){
+        for (let index in this.show.seasons) {
           imdbSeasonAvgRating.push(this.show.seasons[index].average_imdb_rating);
-          this.averageRatingLabels.push('Season ' + (parseInt(index)+1));
+          this.averageRatingLabels.push('Season ' + (parseInt(index) + 1));
         }
         this.averageRatingData = [
-          {data: imdbSeasonAvgRating, label: 'IMDb'},
-          {data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Trakt.tv'}
+          { data: imdbSeasonAvgRating, label: 'IMDb' },
+          { data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Trakt.tv' }
         ];
 
         // TODO: Also use Trakt data which is not there yet
 
         // Reddit Distribution
         let redditComments = [];
-        for (let index in this.show.seasons){
+        for (let index in this.show.seasons) {
           redditComments.push(this.show.seasons[index].redditComment_count);
-          this.redditDistributionLabels.push('Season ' + (parseInt(index)+1));
+          this.redditDistributionLabels.push('Season ' + (parseInt(index) + 1));
         }
         this.redditDistributionData = [
-          {data: redditComments, label: 'Reddit Comments'}
+          { data: redditComments, label: 'Reddit Comments' }
         ];
 
         // If the show is GoT get Character Stats
@@ -311,10 +321,10 @@ export class ShowComponent implements OnInit {
           this._apiService.getCharacters().then(res => {
             this.characterStats = res;
 
-            let characterSentimentChartDataTemp = {imdb: [], reddit: []};
-            for (let index in this.characterStats){
-              characterSentimentChartDataTemp.imdb.push({name: this.characterStats[index].name, data: [this.characterStats[index].imdb_sentimentScoreAvg]});
-              characterSentimentChartDataTemp.reddit.push({name: this.characterStats[index].name, data: [this.characterStats[index].redditTit_sentimentScoreAvg]});
+            let characterSentimentChartDataTemp = { imdb: [], reddit: [] };
+            for (let index in this.characterStats) {
+              characterSentimentChartDataTemp.imdb.push({ name: this.characterStats[index].name, data: [this.characterStats[index].imdb_sentimentScoreAvg] });
+              characterSentimentChartDataTemp.reddit.push({ name: this.characterStats[index].name, data: [this.characterStats[index].redditTit_sentimentScoreAvg] });
             }
             let tempCharacterLabels = [];
             let tempImdbData = [];
@@ -326,15 +336,15 @@ export class ShowComponent implements OnInit {
             characterSentimentChartDataTemp.reddit.forEach(element => {
               tempRedditData.push(parseFloat(element.data));
             });
-            
+
             // TODO GW: Is it possible to resize a chart data array once it is initialized?
             // I could not make it work, therefore the size has to be known when initializing the data array for the chart.
             // -> // this.characterSentimentChartData.length = characterSentimentChartDataTemp.length;
             this.characterSentimentChartLabels = tempCharacterLabels;
             this.cdr.detectChanges();
             this.characterSentimentChartData = [
-              {data: tempImdbData, label: "IMDb"},
-              {data: tempRedditData, label: "Reddit"}
+              { data: tempImdbData, label: "IMDb" },
+              { data: tempRedditData, label: "Reddit" }
             ];
           });
         }
@@ -470,15 +480,15 @@ export class ShowComponent implements OnInit {
   }
 
   public barChartLegend: boolean = true;
-  public lineChartType: string = 'line';
+  public lineChartType: string = 'bar';
 
 
-//Radar Chart
-  public radarChartLabels: string[] = ['Game of Thrones', '13 reasons why', 'BigBangTheory', 'Criminal Minds'];
+  //Radar Chart
+  public radarChartLabels: string[] = ['Game of Thrones', 'The Big Bang Theory', 'Criminal Minds', '13 Reasons Why'];
 
   public radarChartData: any = [
-    {data: [65, 59, 90, 81], label: 'IMDb'},
-    {data: [28, 48, 40, 19], label: 'Reddit'}
+    { data: [65, 59, 90, 81], label: 'IMDb' },
+    { data: [28, 48, 40, 19], label: 'Reddit' }
   ];
   public radarChartType: string = 'radar';
 }

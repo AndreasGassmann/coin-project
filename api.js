@@ -62,7 +62,7 @@ let getShowFromDb = (showId) => {
     console.log('getting show', showId);
     return new Promise((resolve, reject) => {
         db.sequelize.models.tvShow.findAll({
-            where: {id: showId},
+            where: { id: showId },
             include: [{
                 model: db.sequelize.models.season,
                 attributes: ['id', 'seasonNumber', 'average_imdb_rating', 'totalepisodes', 'redditPost_count', 'redditComment_count']
@@ -100,7 +100,7 @@ let getShowFromDb = (showId) => {
 let getSeasonFromDb = (showId, seasonId) => {
     return new Promise((resolve, reject) => {
         db.sequelize.models.season.findOne({
-            where: {seasonNumber: seasonId, tvShowId: showId},
+            where: { seasonNumber: seasonId, tvShowId: showId },
             include: [{
                 model: db.sequelize.models.episode,
                 attributes: ['id', 'name', 'episodeNumber', 'imdbRating', 'redditPost_count', 'redditComment_count'],
@@ -129,7 +129,7 @@ let getSeasonFromDb = (showId, seasonId) => {
 let getEpisodeFromDb = (showId, seasonId, episodeId) => {
     return new Promise((resolve, reject) => {
         db.sequelize.models.season.findOne({
-            where: {seasonNumber: seasonId, tvShowId: showId},
+            where: { seasonNumber: seasonId, tvShowId: showId },
             include: [{
                 model: db.sequelize.models.episode,
                 attributes: ['id', 'name', 'episodeNumber', 'imdbRating', 'imdb_review_count', 'redditPost_count', 'redditComment_count'],
@@ -139,8 +139,8 @@ let getEpisodeFromDb = (showId, seasonId, episodeId) => {
                 }]
             }]
         }).then(season => {
-            for (let index in season.episodes){
-                if (season.episodes[index].episodeNumber === parseInt(episodeId)){
+            for (let index in season.episodes) {
+                if (season.episodes[index].episodeNumber === parseInt(episodeId)) {
                     resolve(season.episodes[index]);
                 }
             }
@@ -153,25 +153,39 @@ let getCharacterStats = function () {
         db.sequelize.models.characters.findAll(
             {
                 attributes: ['name', 'imdb_numOfAppearances', 'imdb_sentimentScoreAvg', 'imdb_sentimentScoreTotal', 'imdb_sentimentComparativeAvg',
-            'imdb_emotionalitySubjectivityAvg',
-            'imdb_emotionalityPolarityAvg',
-            'redditTit_numOfAppearances',
-            'redditTit_sentimentScoreAvg',
-            'redditTit_sentimentScoreTotal',
-            'redditTit_sentimentComparativeAvg',
-            'redditTit_emotionalitySubjectivityAvg',
-            'redditTit_emotionalityPolarityAvg'
-        ]
+                    'imdb_emotionalitySubjectivityAvg',
+                    'imdb_emotionalityPolarityAvg',
+                    'redditTit_numOfAppearances',
+                    'redditTit_sentimentScoreAvg',
+                    'redditTit_sentimentScoreTotal',
+                    'redditTit_sentimentComparativeAvg',
+                    'redditTit_emotionalitySubjectivityAvg',
+                    'redditTit_emotionalityPolarityAvg'
+                ]
             }
-        ).then(function (characterStats){
+        ).then(function (characterStats) {
             resolve(characterStats);
+        });
+    });
+};
+
+
+let getWordCloudDataForEpisode = (episodeId) => {
+    return new Promise((resolve, reject) => {
+        db.sequelize.models.imdbUserReview.findAll(
+            {
+                where: { episodeId: episodeId },
+                attributes: ['id', 'text_sentimentObject']
+            }
+        ).then(res => {
+            resolve(res);
         });
     });
 };
 
 router.use(async (ctx, next) => {
     if (!db) {
-        ctx.body = {message: 'API starting up'};
+        ctx.body = { message: 'API starting up' };
     } else {
         await next();
     }
@@ -210,9 +224,15 @@ router.get('/show/:id/season/:seasonId/episode', async (ctx, next) => {
     ctx.body = {};
 });
 
-router.get('/characters/', async(ctx, next) => {
+router.get('/characters/', async (ctx, next) => {
     let characterStats = await getCharacterStats();
     ctx.body = characterStats;
+});
+
+router.get('/wordCloud/episode/:id', async (ctx, next) => {
+    if (!ctx.params.id) return;
+    let wordCloudData = await getWordCloudDataForEpisode(ctx.params.id);
+    ctx.body = wordCloudData;
 });
 
 router.get('/show/:id/season/:seasonId/episode/:episodeId', async (ctx, next) => {

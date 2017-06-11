@@ -45,8 +45,7 @@
               <div class="card no-vertical-margin card-info">
                 <div class="card-block">
                   <div class="h1 text-muted text-right mb-2">
-                    <img src="../../assets/img/logos/reddit.png"
-                         height="50" width="auto">
+                    <img src="../../assets/img/logos/reddit.png" height="50" width="auto">
                   </div>
                   <div class="h1 mb-0">{{season?.redditPost_count | number}}</div>
                   <p class="text-uppercase font-weight-bold">Posts</p>
@@ -58,8 +57,7 @@
               <div class="card no-vertical-margin card-info">
                 <div class="card-block">
                   <div class="h1 text-muted text-right mb-2">
-                    <img src="../../assets/img/logos/reddit.png"
-                         height="50" width="auto">
+                    <img src="../../assets/img/logos/reddit.png" height="50" width="auto">
                   </div>
                   <div class="h1 mb-0">{{season?.redditComment_count | number}}</div>
                   <p class="text-uppercase font-weight-bold">Comments</p>
@@ -91,7 +89,8 @@
               </div>
             </div>
             <!--/.col-->
-          </div><!--/.row-->
+          </div>
+          <!--/.row-->
         </div>
       </div>
     </div>
@@ -106,18 +105,13 @@
             <div class="offset-lg-2 col-lg-8 col-12">
               <h2 class="text-lg-center">Distribution of Ratings</h2>
               <div class="chart-wrapper">
-                <canvas baseChart class="chart"
-                        [datasets]="ratingDistributionData"
-                        [labels]="ratingDistributionLabels"
-                        [options]="ratingDistributionOptions"
-                        [colors]="ratingDistributionColors"
-                        [legend]="ratingDistributionLegend"
-                        [chartType]="barChartType"
-                        (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)">
+                <canvas baseChart class="chart" [datasets]="ratingDistributionData" [labels]="ratingDistributionLabels" [options]="ratingDistributionOptions"
+                  [colors]="ratingDistributionColors" [legend]="ratingDistributionLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
-            </div><!--/.col-->
+            </div>
+            <!--/.col-->
           </div>
         </div>
       </div>
@@ -132,48 +126,17 @@
             <div class="offset-lg-2 col-lg-8 col-12">
               <h2 class="text-lg-center">Average rating per episode</h2>
               <div class="chart-wrapper">
-                <canvas baseChart class="chart"
-                        [datasets]="averageRatingData"
-                        [labels]="averageRatingLabels"
-                        [options]="averageRatingOptions"
-                        [colors]="averageRatingColors"
-                        [legend]="barChartLegend"
-                        [chartType]="barChartType"
-                        (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)">
+                <canvas baseChart class="chart" [datasets]="averageRatingData" [labels]="averageRatingLabels" [options]="averageRatingOptions"
+                  [colors]="averageRatingColors" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
-            </div><!--/.col-->
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Bar Chart Flo -->
-  <div class="=row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-block">
-          <div class="row">
-            <div class="offset-lg-2 col-lg-8 col-12">
-              <h2 class="text-center">Influence of guest stars on user ratings</h2>
-              <div class="chart-wrapper">
-                <canvas baseChart class="chart"
-                        [datasets]="barChartData"
-                        [labels]="barChartLabels"
-                        [options]="barChartOptions"
-                        [legend]="barChartLegend2"
-                        [chartType]="barChartType2"
-                        (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)"></canvas>
-              </div>
             </div>
+            <!--/.col-->
           </div>
         </div>
       </div>
     </div>
-
   </div>
 
   <div class="row">
@@ -184,11 +147,9 @@
             <div class="offset-lg-2 col-lg-8 col-12">
               <h2 class="text-lg-center">Reddit Comments per Episode</h2>
               <div class="chart-wrapper">
-                <canvas baseChart class="chart" [datasets]="redditDistributionData" [labels]="redditDistributionLabels"
-                        [options]="redditDistributionOptions"
-                        [colors]="redditDistributionColors" [legend]="barChartLegend" [chartType]="lineChartType"
-                        (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)">
+                <canvas baseChart class="chart" [datasets]="redditDistributionData" [labels]="redditDistributionLabels" [options]="redditDistributionOptions"
+                  [colors]="redditDistributionColors" [legend]="barChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
             </div>

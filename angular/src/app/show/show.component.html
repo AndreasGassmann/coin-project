@@ -49,7 +49,8 @@
                       <div class="h2 py-1">{{show?.name}}</div>
                     </div>
                   </div>
-                </div><!--/.col-->
+                </div>
+                <!--/.col-->
                 <div class="col-md-4 col-sm-6 col-lg-2">
                   <div class="card">
                     <div class="card-block text-center" style="height: 10.7rem;">
@@ -57,7 +58,8 @@
                       <div class="h2 py-1">{{show?.genres}}</div>
                     </div>
                   </div>
-                </div><!--/.col-->
+                </div>
+                <!--/.col-->
                 <div class="col-md-4 col-sm-6 col-lg-2">
                   <div class="card">
                     <div class="card-block text-center" style="height: 10.7rem;">
@@ -65,7 +67,8 @@
                       <div class="h2 py-1">{{show?.seasonsCount}}</div>
                     </div>
                   </div>
-                </div><!--/.col-->
+                </div>
+                <!--/.col-->
                 <div class="col-md-4 col-sm-6 col-lg-2">
                   <div class="card">
                     <div class="card-block text-center" style="height: 10.7rem;">
@@ -73,7 +76,8 @@
                       <div class="h2 py-1">{{show?.episodesCount}}</div>
                     </div>
                   </div>
-                </div><!--/.col-->
+                </div>
+                <!--/.col-->
                 <div class="col-md-4 col-sm-6 col-lg-2">
                   <div class="card">
                     <div class="card-block text-center" style="height: 10.7rem;">
@@ -81,7 +85,8 @@
                       <div class="h2 py-1">{{show?.runtime}} min</div>
                     </div>
                   </div>
-                </div><!--/.col-->
+                </div>
+                <!--/.col-->
                 <div class="col-md-4 col-sm-6 col-lg-2">
                   <div class="card">
                     <div class="card-block text-center" style="height: 10.7rem;">
@@ -89,7 +94,8 @@
                       <div class="h2 py-1">{{show?.releaseDate | date: "mediumDate"}}</div>
                     </div>
                   </div>
-                </div><!--/.col-->
+                </div>
+                <!--/.col-->
               </div>
 
               <!-- reddit and imdb -->
@@ -98,8 +104,7 @@
                   <div class="card no-vertical-margin card-info">
                     <div class="card-block">
                       <div class="h1 text-muted text-right mb-2">
-                        <img src="../../assets/img/logos/reddit.png"
-                             height="50" width="auto">
+                        <img src="../../assets/img/logos/reddit.png" height="50" width="auto">
                       </div>
                       <div class="h1 mb-0">{{show?.redditPost_count | number}}</div>
                       <p class="text-uppercase font-weight-bold">Posts</p>
@@ -111,8 +116,7 @@
                   <div class="card no-vertical-margin card-info">
                     <div class="card-block">
                       <div class="h1 text-muted text-right mb-2">
-                        <img src="../../assets/img/logos/reddit.png"
-                             height="50" width="auto">
+                        <img src="../../assets/img/logos/reddit.png" height="50" width="auto">
                       </div>
                       <div class="h1 mb-0">{{show?.redditComment_count | number}}</div>
                       <p class="text-uppercase font-weight-bold">Comments</p>
@@ -163,11 +167,9 @@
             <div class="offset-lg-2 col-lg-8 col-12">
               <h2 class="text-lg-center">Distribution of Ratings</h2>
               <div class="chart-wrapper">
-                <canvas baseChart class="chart" [datasets]="ratingDistributionData" [labels]="ratingDistributionLabels"
-                        [options]="ratingDistributionOptions"
-                        [colors]="ratingDistributionColors" [legend]="ratingDistributionLegend"
-                        [chartType]="barChartType" (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)">
+                <canvas baseChart class="chart" [datasets]="ratingDistributionData" [labels]="ratingDistributionLabels" [options]="ratingDistributionOptions"
+                  [colors]="ratingDistributionColors" [legend]="ratingDistributionLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)">
                 </canvas>
               </div>
             </div>
@@ -185,12 +187,9 @@
             <div class="offset-lg-2 col-lg-8 col-12">
               <h2 class="text-lg-center">Average rating per season</h2>
               <div class="chart-wrapper">
-                <canvas baseChart class="chart" [datasets]="averageRatingData" [labels]="averageRatingLabels"
-                        [options]="averageRatingOptions"
-                        [colors]="averageRatingColors" [legend]="barChartLegend" [chartType]="barChartType"
-                        (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)"
-                        id="avgRatingChart">
+                <canvas baseChart class="chart" [datasets]="averageRatingData" [labels]="averageRatingLabels" [options]="averageRatingOptions"
+                  [colors]="averageRatingColors" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)" id="avgRatingChart">
                 </canvas>
               </div>
             </div>
@@ -205,17 +204,15 @@
     <div class="col-12">
       <!-- Card: Correlation between review sentiment and rating -->
       <div class="card">
-        <div class="card-block DB_TODO">
+        <div class="card-block">
           <div class="row">
             <div class="offset-lg-2 col-lg-8 col-12">
-              <h2 class="text-center">Correlation between review sentiment and rating (IMDb)</h2>
+              <h2 class="text-center">Correlation between rating (x) and review sentiment (y) (IMDb)</h2>
               <div class="chart-wrapper">
                 <!--iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;" -->
                 <!--/iframe-->
-                <canvas baseChart class="chart" style="display: block; height: 139px; width: 349px;" width="698"
-                        height="278" [datasets]="crrLineChartData"
-                        [labels]="crrLineChartLabels" [options]="crrLineChartOptions"
-                        [chartType]="crrLineChartType"></canvas>
+                <canvas baseChart class="chart" style="display: block; height: 139px; width: 349px;" width="698" height="278" [datasets]="crrLineChartData"
+                  [labels]="crrLineChartLabels" [options]="crrLineChartOptions" [chartType]="crrLineChartType"></canvas>
               </div>
             </div>
           </div>
@@ -233,15 +230,13 @@
             <div class="offset-lg-2 col-lg-8 col-12">
               <h2 class="text-center">Sentiment for specific characters (IMDb)</h2>
               <!-- TODO: Replace this text! -->
-              <p class="lead">This chart displays <strong>average sentiment values</strong> for the <strong>main characters</strong> of the show. 
-                The sentiment analysis is based on the <strong>content of user reviews</strong> on IMDb.
-                The <strong>higher</strong> the sentiment, the more <strong>positive</strong> the character is perceived on average.</p>
+              <p class="lead">This chart displays <strong>average sentiment values</strong> for the <strong>main characters</strong> of the
+                show. The sentiment analysis is based on the <strong>content of user reviews</strong> on IMDb. The <strong>higher</strong>                the sentiment, the more <strong>positive</strong> the character is perceived on average.</p>
               <div class="chart-wrapper">
                 <!--iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;" -->
                 <!--/iframe-->
-                <canvas baseChart class="chart" [datasets]="characterSentimentChartData"
-                        [labels]="characterSentimentChartLabels" [options]="characterSentimentChartOptions"
-                        [chartType]="characterSentimentChartType"></canvas>
+                <canvas baseChart class="chart" [datasets]="characterSentimentChartData" [labels]="characterSentimentChartLabels" [options]="characterSentimentChartOptions"
+                  [chartType]="characterSentimentChartType"></canvas>
               </div>
             </div>
           </div>
@@ -259,12 +254,9 @@
             <div class="offset-lg-2 col-lg-8 col-12">
               <h2 class="text-lg-center">Reddit Comments per Season</h2>
               <div class="chart-wrapper">
-                <canvas baseChart class="chart" [datasets]="redditDistributionData" [labels]="redditDistributionLabels"
-                        [options]="redditDistributionOptions"
-                        [colors]="redditDistributionColors" [legend]="barChartLegend" [chartType]="lineChartType"
-                        (chartHover)="chartHovered($event)"
-                        (chartClick)="chartClicked($event)"
-                        id="redditCommentsPerSeason">
+                <canvas baseChart class="chart" [datasets]="redditDistributionData" [labels]="redditDistributionLabels" [options]="redditDistributionOptions"
+                  [colors]="redditDistributionColors" [legend]="barChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)" id="redditCommentsPerSeason">
                 </canvas>
               </div>
             </div>
@@ -323,12 +315,8 @@
         </div>
         <div class="card-block">
           <div class="chart-wrapper">
-            <canvas baseChart class="chart"
-                    [datasets]="radarChartData"
-                    [labels]="radarChartLabels"
-                    [chartType]="radarChartType"
-                    (chartHover)="chartHovered($event)"
-                    (chartClick)="chartClicked($event)"></canvas>
+            <canvas baseChart class="chart" [datasets]="radarChartData" [labels]="radarChartLabels" [chartType]="radarChartType" (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
           </div>
         </div>
       </div>
