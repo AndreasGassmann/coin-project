@@ -303,7 +303,7 @@ export class ShowComponent implements OnInit {
 
         let traktSeasonAvgRating = [];
         imdbSeasonAvgRating.forEach(r => {
-          traktSeasonAvgRating.push(Math.max(0, r - Math.random()));
+          traktSeasonAvgRating.push(Math.max(0, r - (1 - Math.random() * 2)));
           console.log(r);
         });
         console.log(traktSeasonAvgRating); // TODO: TRAKT
