@@ -100,35 +100,17 @@
     </div>
   </div>
 
-<div class="row">
-    <div class="col-12 col-md-6">
-      <div class="card text-center">
-        <div class="card-block">
-          <div class="row">
-            <!-- IMDb rating -->
-           <!-- <div class="col-sm-6 col-md-6">
-              <div class="card card-inverse card-warning text-center">
-                <div class="card-block">
-                  <h1 class="card-title display-1"><i class="fa fa-star"></i></h1>
-                  <h1 class="card-title"><strong>8.6</strong></h1>
-                  <h3 class="card-text">IMDb Rating</h3>
-                </div>
-              </div>
-            </div>--><!--/.col-->
-            <!-- trakt.tv rating -->
-           <!-- <div class="col-sm-6 col-md-6">
-              <div class="card card-inverse card-danger text-center">
-                <div class="card-block">
-                  <h1 class="card-title display-1"><i class="fa fa-star"></i></h1>
-                  <h1 class="card-title"><strong>8.9</strong></h1>
-                  <h3 class="card-text">Trakt.tv Rating</h3>
-                </div>
-              </div>
-            </div>--><!--/.col-->
-          </div>
-        </div>
+  <!-- Word cloud -->
+  <div class="row">
+    <div class="col-sm-12 col-md-12">
+      <button class="btn btn-primary btn-sm" type="button" (click)="setFilter('all')">All</button>
+      <button class="btn btn-success btn-sm" type="button" (click)="setFilter('pos')">Positive</button>
+      <button class="btn btn-danger btn-sm" type="button" (click)="setFilter('neg')">Negative</button>
+      <div class="card">
+        <svg width="1000" height="1000"></svg>
       </div>
     </div>
   </div>
+
 </div>
 

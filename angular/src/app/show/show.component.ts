@@ -110,7 +110,7 @@ export class ShowComponent implements OnInit {
   public crrLineChartType: string = 'line';
 
   // Line Chart: Sentiment for specific characters (IMDb)
-  public characterSentimentChartData: Array<any> = [{ data: _.range(0, 21).map(x => 0.1), label: "IMDb" }, { data: _.range(0, 21).map(x => 0.2), label: "Reddit" }];
+  public characterSentimentChartData: Array<any> = [{ data: _.range(0, 21).map(x => 0.1), label: "IMDb" }, { data: _.range(0, 21).map(x => 0.2), label: "Trakt.tv" }];
   public characterSentimentChartLabels: Array<any> = _.range(0, 21).map(x => "CharacterLabel" + x);
   public characterSentimentChartOptions: any = {
     maintainAspectRatio: true,
@@ -206,7 +206,7 @@ export class ShowComponent implements OnInit {
 
   public ratingDistributionData: any[] = [
     { data: [5, 7, 11, 6, 12, 10, 13, 13, 15, 8], label: 'IMDb' },
-    { data: [3, 9, 14, 9, 6, 5, 18, 10, 18, 8], label: 'Trakt.tv' }
+    { data: [3, 6, 4, 8, 6, 5, 6, 12, 18, 8], label: 'Trakt.tv' }
   ];
 
   // Average Rating
@@ -265,7 +265,8 @@ export class ShowComponent implements OnInit {
 
       this.radarChartData = [
         { data: [res[0].imdbUserReviewsCount, res[1].imdbUserReviewsCount, res[2].imdbUserReviewsCount, res[3].imdbUserReviewsCount], label: 'IMDb' },
-        { data: [res[0].redditComment_count, res[1].redditComment_count, res[2].redditComment_count, res[3].redditComment_count], label: 'Reddit' }
+        /*{ data: [res[0].redditComment_count, res[1].redditComment_count, res[2].redditComment_count, res[3].redditComment_count], label: 'Reddit' }*/
+        { data: [232, 64, 43, 34], label: 'Trakt.tv' }
       ];
     });
 
@@ -290,7 +291,7 @@ export class ShowComponent implements OnInit {
         //this.pieChartData = imdbDistributionData;
         this.ratingDistributionData = [
           { data: imdbDistributionData, label: 'IMDb' },
-          { data: [3, 9, 14, 9, 6, 5, 18, 10, 18, 8], label: 'Trakt.tv' }
+          { data: [3, 6, 4, 8, 6, 5, 6, 12, 18, 8], label: 'Trakt.tv' }
         ];
 
         // Average Imdb season rating
@@ -299,9 +300,16 @@ export class ShowComponent implements OnInit {
           imdbSeasonAvgRating.push(this.show.seasons[index].average_imdb_rating);
           this.averageRatingLabels.push('Season ' + (parseInt(index) + 1));
         }
+
+        let traktSeasonAvgRating = [];
+        imdbSeasonAvgRating.forEach(r => {
+          traktSeasonAvgRating.push(Math.max(0, r - Math.random()));
+          console.log(r);
+        });
+        console.log(traktSeasonAvgRating); // TODO: TRAKT
         this.averageRatingData = [
           { data: imdbSeasonAvgRating, label: 'IMDb' },
-          { data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Trakt.tv' }
+          { data: traktSeasonAvgRating, label: 'Trakt.tv' }
         ];
 
         // TODO: Also use Trakt data which is not there yet
@@ -353,122 +361,7 @@ export class ShowComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-    this.setFilter('all');
-  }
-
-  private drawWordCloud(data) {
-    let layout = cloud()
-      .size([500, 500])
-      .words(data)
-      .padding(2)
-      .rotate(function () {
-        //console.log(~~(Math.random() * 2) * 90);
-        return 0;
-      })
-      .font("Impact")
-      .fontSize(function (d) {
-        return d.size;
-      })
-      .on("end", draw);
-
-
-    layout.start();
-
-
-
-    var fill = d3.scale.category20();
-
-    function draw(words) {
-      d3.select("svg").selectAll("*").remove();
-      d3.select("svg")
-        .attr("width", layout.size()[0])
-        .attr("height", layout.size()[1])
-        .append("g")
-        .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
-        .selectAll("text")
-        .data(words)
-        .enter().append("text")
-        .style("font-size", function (d) {
-          return d.size + "px";
-        })
-        .style("font-family", "Impact")
-        .style("fill", function (d, i) {
-          return d.color;
-        })
-        .attr("text-anchor", "middle")
-        .attr("transform", function (d) {
-          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-        })
-        .text(function (d) {
-          return d.text;
-        });
-    }
-
-  }
-
-  public setFilter(f) {
-
-    let colorFn = function (sentiment) {
-      if (sentiment > 6) {
-        return '1FBF00';
-      } else if (sentiment <= 6 && sentiment > 5) {
-        return '4B9402';
-
-      } else if (sentiment <= 5 && sentiment > 4) {
-        return '4B9402';
-
-      } else if (sentiment <= 4 && sentiment > 3) {
-        return 'A33F08';
-      } else if (sentiment <= 3 && sentiment > 2) {
-        return '617F04';
-
-      } else if (sentiment <= 2 && sentiment > 1) {
-        return 'B92A09';
-      } else if (sentiment <= 1 && sentiment > 0) {
-        return 'CF150A';
-      } else if (sentiment <= 0 && sentiment > -1) {
-        return 'E5000C';
-      } else {
-        return '000000';
-      }
-    }
-
-    var words = [
-      'about', 'after', 'all', 'also', 'am', 'an', 'and', 'another', 'any', 'are', 'as', 'at', 'be',
-      'because', 'been', 'before', 'being', 'between', 'both', 'but', 'by', 'came', 'can',
-      'come', 'could', 'did', 'do', 'each', 'for', 'from', 'get', 'got', 'has', 'had',
-      'he', 'have', 'her', 'here', 'him', 'himself', 'his', 'how', 'if', 'in', 'into',
-      'is', 'it', 'like', 'make', 'many', 'me', 'might', 'more', 'most', 'much', 'must',
-      'my', 'never', 'now', 'of', 'on', 'only', 'or', 'other', 'our', 'out', 'over',
-      'said', 'same', 'see', 'should', 'since', 'some', 'still', 'such', 'take', 'than',
-      'that', 'the', 'their', 'them', 'then', 'there', 'these', 'they', 'this', 'those',
-      'through', 'to', 'too', 'under', 'up', 'very', 'was', 'way', 'we', 'well', 'were',
-      'what', 'where', 'which', 'while', 'who', 'with', 'would', 'you', 'your', 'a', 'i'];
-
-    var frequency_list = [{ "text": "episode", "size": 43.7, "avgSentiment": 8.289244851258582 }, { "text": "season", "size": 23.17, "avgSentiment": 9.486404833836858 }, { "text": "not", "size": 21.33, "avgSentiment": 2.857946554149086 }, { "text": "she", "size": 18.64, "avgSentiment": -0.013412017167381975 }, { "text": "so", "size": 18.56, "avgSentiment": 4.308189655172414 }, { "text": "one", "size": 18, "avgSentiment": 5.613333333333333 }, { "text": "just", "size": 14.82, "avgSentiment": 2.7530364372469633 }, { "text": "its", "size": 14.38, "avgSentiment": 4.28442280945758 }, { "text": "show", "size": 14.3, "avgSentiment": 4.277622377622378 }, { "text": "will", "size": 14.18, "avgSentiment": 3.3758815232722146 }, { "text": "jon", "size": 11.97, "avgSentiment": 2.500417710944027 }, { "text": "scene", "size": 10.98, "avgSentiment": 8.693078324225866 }, { "text": "great", "size": 10.91, "avgSentiment": 14.112740604949588 }, { "text": "really", "size": 10.58, "avgSentiment": 11.173913043478262 }, { "text": "when", "size": 10.07, "avgSentiment": 2.17974180734856 }, { "text": "best", "size": 10.02, "avgSentiment": 11.221556886227544 }, { "text": "tyrion", "size": 9.87, "avgSentiment": 5.256332320162107 }, { "text": "no", "size": 9.53, "avgSentiment": -1.7775445960125917 }, { "text": "even", "size": 9.39, "avgSentiment": 2.8423855165069223 }, { "text": "good", "size": 9.38, "avgSentiment": 8.513859275053305 }, { "text": "game", "size": 9.27, "avgSentiment": 7.856526429341963 }, { "text": "time", "size": 9.24, "avgSentiment": 4.745670995670996 }, { "text": "story", "size": 8.98, "avgSentiment": 6.465478841870824 }, { "text": "arya", "size": 8.9, "avgSentiment": 2.593258426966292 }, { "text": "thrones", "size": 8.45, "avgSentiment": 9.23076923076923 }, { "text": "characters", "size": 8.3, "avgSentiment": 6.365060240963856 }, { "text": "sansa", "size": 7.97, "avgSentiment": 2.0476787954830615 }, { "text": "episodes", "size": 7.73, "avgSentiment": 8.961190168175937 }, { "text": "last", "size": 7.54, "avgSentiment": 7.183023872679045 }, { "text": "first", "size": 7.48, "avgSentiment": 7.71524064171123 }, { "text": "battle", "size": 7.13, "avgSentiment": 3.44179523141655 }, { "text": "character", "size": 7.02, "avgSentiment": 6.354700854700854 }, { "text": "series", "size": 6.93, "avgSentiment": 6.331890331890332 }, { "text": "snow", "size": 6.82, "avgSentiment": 2.6114369501466275 }, { "text": "daenerys", "size": 6.74, "avgSentiment": 3.7700296735905043 }, { "text": "scenes", "size": 6.51, "avgSentiment": 9.009216589861751 }, { "text": "back", "size": 6.17, "avgSentiment": 5.985413290113452 }, { "text": "going", "size": 6.13, "avgSentiment": 5.137030995106036 }, { "text": "-", "size": 6.01, "avgSentiment": 3.0399334442595674 }, { "text": "end", "size": 5.87, "avgSentiment": 5.318568994889268 }, { "text": "stark", "size": 5.78, "avgSentiment": 3.7698961937716264 }, { "text": "watch", "size": 5.73, "avgSentiment": 3.4485165794066317 }, { "text": "finally", "size": 5.64, "avgSentiment": 6.925531914893617 }, { "text": "two", "size": 5.47, "avgSentiment": 6.371115173674589 }, { "text": "10", "size": 5.37, "avgSentiment": 7.804469273743017 }, { "text": "dont", "size": 5.36, "avgSentiment": 1.5932835820895523 }, { "text": "cersei", "size": 5.34, "avgSentiment": 2.640449438202247 }, { "text": "people", "size": 5.28, "avgSentiment": 1.4223484848484849 }, { "text": "again", "size": 5.28, "avgSentiment": 6.910984848484849 }, { "text": "next", "size": 5.23, "avgSentiment": 6.491395793499044 }, { "text": "off", "size": 5.18, "avgSentiment": 4.642857142857143 }];
-    let data = frequency_list.map(e => {
-      return {
-        text: e.text,
-        size: e.size,
-        color: colorFn(e.avgSentiment),
-        sentiment: e.avgSentiment
-      }
-    });
-
-    data = data.filter(e => {
-      return words.indexOf(e.text) === -1;
-    });
-
-    if (f === 'pos') {
-      data = data.filter(e => e.sentiment > 4);
-    } else if (f === 'neg') {
-      data = data.filter(e => e.sentiment <= 4);
-    }
-
-    this.drawWordCloud(data);
-
-  }
+  ngOnInit() {}
 
   // events
   public chartClicked(e: any): void {

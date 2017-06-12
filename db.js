@@ -100,11 +100,11 @@ module.exports.init = () => {
         imdbUserReview.hasMany(sentence);
 
         let traktComment = sequelize.define('traktComment', {
-            title: Sequelize.STRING,
+            comment: Sequelize.STRING,
             isSpoiler: Sequelize.BOOLEAN,
             isReview: Sequelize.BOOLEAN,
             parentId: Sequelize.INTEGER,
-            createdAt: Sequelize.DATE,
+            date: Sequelize.DATE,
             replies: Sequelize.INTEGER,
             likes: Sequelize.INTEGER,
             userRating: Sequelize.INTEGER

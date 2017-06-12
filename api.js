@@ -32,6 +32,19 @@ staticData = {
     }
 };
 
+let stopWords = [
+    'about', 'after', 'all', 'also', 'am', 'an', 'and', 'another', 'any', 'are', 'as', 'at', 'be',
+    'because', 'been', 'before', 'being', 'between', 'both', 'but', 'by', 'came', 'can',
+    'come', 'could', 'did', 'do', 'each', 'for', 'from', 'get', 'got', 'has', 'had',
+    'he', 'have', 'her', 'here', 'him', 'himself', 'his', 'how', 'if', 'in', 'into',
+    'is', 'it', 'like', 'make', 'many', 'me', 'might', 'more', 'most', 'much', 'must',
+    'my', 'never', 'now', 'of', 'on', 'only', 'or', 'other', 'our', 'out', 'over',
+    'said', 'same', 'see', 'should', 'since', 'some', 'still', 'such', 'take', 'than',
+    'that', 'the', 'their', 'them', 'then', 'there', 'these', 'they', 'this', 'those',
+    'through', 'to', 'too', 'under', 'up', 'very', 'was', 'way', 'we', 'well', 'were',
+    'what', 'where', 'which', 'while', 'who', 'with', 'would', 'you', 'your', 'a', 'i'
+];
+
 
 let getShowsFromDb = () => {
     return new Promise((resolve, reject) => {
@@ -169,7 +182,6 @@ let getCharacterStats = function () {
     });
 };
 
-
 let getWordCloudDataForEpisode = (episodeId) => {
     return new Promise((resolve, reject) => {
         db.sequelize.models.imdbUserReview.findAll(
@@ -225,14 +237,81 @@ router.get('/show/:id/season/:seasonId/episode', async (ctx, next) => {
 });
 
 router.get('/characters/', async (ctx, next) => {
-    let characterStats = await getCharacterStats();
-    ctx.body = characterStats;
+    ctx.body = await getCharacterStats();
 });
 
 router.get('/wordCloud/episode/:id', async (ctx, next) => {
     if (!ctx.params.id) return;
     let wordCloudData = await getWordCloudDataForEpisode(ctx.params.id);
-    ctx.body = wordCloudData;
+
+    let wordCount = {};
+
+    wordCloudData.forEach(c => {
+        let data = c.dataValues.text_sentimentObject.split(`
+`).join(' '); // Don't change this, otherwise JSON cannot be parsed!
+
+        let obj = JSON.parse(data);
+        obj.tokens.forEach(t => {
+            if (wordCount.hasOwnProperty(t)) {
+                wordCount[t].push(obj.score);
+            } else {
+                wordCount[t] = [obj.score];
+            }
+        })
+    });
+
+    let wordArray = [];
+
+    for (var property in wordCount) {
+        if (wordCount.hasOwnProperty(property)) {
+
+            // calculate average
+            let word = wordCount[property];
+            let average = word.reduce(function (acc, val) {
+                    return acc + parseInt(val);
+                }, 0) / wordCount[property].length;
+
+            wordArray.push({
+                text: property,
+                size: wordCount[property].length,
+                avgSentiment: average
+            });
+        }
+    }
+
+    wordArray = wordArray.filter(e => {
+        return stopWords.indexOf(e.text) === -1;
+    });
+
+    wordArray = wordArray.filter(e => {
+        return e.text;
+    });
+
+    let result = wordArray.sort((a, b) => {
+        if (a.size > b.size) {
+            return -1;
+        }
+        if (a.size < b.size) {
+            return 1;
+        }
+        // a must be equal to b
+        return 0;
+    });
+
+    let smallerArray = [];
+    let count = 0;
+    result.forEach(el => {
+        if (count > 50) {
+            return
+        } else {
+
+        }
+        count++;
+        //el.size = el.size * 3;
+        smallerArray.push(el);
+    });
+
+    ctx.body = smallerArray;
 });
 
 router.get('/show/:id/season/:seasonId/episode/:episodeId', async (ctx, next) => {

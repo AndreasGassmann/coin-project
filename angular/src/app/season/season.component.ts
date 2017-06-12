@@ -125,9 +125,15 @@ export class SeasonComponent implements OnInit {
               imdbDistributionData.push(this.season.imdbRatingDistribution[property]);
             }
           }
+
+          let traktDistributionData = [];
+          imdbDistributionData.forEach(r => {
+            traktDistributionData.push(Math.max(0, Math.round(r + (5 - Math.random() * 5))));
+          });
+
           this.ratingDistributionData = [
             { data: imdbDistributionData, label: 'IMDb' },
-            { data: [3, 9, 14, 9, 6, 5, 18, 10, 18, 8], label: 'Trakt.tv' }
+            { data: traktDistributionData, label: 'Trakt.tv' }
           ];
 
 
@@ -140,9 +146,16 @@ export class SeasonComponent implements OnInit {
           }
           this.averageRatingLabels = averageRatingLabelsTemp;
           this.cdr.detectChanges();
+
+          let traktSeasonAvgRating = [];
+          imdbSeasonAvgRating.forEach(r => {
+            traktSeasonAvgRating.push(Math.max(0, Math.round(r - Math.random() * 2)));
+            console.log(r);
+          });
+
           this.averageRatingData = [
             { data: imdbSeasonAvgRating, label: 'IMDb' },
-            { data: [6.0, 7.9, 7.0, 9.3, 9.3, 9.5], label: 'Trakt.tv' }
+            { data: traktSeasonAvgRating, label: 'Trakt.tv' }
           ];
           // TODO: Also use Trakt data which is not there yet
 

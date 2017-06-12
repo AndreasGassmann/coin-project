@@ -3,6 +3,14 @@ let credentials = require('../config/config.json').credentials.trakt;
 let request = require('request');
 let fs = require('fs');
 
+let dbjs = require('../db');
+let db;
+
+dbjs.init().then(res => {
+    db = res;
+    fetchShow('game-of-thrones');
+});
+
 let episodesArray;
 
 let trakt = function(url) {
@@ -23,13 +31,43 @@ let trakt = function(url) {
 let successHandler = function(showName, seasonNr, episodeNr) {
     return (res) => {
         console.log('successfully fetched ' + showName + '-' + seasonNr + '-' + episodeNr);
-        fs.writeFileSync('./data/trakt/' + showName + '-' + seasonNr + '-' + episodeNr + '.json', res.body);
-        let nextEpisode = getNextEpisode(showName, seasonNr, episodeNr);
-        if (nextEpisode) {
-            setTimeout(() => {
-                fetchTraktEpisodeComments(showName, nextEpisode.season, nextEpisode.episode);
-            }, 500);
-        }
+        //fs.writeFileSync('./data/trakt/' + showName + '-' + seasonNr + '-' + episodeNr + '.json', res.body);
+        db.sequelize.models.season.findOne({
+            where: {seasonNumber: seasonNr, tvShowId: 1},
+            include: [{
+                model: db.sequelize.models.episode,
+                where: { episodeNumber: episodeNr },
+                attributes: ['id', 'name', 'episodeNumber']
+            }]
+        }).then(season => {
+            //console.log(res.body);
+            let comments = [];
+            JSON.parse(res.body).forEach(r => {
+                comments.push({
+                    comment: r.comment,
+                    isSpoiler: r.spoiler,
+                    isReview: r.review,
+                    parentId: r.parent_id,
+                    replies: r.replies,
+                    likes: r.likes,
+                    date: r.created_at,
+                    userRating: r.user_rating,
+                    episodeId: season.episodes[0].id
+                });
+            });
+
+            //console.log(comments);
+/*
+            db.sequelize.models.traktComment.bulkCreate(comments).then(dbResult => {
+                console.log('created!');
+                let nextEpisode = getNextEpisode(showName, seasonNr, episodeNr);
+                if (nextEpisode) {
+                    setTimeout(() => {
+                        fetchTraktEpisodeComments(showName, nextEpisode.season, nextEpisode.episode);
+                    }, 500);
+                }
+            });*/
+        });
     }
 };
 
@@ -79,6 +117,3 @@ let getNextEpisode = (showName, seasonNr, episodeNr) => {
     return { season: nextEpisode.season, episode: nextEpisode.number };
 };
 
-//fetchShow('the-big-bang-theory');
-fetchShow('13-reasons-why');
-fetchShow('game-of-thrones');

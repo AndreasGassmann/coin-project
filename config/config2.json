@@ -1,0 +1,22 @@
+{
+  "credentials": {
+    "twitter": {
+      "consumer_key": "fRXq2Qwoslb2jxqbgrv0e1EFb",
+      "consumer_secret": "1Ccw6wuRvLJWGR0XoNkcyd8B2LfBcQB4XPt6Ob2o4cA5XVpwn6",
+      "access_token_key": "353785871-F8ZIjzTEq4i6eVoXaEPD7DWBpnXUxPljVlzkfzag",
+      "access_token_secret": "cWT8WeiecEXtQhR0d3xhmV3bJ9MiNC48UyMXGm2AFazMD"
+    },
+    "trakt": {
+      "client_id": "6a4198b5e8d368f731b90f8c35ed794b9f0b8b04e522b83bd9d478e62bc4e70b"
+    },
+    "db": {
+      "dialect": "mysql",
+      "username": "root",
+      "password": "",
+      "database": "coins",
+      "host": "localhost",
+      "port": "3306",
+      "logging": false
+    }
+  }
+}
