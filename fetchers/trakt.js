@@ -8,10 +8,15 @@ let db;
 
 dbjs.init().then(res => {
     db = res;
-    fetchShow('game-of-thrones');
+    //fetchShow('game-of-thrones');
+    //fetchShow('the-big-bang-theory');
+    //fetchShow('criminal-minds');
+    //fetchShow('13-reasons-why');
 });
 
 let episodesArray;
+
+let showId = 2;
 
 let trakt = function(url) {
     return new Promise((resolve, reject) => {
@@ -33,13 +38,21 @@ let successHandler = function(showName, seasonNr, episodeNr) {
         console.log('successfully fetched ' + showName + '-' + seasonNr + '-' + episodeNr);
         //fs.writeFileSync('./data/trakt/' + showName + '-' + seasonNr + '-' + episodeNr + '.json', res.body);
         db.sequelize.models.season.findOne({
-            where: {seasonNumber: seasonNr, tvShowId: 1},
+            where: {seasonNumber: seasonNr, tvShowId: showId},
             include: [{
                 model: db.sequelize.models.episode,
                 where: { episodeNumber: episodeNr },
                 attributes: ['id', 'name', 'episodeNumber']
             }]
         }).then(season => {
+            if (!season) {
+                let nextEpisode = getNextEpisode(showName, seasonNr, episodeNr);
+                if (nextEpisode) {
+                    setTimeout(() => {
+                        fetchTraktEpisodeComments(showName, nextEpisode.season, nextEpisode.episode);
+                    }, 500);
+                }
+            }
             //console.log(res.body);
             let comments = [];
             JSON.parse(res.body).forEach(r => {
@@ -52,12 +65,15 @@ let successHandler = function(showName, seasonNr, episodeNr) {
                     likes: r.likes,
                     date: r.created_at,
                     userRating: r.user_rating,
-                    episodeId: season.episodes[0].id
+                    episodeId: season.episodes[0].id,
+                    seasonId: season.id,
+                    tvShowId: showId,
                 });
             });
 
-            //console.log(comments);
-/*
+            console.log(comments);
+
+            /*
             db.sequelize.models.traktComment.bulkCreate(comments).then(dbResult => {
                 console.log('created!');
                 let nextEpisode = getNextEpisode(showName, seasonNr, episodeNr);
@@ -66,7 +82,8 @@ let successHandler = function(showName, seasonNr, episodeNr) {
                         fetchTraktEpisodeComments(showName, nextEpisode.season, nextEpisode.episode);
                     }, 500);
                 }
-            });*/
+            });
+            */
         });
     }
 };
