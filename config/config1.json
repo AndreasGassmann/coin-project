@@ -11,12 +11,12 @@
     },
     "db": {
       "dialect": "mysql",
-      "username": "root",
-      "password": "",
+      "username": "coin",
+      "password": "kVCPqgRiT2qiQHyaiWFP",
       "database": "coins",
-      "host": "localhost",
+      "host": "64.137.225.11",
       "port": "3306",
-      "logging": true
+      "logging": false
     }
   }
 }

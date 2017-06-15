@@ -33,6 +33,7 @@ module.exports.init = () => {
             poster: Sequelize.STRING,
             metascore: Sequelize.INTEGER,
             rating: Sequelize.DECIMAL,
+            average_trakt_rating: Sequelize.FLOAT,
             votes: Sequelize.INTEGER,
             imdbid: Sequelize.STRING,
             totalseasons: Sequelize.INTEGER,
@@ -41,6 +42,7 @@ module.exports.init = () => {
             startYear: Sequelize.INTEGER,
             endYear: Sequelize.INTEGER,
             imdb_review_count: Sequelize.INTEGER,
+            trakt_review_count: Sequelize.INTEGER,
             redditPost_count: Sequelize.INTEGER,
             redditComment_count: Sequelize.INTEGER
         });
@@ -48,8 +50,10 @@ module.exports.init = () => {
         let season = sequelize.define('season', {
             seasonNumber: Sequelize.INTEGER,
             average_imdb_rating: Sequelize.FLOAT,
+            average_trakt_rating: Sequelize.FLOAT,
             totalepisodes: Sequelize.INTEGER,
             imdb_review_count: Sequelize.INTEGER,
+            trakt_review_count: Sequelize.INTEGER,
             redditPost_count: Sequelize.INTEGER,
             redditComment_count: Sequelize.INTEGER
         });
@@ -67,6 +71,7 @@ module.exports.init = () => {
             traktId: Sequelize.STRING,
             traktRating: Sequelize.DECIMAL,
             imdb_review_count: Sequelize.INTEGER,
+            trakt_review_count: Sequelize.INTEGER,
             redditPost_count: Sequelize.INTEGER,
             redditComment_count: Sequelize.INTEGER
         });
@@ -151,7 +156,7 @@ module.exports.init = () => {
             content_termFrequencyObject: Sequelize.TEXT,
         });
         RedditComments.belongsTo(tvShow);
-        //        RedditComments.belongsTo(RedditPosts);
+        //      RedditComments.belongsTo(RedditPosts);
 
 
         let ratingDistribution = sequelize.define('ratingDistribution', {
@@ -170,8 +175,24 @@ module.exports.init = () => {
         episode.belongsTo(ratingDistribution);
         tvShow.belongsTo(ratingDistribution);
 
-        let characters = sequelize.define('characters', {
-            id: { type: Sequelize.INTEGER, primaryKey: true },
+        let traktRatingDistribution = sequelize.define('traktRatingDistribution',{
+            star1: Sequelize.INTEGER,
+            star2: Sequelize.INTEGER,
+            star3: Sequelize.INTEGER,
+            star4: Sequelize.INTEGER,
+            star5: Sequelize.INTEGER,
+            star6: Sequelize.INTEGER,
+            star7: Sequelize.INTEGER,
+            star8: Sequelize.INTEGER,
+            star9: Sequelize.INTEGER,
+            star10: Sequelize.INTEGER,
+        });
+        season.belongsTo(traktRatingDistribution);
+        episode.belongsTo(traktRatingDistribution);
+        tvShow.belongsTo(traktRatingDistribution);
+
+        let characters = sequelize.define('characters',{
+            id: {type: Sequelize.INTEGER, primaryKey: true},
             name: Sequelize.STRING,
             imdb_numOfAppearances: Sequelize.INTEGER,
             imdb_sentimentScoreAvg: Sequelize.FLOAT,
