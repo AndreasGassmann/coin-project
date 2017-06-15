@@ -32,11 +32,11 @@ dbjs.init().then(res => {
     //}
 
 
-    lastProcessedEpisodeId = 521;
+    lastProcessedEpisodeId = 0;
 
 
     emotional.load(() => {
-        db.sequelize.models.imdbUserReview.findAll({ where: {episodeId: {$gt: lastProcessedEpisodeId}}})
+        db.sequelize.models.imdbUserReview.findAll({ where: { episodeId: { $gt: lastProcessedEpisodeId } } })
             .then(dbUserReviews => {
                 dbUserReviews.forEach(dbUserReview => {
                     //console.log(dbUserReview);
@@ -57,7 +57,7 @@ dbjs.init().then(res => {
                     //console.log(text_sentimentObject);
                     //console.log(text_emotionalObject);
                     //console.log(text_termFrequencyObject);
-                    
+
 
                     //dbUserReview.sentimentObject = null;
                     var setValues = "";
@@ -74,43 +74,3 @@ dbjs.init().then(res => {
             });
     });
 });
-
-/*
-    emotional.load(() => {
-        jsonUserReviews.forEach(jsonUserReview => {
-
-            //console.log(jsonUserReview.text);
-            //console.log('User rating: ' + jsonUserReview.rating);
-
-            // Term frequency
-            tfidf.addDocument(jsonUserReview.text);
-
-            //console.dir(emotional.get(jsonUserReview.text).polarity, { depth: null });
-            //console.dir(emotional.get(jsonUserReview.text).subjectivity, { depth: null });
-
-            console.log(jsonUserReview.rating + ';' + sentiment(jsonUserReview.text).comparative + ';' + sentiment(jsonUserReview.text).score);
-
-
-
-
-
-            // Words in comments
-            // let commentNumber = 1;
-            // tfidf.listTerms(commentNumber).forEach(function(item) {
-            //     console.log(item.term + ': ' + item.tfidf);
-            // });
-
-            // Importance of word in each comment
-            // let word = 'like';
-            // tfidf.tfidfs(word, function(i, measure) {
-            //     console.log('document #' + i + ' is ' + measure);
-            // });
-        });
-    });
-});*/
-
-
-
-
-
-

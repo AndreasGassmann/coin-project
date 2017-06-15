@@ -75,7 +75,7 @@ module.exports.init = () => {
         let episodePlot = sequelize.define('episode_plot', {
             plot: Sequelize.TEXT
         });
-		episodePlot.belongsTo(episode);
+        episodePlot.belongsTo(episode);
 
         season.hasMany(episode);
 
@@ -114,7 +114,7 @@ module.exports.init = () => {
         traktComment.belongsTo(episode);
 
         let RedditPosts = sequelize.define('RedditPosts', {
-            id: {type: Sequelize.INTEGER, primaryKey: true},
+            id: { type: Sequelize.INTEGER, primaryKey: true },
             pID: Sequelize.STRING,
             subreddit: Sequelize.STRING,
             title: Sequelize.STRING,
@@ -139,7 +139,7 @@ module.exports.init = () => {
         RedditPosts.belongsTo(tvShow);
 
         let RedditComments = sequelize.define('RedditComments', {
-            id: {type: Sequelize.INTEGER, primaryKey: true},
+            id: { type: Sequelize.INTEGER, primaryKey: true },
             commentID: Sequelize.STRING,
             parentID: Sequelize.STRING,
             content: Sequelize.STRING,
@@ -151,10 +151,10 @@ module.exports.init = () => {
             content_termFrequencyObject: Sequelize.TEXT,
         });
         RedditComments.belongsTo(tvShow);
-//        RedditComments.belongsTo(RedditPosts);
+        //        RedditComments.belongsTo(RedditPosts);
 
 
-        let ratingDistribution = sequelize.define('ratingDistribution',{
+        let ratingDistribution = sequelize.define('ratingDistribution', {
             star1: Sequelize.INTEGER,
             star2: Sequelize.INTEGER,
             star3: Sequelize.INTEGER,
@@ -170,8 +170,8 @@ module.exports.init = () => {
         episode.belongsTo(ratingDistribution);
         tvShow.belongsTo(ratingDistribution);
 
-        let characters = sequelize.define('characters',{
-            id: {type: Sequelize.INTEGER, primaryKey: true},
+        let characters = sequelize.define('characters', {
+            id: { type: Sequelize.INTEGER, primaryKey: true },
             name: Sequelize.STRING,
             imdb_numOfAppearances: Sequelize.INTEGER,
             imdb_sentimentScoreAvg: Sequelize.FLOAT,
@@ -191,7 +191,27 @@ module.exports.init = () => {
         episode.hasMany(traktComment);
         tvShow.hasMany(RedditPosts);
         tvShow.hasMany(RedditComments);
-//        episode.hasMany(RedditPosts);
+        //        episode.hasMany(RedditPosts);
+
+
+        let imdbCorrelation = sequelize.define('imdbCorrelation', {
+            regr_r_square: Sequelize.FLOAT,
+            regr_coeff_intercept: Sequelize.FLOAT,
+            regr_coeff_slope: Sequelize.FLOAT,
+            v1: Sequelize.FLOAT,
+            v2: Sequelize.FLOAT,
+            v3: Sequelize.FLOAT,
+            v4: Sequelize.FLOAT,
+            v5: Sequelize.FLOAT,
+            v6: Sequelize.FLOAT,
+            v7: Sequelize.FLOAT,
+            v8: Sequelize.FLOAT,
+            v9: Sequelize.FLOAT,
+            v10: Sequelize.FLOAT
+        });
+        tvShow.hasOne(imdbCorrelation);
+        imdbCorrelation.belongsTo(tvShow);
+
 
         sequelize.sync({ force: false }).then(function () {
             resolve(db);

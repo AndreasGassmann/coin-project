@@ -68,34 +68,12 @@ export class ShowComponent implements OnInit {
   // Line Chart: Correlation between review sentiment and rating
   public crrLineChartData: Array<any> = [
     {
-      data: [
-        { x: '1 star', y: 0 },
-        { x: '2 stars', y: 0.31 },
-        { x: '3 stars', y: 0.48 },
-        { x: '4 stars', y: 0.37 },
-        { x: '5 stars', y: 0.49 },
-        { x: '6 stars', y: 0.52 },
-        { x: '7 stars', y: 0.69 },
-        { x: '8 stars', y: 0.67 },
-        { x: '9 stars', y: 0.89 },
-        { x: '10 stars', y: 1 },
-      ],
+      data: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
       label: 'Normalized average sentiment (IMDb) per rating',
       pointRadius: 7
     },
     {
-      data: [
-        { x: '1 star', y: 0.1325 },
-        { x: '2 stars', y: 0.22324 },
-        { x: '3 stars', y: 0.31413 },
-        { x: '4 stars', y: 0.40502 },
-        { x: '5 stars', y: 0.49591 },
-        { x: '6 stars', y: 0.5868 },
-        { x: '7 stars', y: 0.67769 },
-        { x: '8 stars', y: 0.76858 },
-        { x: '9 stars', y: 0.85947 },
-        { x: '10 stars', y: 0.95036 },
-      ],
+      data: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
       label: 'Line of best fit (linear regression)',
       showLine: true,
       pointRadius: 0,
@@ -296,10 +274,12 @@ export class ShowComponent implements OnInit {
 
         // Average Imdb season rating
         let imdbSeasonAvgRating = [];
+        this.averageRatingLabels = [];
         for (let index in this.show.seasons) {
           imdbSeasonAvgRating.push(this.show.seasons[index].average_imdb_rating);
           this.averageRatingLabels.push('Season ' + (parseInt(index) + 1));
         }
+        this.cdr.detectChanges();
 
         let traktSeasonAvgRating = [];
         imdbSeasonAvgRating.forEach(r => {
@@ -316,13 +296,43 @@ export class ShowComponent implements OnInit {
 
         // Reddit Distribution
         let redditComments = [];
+        let redditDistributionLabels = [];
         for (let index in this.show.seasons) {
           redditComments.push(this.show.seasons[index].redditComment_count);
           this.redditDistributionLabels.push('Season ' + (parseInt(index) + 1));
         }
+        this.cdr.detectChanges();
         this.redditDistributionData = [
           { data: redditComments, label: 'Reddit Comments' }
         ];
+
+        let crrLineChartDataTempPoints = [];
+        let crrLineChartDataTempLine = [];
+        let intercept = this.show.imdbCorrelation.regr_coeff_intercept;
+        let slope = this.show.imdbCorrelation.regr_coeff_slope;
+        _.range(1, 11).map(x => {
+          crrLineChartDataTempPoints.push(parseFloat(this.show.imdbCorrelation['v' + x]));
+          crrLineChartDataTempLine.push(parseFloat(slope * x + intercept));
+        })
+
+        this.crrLineChartData = [
+          {
+            data: crrLineChartDataTempPoints,
+            label: 'Normalized average sentiment (IMDb) per rating',
+            pointRadius: 7
+          },
+          {
+            data: crrLineChartDataTempLine,
+            label: 'Line of best fit (linear regression)',
+            showLine: true,
+            pointRadius: 0,
+            fill: false
+          }
+        ];
+
+
+
+        // TODO crrLineChartData[0].data = ...
 
         // If the show is GoT get Character Stats
         if (this.show.id === 1) {
@@ -361,7 +371,7 @@ export class ShowComponent implements OnInit {
 
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   // events
   public chartClicked(e: any): void {

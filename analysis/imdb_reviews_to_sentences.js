@@ -20,8 +20,6 @@ var globalCounter = 0; // for debugging
 dbjs.init().then(res => {
     db = res;
 
-    //db.sequelize.models.sentence.create({ content: "test", imdbUserReviewId: 1});
-
     var lastProcessedEpisodeId = 0;
 
     db.sequelize.models.imdbUserReview.findAll({ where: { id: { $gt: lastProcessedEpisodeId } } })

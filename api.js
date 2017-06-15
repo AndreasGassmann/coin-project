@@ -82,6 +82,9 @@ let getShowFromDb = (showId) => {
             }, {
                 model: db.sequelize.models.ratingDistribution,
                 attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
+            }, {
+                model: db.sequelize.models.imdbCorrelation,
+                attributes: ['regr_r_square', 'regr_coeff_intercept', 'regr_coeff_slope', 'v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9', 'v10']
             }]
         }).then(dbShow => {
             dbShow = dbShow[0];
@@ -104,6 +107,7 @@ let getShowFromDb = (showId) => {
                 'redditPost_count': dbShow.redditPost_count,
                 'redditComment_count': dbShow.redditComment_count,
                 'seasons': dbShow.seasons,
+                'imdbCorrelation': dbShow.imdbCorrelation
             };
             resolve(show);
         });
@@ -268,8 +272,8 @@ router.get('/wordCloud/episode/:id', async (ctx, next) => {
             // calculate average
             let word = wordCount[property];
             let average = word.reduce(function (acc, val) {
-                    return acc + parseInt(val);
-                }, 0) / wordCount[property].length;
+                return acc + parseInt(val);
+            }, 0) / wordCount[property].length;
 
             wordArray.push({
                 text: property,
