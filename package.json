@@ -24,7 +24,7 @@
     "request": "^2.81.0",
     "scraperjs": "^1.2.0",
     "sentiment": "^4.0.0",
-    "sequelize": "^3.30.4",
+    "sequelize": "^4.0.0",
     "stopword": "^0.1.1",
     "twitter": "^1.7.0",
     "winston": "^2.3.1"
