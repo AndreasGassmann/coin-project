@@ -22,7 +22,7 @@ cd coin-project
 npm i
 ```
 
-### Running the project
+### Running the project (backend)
 
 You can now run the app by using the followin command:
 
@@ -31,6 +31,29 @@ node server.js
 ```
 
 The webserver is now accessible on port 3000. `http://localhost:3000/`
+
+### Running the project (frontend)
+
+First we need to install all angular dependencies
+
+```
+cd angular
+
+npm i
+```
+
+For development we can start the server included by angular
+
+```
+ng serve
+```
+
+To build the files for production use, we can run
+
+```
+ng build --prod
+```
+
 
 ## Config
 
