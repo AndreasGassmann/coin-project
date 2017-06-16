@@ -9,7 +9,8 @@ dbjs.init().then(db => {
             //console.log(e.dataValues);
         });
     }).catch(console.log);
-*//*
+*/
+/*
     db.sequelize.models.tvShow.findAll().then(shows => {
         console.log(shows);
     })
@@ -60,7 +61,9 @@ db.init().then((db) => {
 
             // fetch all imdb ratings for tvShowId
             promises.push(db.sequelize.models.imdbUserReview.findAll({
-                where: { id: showId },
+                where: {
+                    id: showId
+                },
                 include: [{
                     model: db.sequelize.models.season,
                     attributes: ['id', 'seasonNumber'],
@@ -76,7 +79,9 @@ db.init().then((db) => {
             }));
             // fetch all trakt ratings for tvShowId
             promises.push(db.sequelize.models.traktComment.findAll({
-                where: { id: showId }
+                where: {
+                    id: showId
+                }
             }));
 
             // when all ratings where fetched (promises resolved), then fill the arrays.
@@ -111,29 +116,29 @@ db.init().then((db) => {
      "use strict";
      console.log('yay distribution')
      });*/
-/*
-    let saveAverageImdbRating = function(limit){
-        db.sequelize.models.season.findAll({limit: limit}).then(function(seasons){
-            for (let index in seasons){
-                db.sequelize.models.episode.findAll({where: {seasonId: seasons[index].id}}).then(function (episodes){
-                    let seasonRatingSum = 0;
+    /*
+        let saveAverageImdbRating = function(limit){
+            db.sequelize.models.season.findAll({limit: limit}).then(function(seasons){
+                for (let index in seasons){
+                    db.sequelize.models.episode.findAll({where: {seasonId: seasons[index].id}}).then(function (episodes){
+                        let seasonRatingSum = 0;
 
-                    for (let i in episodes){
-                        seasonRatingSum += episodes[i].imdbRating;
-                    }
-                    let averageSeasonRating = seasonRatingSum / episodes.length;
-                    seasons[index].update({
-                        average_rating: averageSeasonRating
-                    });
-                })
-            }
-        });
-    };*/
+                        for (let i in episodes){
+                            seasonRatingSum += episodes[i].imdbRating;
+                        }
+                        let averageSeasonRating = seasonRatingSum / episodes.length;
+                        seasons[index].update({
+                            average_rating: averageSeasonRating
+                        });
+                    })
+                }
+            });
+        };*/
 
 
     // calculates and saves the RATING DISTRIBUTION for show, season and episodes
     // calculates and saves total amount of episodes, seasons, ratings for all levels.
-    let saveTraktRatingDistribution = function(limit){
+    let saveTraktRatingDistribution = function () {
         db.sequelize.models.tvShow.findAll({
             include: [{
                 model: db.sequelize.models.season,
@@ -148,8 +153,8 @@ db.init().then((db) => {
                 }]
             }]
         }).then(dbShows => {
-            console.log(dbShows);
-            for (let index in dbShows){
+            //console.log(dbShows);
+            for (let index in dbShows) {
                 let episodesCount = 0;
                 let traktCommentsCount = 0;
                 let seasontraktCommentsCount = 0;
@@ -172,14 +177,15 @@ db.init().then((db) => {
                         traktCommentsCount += episode.traktComments.length;
                         seasontraktCommentsCount += episode.traktComments.length;
                         episode.traktComments.forEach(traktComment => {
-                            if (traktComment !== null && traktComment.rating !== null)
-                                traktCommentRatingsEpisode[traktComment.rating] += 1;
-                            traktCommentRatingsSeason[traktComment.rating] += 1;
-                            traktCommentRatings[traktComment.rating] += 1;
+                            if (traktComment !== null && traktComment.userRating !== null) {
+                                traktCommentRatingsEpisode[traktComment.userRating] += 1;
+                                traktCommentRatingsSeason[traktComment.userRating] += 1;
+                                traktCommentRatings[traktComment.userRating] += 1;
+                            }
                         });
 
-                        console.log(traktCommentRatingsEpisode);
-                        /*
+
+                        let lokalTraktCommentRatingsEpisode = traktCommentRatingsEpisode;
                         db.sequelize.models.traktRatingDistribution.create({
                             star1: traktCommentRatingsEpisode[1],
                             star2: traktCommentRatingsEpisode[2],
@@ -191,14 +197,31 @@ db.init().then((db) => {
                             star8: traktCommentRatingsEpisode[8],
                             star9: traktCommentRatingsEpisode[9],
                             star10: traktCommentRatingsEpisode[10],
-                        }).then(function(episodeRatingDistribution){
+                        }).then(function (episodeRatingDistribution) {
                             episode.setTraktRatingDistribution(episodeRatingDistribution);
+
+                            let averageRating = 0;
+                            let commentCount = 0;
+                            _.range(1, 11).forEach(index => {
+                                commentCount += lokalTraktCommentRatingsEpisode[index];
+                                averageRating += index * lokalTraktCommentRatingsEpisode[index];
+                            });
+
+                            if (commentCount !== 0) {
+                                averageRating = averageRating / commentCount;
+                            }
+
                             episode.update({
-                                trakt_review_count: episode.traktComments.length
+                                trakt_review_count: episode.traktComments.length,
+                                traktRating: averageRating
                             })
                         });
-                        */
-                    });/*
+
+                    });
+
+                    let localTraktCommentRatingsSeason = traktCommentRatingsSeason;
+                    let localSeasontraktCommentsCount = seasontraktCommentsCount;
+                    let localSeasonEpisodesCount = seasonEpisodesCount;
                     db.sequelize.models.traktRatingDistribution.create({
                         star1: traktCommentRatingsSeason[1],
                         star2: traktCommentRatingsSeason[2],
@@ -210,16 +233,29 @@ db.init().then((db) => {
                         star8: traktCommentRatingsSeason[8],
                         star9: traktCommentRatingsSeason[9],
                         star10: traktCommentRatingsSeason[10],
-                    }).then(function(seasonRatingDistribution){
+                    }).then(function (seasonRatingDistribution) {
+
+                        let averageRating = 0;
+                        let commentCount = 0;
+                        _.range(1, 11).forEach(index => {
+                            commentCount += localTraktCommentRatingsSeason[index];
+                            averageRating += index * localTraktCommentRatingsSeason[index];
+                        });
+
+                        if (commentCount !== 0) {
+                            averageRating = averageRating / commentCount;
+                        }
 
                         season.setTraktRatingDistribution(seasonRatingDistribution);
                         season.update({
-                            trakt_review_count: seasontraktCommentsCount,
-                            totalepisodes: seasonEpisodesCount
+                            trakt_review_count: localSeasontraktCommentsCount,
+                            totalepisodes: localSeasonEpisodesCount,
+                            average_trakt_rating: averageRating
                         })
 
-                    });*/
-                });/*
+                    });
+                });
+
                 db.sequelize.models.traktRatingDistribution.create({
                     star1: traktCommentRatings[1],
                     star2: traktCommentRatings[2],
@@ -231,15 +267,26 @@ db.init().then((db) => {
                     star8: traktCommentRatings[8],
                     star9: traktCommentRatings[9],
                     star10: traktCommentRatings[10],
-                }).then(function(ratingDistribution){
+                }).then(function (ratingDistribution) {
+                    let averageRating = 0;
+                    let commentCount = 0;
+                    _.range(1, 11).forEach(index => {
+                        commentCount += traktCommentRatings[index];
+                        averageRating += index * traktCommentRatings[index];
+                    });
+
+                    if (commentCount !== 0) {
+                        averageRating = averageRating / commentCount;
+                    }
 
                     dbShows[index].setTraktRatingDistribution(ratingDistribution);
                     dbShows[index].update({
                         trakt_review_count: traktCommentsCount,
-                        totalepisodes: episodesCount
+                        totalepisodes: episodesCount,
+                        average_trakt_rating: averageRating
                     })
 
-                });*/
+                });
             }
 
         });
@@ -247,7 +294,7 @@ db.init().then((db) => {
 
     //saveAverageImdbRating(100);
 
-    saveTraktRatingDistribution(1000);
+    saveTraktRatingDistribution();
 
 
 });
