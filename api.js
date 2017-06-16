@@ -60,6 +60,7 @@ let getShowsFromDb = () => {
                     'titleimage': staticData[dbShow.id]['titleimage'],
                     'imdbUserReviewsCount': dbShow.imdb_review_count,
                     'imdbRatingDistribution': dbShow.ratingDistribution,
+                    'traktCommentCount': dbShow.trakt_review_count,
                     'redditPost_count': dbShow.redditPost_count,
                     'redditComment_count': dbShow.redditComment_count,
                 };
@@ -130,7 +131,7 @@ let getSeasonFromDb = (showId, seasonId) => {
             },
             include: [{
                 model: db.sequelize.models.episode,
-                attributes: ['id', 'name', 'episodeNumber', 'imdbRating', 'redditPost_count', 'redditComment_count'],
+                attributes: ['id', 'name', 'episodeNumber', 'imdbRating', 'traktRating', 'redditPost_count', 'redditComment_count'],
             }, {
                 model: db.sequelize.models.ratingDistribution,
                 attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],

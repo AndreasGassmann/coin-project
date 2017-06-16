@@ -127,9 +127,11 @@ export class SeasonComponent implements OnInit {
           }
 
           let traktDistributionData = [];
-          imdbDistributionData.forEach(r => {
-            traktDistributionData.push(Math.max(0, Math.round(r + (5 - Math.random() * 5))));
-          });
+          for (let property in this.season.traktRatingDistribution) {
+            if (this.season.traktRatingDistribution.hasOwnProperty(property)) {
+              traktDistributionData.push(this.season.traktRatingDistribution[property]);
+            }
+          }
 
           this.ratingDistributionData = [
             { data: imdbDistributionData, label: 'IMDb' },
@@ -139,25 +141,20 @@ export class SeasonComponent implements OnInit {
 
           // Average Imdb season rating
           let imdbSeasonAvgRating = [];
+          let traktSeasonAvgRating = [];
           let averageRatingLabelsTemp = [];
           for (let index in this.season.episodes) {
             imdbSeasonAvgRating.push(this.season.episodes[index].imdbRating);
+            traktSeasonAvgRating.push(this.season.episodes[index].traktRating);
             averageRatingLabelsTemp.push('Episode ' + (parseInt(index) + 1));
           }
           this.averageRatingLabels = averageRatingLabelsTemp;
           this.cdr.detectChanges();
 
-          let traktSeasonAvgRating = [];
-          imdbSeasonAvgRating.forEach(r => {
-            traktSeasonAvgRating.push(Math.max(0, Math.round(r - Math.random() * 2)));
-            console.log(r);
-          });
-
           this.averageRatingData = [
             { data: imdbSeasonAvgRating, label: 'IMDb' },
             { data: traktSeasonAvgRating, label: 'Trakt.tv' }
           ];
-          // TODO: Also use Trakt data which is not there yet
 
           // Reddit Distribution
           let redditComments = [];

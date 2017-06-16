@@ -52,9 +52,11 @@ export class EpisodeComponent implements OnInit {
           }
 
           let traktDistributionData = [];
-          imdbDistributionData.forEach(r => {
-            traktDistributionData.push(Math.max(0, Math.round(r + (1 - Math.random()))));
-          });
+          for (let property in this.episode.traktRatingDistribution) {
+            if (this.episode.traktRatingDistribution.hasOwnProperty(property)) {
+              traktDistributionData.push(this.episode.traktRatingDistribution[property]);
+            }
+          }
 
           this.ratingDistributionData = [
             {data: imdbDistributionData, label: 'IMDb'},
