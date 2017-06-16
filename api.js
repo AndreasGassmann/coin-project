@@ -80,9 +80,12 @@ let getShowFromDb = (showId) => {
             },
             include: [{
                 model: db.sequelize.models.season,
-                attributes: ['id', 'seasonNumber', 'average_imdb_rating', 'totalepisodes', 'redditPost_count', 'redditComment_count']
+                attributes: ['id', 'seasonNumber', 'average_imdb_rating', 'average_trakt_rating', 'totalepisodes', 'redditPost_count', 'redditComment_count']
             }, {
                 model: db.sequelize.models.ratingDistribution,
+                attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
+            }, {
+                model: db.sequelize.models.traktRatingDistribution,
                 attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
             }, {
                 model: db.sequelize.models.imdbCorrelation,
@@ -90,9 +93,6 @@ let getShowFromDb = (showId) => {
             }]
         }).then(dbShow => {
             dbShow = dbShow[0];
-
-            console.log(dbShow.traktRatingDistribution);
-
             // TODO make dummy data dynamic!
             let show = {
                 'id': dbShow.id,
@@ -108,6 +108,7 @@ let getShowFromDb = (showId) => {
                 'imdbRating': dbShow.rating,
                 'imdbUserReviewsCount': dbShow.imdb_review_count,
                 'imdbRatingDistribution': dbShow.ratingDistribution,
+                'traktRating': dbShow.average_trakt_rating,
                 'traktCommentCount': dbShow.trakt_review_count,
                 'traktRatingDistribution': dbShow.traktRatingDistribution,
                 'redditPost_count': dbShow.redditPost_count,
@@ -133,6 +134,9 @@ let getSeasonFromDb = (showId, seasonId) => {
             }, {
                 model: db.sequelize.models.ratingDistribution,
                 attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
+            }, {
+                model: db.sequelize.models.traktRatingDistribution,
+                attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
             }]
         }).then(season => {
             let resolveSeason = {
@@ -142,6 +146,9 @@ let getSeasonFromDb = (showId, seasonId) => {
                 'imdbRating': season.average_imdb_rating,
                 'imdbUserReviewsCount': season.imdb_review_count,
                 'imdbRatingDistribution': season.ratingDistribution,
+                'traktRating': season.average_trakt_rating,
+                'traktCommentCount': season.trakt_review_count,
+                'traktRatingDistribution': season.traktRatingDistribution,
                 'redditPost_count': season.redditPost_count,
                 'redditComment_count': season.redditComment_count,
                 'episodes': season.episodes
@@ -164,6 +171,9 @@ let getEpisodeFromDb = (showId, seasonId, episodeId) => {
                 attributes: ['id', 'name', 'episodeNumber', 'imdbRating', 'imdb_review_count', 'redditPost_count', 'redditComment_count'],
                 include: [{
                     model: db.sequelize.models.ratingDistribution,
+                    attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
+                }, {
+                    model: db.sequelize.models.traktRatingDistribution,
                     attributes: ['star1', 'star2', 'star3', 'star4', 'star5', 'star6', 'star7', 'star8', 'star9', 'star10'],
                 }]
             }]
